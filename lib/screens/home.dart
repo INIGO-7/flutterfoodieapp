@@ -57,11 +57,19 @@ class Home extends StatelessWidget {
             fontWeight: FontWeight.w800,
           ),
         ),
+<<<<<<< HEAD
         FlatButton(
           child: Text(
             "See all (9)",
             style: TextStyle(
               color: Theme.of(context).accentColor,
+=======
+        TextButton(
+          child: Text(
+            "See all (9)",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+>>>>>>> f4b3ba4 (Fixed original app: https://github.com/JideGuru/FlutterFoodybite)
             ),
           ),
           onPressed: () {
@@ -90,11 +98,19 @@ class Home extends StatelessWidget {
             fontWeight: FontWeight.w800,
           ),
         ),
+<<<<<<< HEAD
         FlatButton(
           child: Text(
             "See all (9)",
             style: TextStyle(
               color: Theme.of(context).accentColor,
+=======
+        TextButton(
+          child: Text(
+            "See all (9)",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+>>>>>>> f4b3ba4 (Fixed original app: https://github.com/JideGuru/FlutterFoodybite)
             ),
           ),
           onPressed: () {
