@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 
 class CategoryItem extends StatelessWidget {
   final Map cat;
-
-<<<<<<< HEAD
-  CategoryItem({this.cat});
-=======
   CategoryItem({required this.cat});
->>>>>>> f4b3ba4 (Fixed original app: https://github.com/JideGuru/FlutterFoodybite)
 
   @override
   Widget build(BuildContext context) {

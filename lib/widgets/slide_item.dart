@@ -8,19 +8,11 @@ class SlideItem extends StatefulWidget {
   final String rating;
 
   SlideItem({
-<<<<<<< HEAD
-    Key key,
-    @required this.img,
-    @required this.title,
-    @required this.address,
-    @required this.rating,
-=======
     Key? key,
     required this.title,
     required this.address,
     required this.rating,
     required this.img,
->>>>>>> f4b3ba4 (Fixed original app: https://github.com/JideGuru/FlutterFoodybite)
   }) : super(key: key);
 
   @override

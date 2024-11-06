@@ -12,11 +12,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-<<<<<<< HEAD
-  PageController _pageController;
-=======
+
   PageController _pageController = PageController();
->>>>>>> f4b3ba4 (Fixed original app: https://github.com/JideGuru/FlutterFoodybite)
   int _page = 0;
 
   List icons = [
@@ -103,13 +100,9 @@ class _MainScreenState extends State<MainScreen> {
             size: 24.0,
           ),
           color: _page == index
-<<<<<<< HEAD
-              ? Theme.of(context).accentColor
-              : Theme.of(context).textTheme.caption.color,
-=======
+
               ? Theme.of(context).colorScheme.secondary
               : Theme.of(context).colorScheme.primary,
->>>>>>> f4b3ba4 (Fixed original app: https://github.com/JideGuru/FlutterFoodybite)
           onPressed: () => _pageController.jumpToPage(index),
         ),
       );
