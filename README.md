@@ -23,6 +23,3 @@ Work on the project resumed by: @AndoniOka, @MaMarco13, @INIGO-7 and Germán Dar
 * Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
 * A little knowledge of Dart and Flutter
 * A brain to think 🤓🤓
-
-## 🤓 Author(s)
-**Olusegun Festus Babajide** [![Twitter Follow](https://img.shields.io/twitter/follow/iamjideguru.svg?style=social)](https://twitter.com/iamjideguru)
