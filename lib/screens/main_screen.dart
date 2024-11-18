@@ -22,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
     Icons.add,
     Icons.notifications,
     Icons.person,
+    Icons.bookmarks
   ];
 
   List pages = [
