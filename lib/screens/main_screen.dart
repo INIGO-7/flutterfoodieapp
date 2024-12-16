@@ -4,10 +4,16 @@ import 'package:flutter_foodybite/screens/home.dart';
 import 'package:flutter_foodybite/screens/label.dart';
 import 'package:flutter_foodybite/screens/profile.dart'; // Asegúrate de importar Profile
 
+import 'package:flutter_foodybite/util/user_service.dart';
 import 'notifications.dart';
 import 'login.dart'; // Agregamos LoginScreen
 
 class MainScreen extends StatefulWidget {
+  final bool isLogged;  // Propiedad para almacenar el valor
+
+  // Constructor para recibir el parámetro isLogged
+  MainScreen({required this.isLogged});
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -30,19 +36,20 @@ class _MainScreenState extends State<MainScreen> {
     Add(),
     Notifications(),
     Profile(), // Página de Profile añadida
+    LoginScreen()
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_page == 4 ? 'Perfil' : 'Mi App'), // Cambia el título si estás en Profile
+        title: Text('Mi App'), // Cambia el título si estás en Profile
       ),
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
-        children: List.generate(5, (index) => pages[index]),
+        children: List.generate(6, (index) => pages[index]),
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -92,7 +99,16 @@ class _MainScreenState extends State<MainScreen> {
             ? Theme.of(context).colorScheme.secondary
             : Theme.of(context).colorScheme.primary,
         onPressed: () {
-          _pageController.jumpToPage(index); // Cambiar al índice correspondiente
+          if(index == 4){
+            final isLogged = UserService().isUserLoggedIn();
+            print("isLogged: ${widget.isLogged}");
+            if(widget.isLogged) // Si está logueado
+              _pageController.jumpToPage(index); // Cambiar al índice correspondiente
+            else
+              _pageController.jumpToPage(5); // Cambiar a la página de Login
+          }
+          else
+            _pageController.jumpToPage(index); // Cambiar al índice correspondiente
         },
       ),
     );

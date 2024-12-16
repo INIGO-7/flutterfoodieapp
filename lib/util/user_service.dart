@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class UserService {
   final String _filePath = 'users.json';
@@ -48,4 +50,16 @@ class UserService {
     users.add({'username': username, 'password': password});
     await _saveUsers(users);
   }
+
+   // Nuevos métodos para manejar el estado de login
+  Future<void> setUserLoggedIn(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLogged', value);
+  }
+
+  Future<bool> isUserLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLogged') ?? false;
+  }
+
 }

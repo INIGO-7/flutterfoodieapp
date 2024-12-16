@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_foodybite/screens/profile.dart';
 import 'package:flutter_foodybite/screens/register.dart';
 import '../util/user_service.dart';
 import 'main_screen.dart'; // Asegúrate de importar MainScreen
@@ -16,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _userService = UserService();
 
+  
   void _login() async {
     if (_formKey.currentState!.validate()) {
       final isValid = await _userService.validateUser(
@@ -23,10 +25,11 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.text,
       );
       if (isValid) {
+      _userService.setUserLoggedIn(true);
         // Volver al MainScreen con Profile seleccionado
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MainScreen()),
+          MaterialPageRoute(builder: (context) => Profile()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
