@@ -18,26 +18,30 @@ class _LoginScreenState extends State<LoginScreen> {
   final _userService = UserService();
 
   
-  void _login() async {
-    if (_formKey.currentState!.validate()) {
-      final isValid = await _userService.validateUser(
-        _usernameController.text,
-        _passwordController.text,
+void _login() async {
+  if (_formKey.currentState!.validate()) {
+    final isValid = await _userService.validateUser(
+      _usernameController.text,
+      _passwordController.text,
+    );
+    if (isValid) {
+      _userService.setUserLoggedIn(true); // Establecer el estado de "logueado"
+
+      // Navegar al MainScreen, pasando el valor de isLogged como 'true'
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainScreen(isLogged: true), // Asegúrate de pasar el isLogged como 'true'
+        ),
       );
-      if (isValid) {
-      _userService.setUserLoggedIn(true);
-        // Volver al MainScreen con Profile seleccionado
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Profile()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Credenciales inválidas')),
-        );
-      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Credenciales inválidas')),
+      );
     }
   }
+}
+
 
   void _goToRegister() {
     Navigator.push(
@@ -62,12 +66,12 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 controller: _usernameController,
                 decoration: InputDecoration(
-                  labelText: 'Usuario',
+                  labelText: 'Username',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, ingrese su usuario';
+                    return 'Add your username';
                   }
                   return null;
                 },
@@ -76,25 +80,34 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(
-                  labelText: 'Contraseña',
+                  labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, ingrese su contraseña';
+                    return 'Add your password';
                   }
                   return null;
                 },
               ),
               SizedBox(height: 16),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                ),
                 onPressed: _login,
-                child: Text('Iniciar Sesión'),
+                child: Text('Sign In'),
               ),
+              SizedBox(height: 8), // Espacio entre botones
               TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                ),
                 onPressed: _goToRegister,
-                child: Text('¿No tienes cuenta? Regístrate'),
+                child: Text('Register'),
               ),
             ],
           ),

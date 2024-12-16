@@ -7,7 +7,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.green,
         title: Text(
           'Perfil',
           style: TextStyle(color: Colors.white),
@@ -23,7 +23,7 @@ class Profile extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 50.0,
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.green,
               child: Icon(
                 Icons.person,
                 size: 50.0,
@@ -36,7 +36,7 @@ class Profile extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.blue,
+                color: Colors.green,
               ),
             ),
             SizedBox(height: 8.0),
@@ -51,21 +51,21 @@ class Profile extends StatelessWidget {
             Divider(color: Colors.grey),
             SizedBox(height: 16.0),
             ListTile(
-              leading: Icon(Icons.edit, color: Colors.blue),
+              leading: Icon(Icons.edit, color: Colors.green),
               title: Text('Editar Perfil'),
               onTap: () {
                 // Acción para editar perfil
               },
             ),
             ListTile(
-              leading: Icon(Icons.lock, color: Colors.blue),
+              leading: Icon(Icons.lock, color: Colors.green),
               title: Text('Cambiar Contraseña'),
               onTap: () {
                 // Acción para cambiar contraseña
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout, color: Colors.blue),
+              leading: Icon(Icons.logout, color: Colors.green),
               title: Text('Cerrar Sesión'),
               onTap: () {
                 // Acción para cerrar sesión

@@ -10,7 +10,6 @@ import 'login.dart'; // Agregamos LoginScreen
 
 class MainScreen extends StatefulWidget {
   final bool isLogged;  // Propiedad para almacenar el valor
-
   // Constructor para recibir el parámetro isLogged
   MainScreen({required this.isLogged});
 
@@ -43,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mi App'), // Cambia el título si estás en Profile
+        title: Text('Guest Session'),
       ),
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
@@ -52,6 +51,7 @@ class _MainScreenState extends State<MainScreen> {
         children: List.generate(6, (index) => pages[index]),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.green,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -62,12 +62,12 @@ class _MainScreenState extends State<MainScreen> {
             buildTabIcon(4), // Icono de Profile
           ],
         ),
-        color: Theme.of(context).primaryColor,
         shape: CircularNotchedRectangle(),
       ),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green.shade400,
         elevation: 10.0,
         child: Icon(
           Icons.add,
