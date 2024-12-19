@@ -2,26 +2,25 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class UserService {
   final String _filePath = 'users.json';
 
-  Future<List<Map<String, String>>> _loadUsers() async {
+  // Carga la lista de usuarios desde el archivo JSON
+  Future<List<Map<String, dynamic>>> _loadUsers() async {
     try {
       final file = File(_filePath);
       if (!await file.exists()) {
         await file.writeAsString('[]'); // Crear archivo vacío si no existe
       }
       final content = await file.readAsString();
-      // Asegurarse de que cada elemento de la lista se convierta en Map<String, String>
-      final List<dynamic> decodedList = jsonDecode(content);
-      return decodedList.map((user) => Map<String, String>.from(user)).toList();
+      return List<Map<String, dynamic>>.from(jsonDecode(content));
     } catch (e) {
       throw Exception("Error al cargar usuarios: $e");
     }
   }
 
-  Future<void> _saveUsers(List<Map<String, String>> users) async {
+  // Guarda la lista de usuarios en el archivo JSON
+  Future<void> _saveUsers(List<Map<String, dynamic>> users) async {
     try {
       final file = File(_filePath);
       final content = jsonEncode(users);
@@ -31,27 +30,57 @@ class UserService {
     }
   }
 
+  // Verifica si un usuario existe
   Future<bool> userExists(String username) async {
     final users = await _loadUsers();
     return users.any((user) => user['username'] == username);
   }
 
+  // Valida las credenciales del usuario
   Future<bool> validateUser(String username, String password) async {
     final users = await _loadUsers();
     return users.any((user) =>
         user['username'] == username && user['password'] == password);
   }
 
+  // Registra un nuevo usuario
   Future<void> registerUser(String username, String password) async {
     if (await userExists(username)) {
       throw Exception('El usuario ya existe.');
     }
     final users = await _loadUsers();
-    users.add({'username': username, 'password': password});
+    users.add({'username': username, 'password': password, 'estado': 'Bronze Member'});
     await _saveUsers(users);
   }
 
-   // Nuevos métodos para manejar el estado de login
+  // Obtiene el estado del usuario
+  Future<String?> getEstadoUsuario(String username) async {
+    final users = await _loadUsers();
+    final user = users.firstWhere((user) => user['username'] == username, orElse: () => {});
+    return user['estado'];
+  }
+
+  // Actualiza el estado del usuario
+  Future<void> updateEstadoUsuario(String username, String nuevoEstado) async {
+    final users = await _loadUsers();
+    bool encontrado = false;
+    for (var user in users) {
+      if (user['username'] == username) {
+        user['estado'] = nuevoEstado;
+        encontrado = true;
+        print('Estado de $username actualizado a: $nuevoEstado');
+        break;
+      }
+    }
+
+    if (!encontrado) {
+      print('Usuario $username no encontrado.');
+    }
+
+    await _saveUsers(users);
+  }
+
+  // Métodos para manejar el estado de login
   Future<void> setUserLoggedIn(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLogged', value);
@@ -61,5 +90,4 @@ class UserService {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('isLogged') ?? false;
   }
-
 }

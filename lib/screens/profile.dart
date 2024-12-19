@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../util/user_service.dart';
 import 'login.dart';
 
 class Profile extends StatefulWidget {
@@ -9,13 +10,62 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String nombre = "Loading..."; // Valor predeterminado en caso de que no se obtenga nada
+  String nombre = "Loading...";
+  String estado = "Loading...";
+  final UserService _userService = UserService();
 
   @override
   void initState() {
     super.initState();
-    // Se llama a getUserName() en initState para obtener el nombre del usuario.
-    nombre = LoginScreen.getUserName() ?? "Failure";
+    cargarDatosUsuario();
+  }
+
+  void cargarDatosUsuario() async {
+    final username = LoginScreen.getUserName() ?? "Failure";
+    final userEstado = await _userService.getEstadoUsuario(username);
+    setState(() {
+      nombre = username;
+      estado = userEstado ?? "No estado";
+    });
+  }
+
+  void editarEstado() async {
+    final nuevoEstado = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        String nuevoEstado = estado;
+        return AlertDialog(
+          title: Text('Editar Estado'),
+          content: TextFormField(
+            initialValue: estado,
+            decoration: InputDecoration(labelText: 'Nuevo estado'),
+            onChanged: (value) {
+              nuevoEstado = value;
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(null),
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(nuevoEstado),
+              child: Text('Guardar'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (nuevoEstado != null && nuevoEstado.isNotEmpty) {
+      final username = LoginScreen.getUserName()!;
+      await _userService.updateEstadoUsuario(username, nuevoEstado);
+      final updatedEstado = await _userService.getEstadoUsuario(username); // Recargar estado desde el servicio
+      setState(() {
+        estado = updatedEstado ?? "No estado";
+      });
+      print('Nuevo estado cargado: $estado');
+    }
   }
 
   @override
@@ -23,14 +73,10 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text(
-          'Profile',
-          style: TextStyle(color: Colors.white),
-        ),
+        title: Text('Profile', style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       body: Container(
-        color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -39,11 +85,7 @@ class _ProfileState extends State<Profile> {
             CircleAvatar(
               radius: 50.0,
               backgroundColor: Colors.green,
-              child: Icon(
-                Icons.person,
-                size: 50.0,
-                color: Colors.white,
-              ),
+              child: Icon(Icons.person, size: 50.0, color: Colors.white),
             ),
             SizedBox(height: 16.0),
             Text(
@@ -55,11 +97,17 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             SizedBox(height: 8.0),
-            Text(
-              'Foodie Tier',
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.grey[600],
+            GestureDetector(
+              onTap: editarEstado,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    estado,
+                    style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
+                  ),
+                  Icon(Icons.edit, color: Colors.grey, size: 16.0),
+                ],
               ),
             ),
             SizedBox(height: 24.0),
@@ -68,9 +116,7 @@ class _ProfileState extends State<Profile> {
             ListTile(
               leading: Icon(Icons.edit, color: Colors.green),
               title: Text('Edit profile'),
-              onTap: () {
-                // Acción para editar perfil
-              },
+              onTap: editarEstado,
             ),
             ListTile(
               leading: Icon(Icons.lock, color: Colors.green),
