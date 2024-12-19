@@ -3,12 +3,19 @@ import 'package:flutter_foodybite/screens/profile.dart';
 import 'package:flutter_foodybite/screens/register.dart';
 import '../util/user_service.dart';
 import 'main_screen.dart'; // Asegúrate de importar MainScreen
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
+
+  // Propiedad estática para almacenar el nombre de usuario
+  static String? _userName;
+
+  // Método estático para obtener el nombre de usuario
+  static String? getUserName() {
+    return _userName;
+  }
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -17,31 +24,28 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _userService = UserService();
 
-  
-void _login() async {
-  if (_formKey.currentState!.validate()) {
-    final isValid = await _userService.validateUser(
-      _usernameController.text,
-      _passwordController.text,
-    );
-    if (isValid) {
-      _userService.setUserLoggedIn(true); // Establecer el estado de "logueado"
-
-      // Navegar al MainScreen, pasando el valor de isLogged como 'true'
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MainScreen(isLogged: true), // Asegúrate de pasar el isLogged como 'true'
-        ),
+  void _login() async {
+    if (_formKey.currentState!.validate()) {
+      final isValid = await _userService.validateUser(
+        _usernameController.text,
+        _passwordController.text,
       );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Credenciales inválidas')),
-      );
+      if (isValid) {
+        _userService.setUserLoggedIn(true); // Establecer el estado de "logueado"
+        LoginScreen._userName = _usernameController.text; // Guardar el nombre de usuario en la propiedad estática
+        print(LoginScreen._userName);
+        // Navegar al MainScreen, pasando el valor de isLogged como 'true'
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreen(isLogged: true)),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Credenciales inválidas')),
+        );
+      }
     }
   }
-}
-
 
   void _goToRegister() {
     Navigator.push(

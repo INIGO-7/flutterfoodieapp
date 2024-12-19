@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
+import 'login.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
+
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  String nombre = "Loading..."; // Valor predeterminado en caso de que no se obtenga nada
+
+  @override
+  void initState() {
+    super.initState();
+    // Se llama a getUserName() en initState para obtener el nombre del usuario.
+    nombre = LoginScreen.getUserName() ?? "Failure";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +24,7 @@ class Profile extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: Text(
-          'Perfil',
+          'Profile',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -32,7 +47,7 @@ class Profile extends StatelessWidget {
             ),
             SizedBox(height: 16.0),
             Text(
-              'Nombre de Usuario',
+              nombre,
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
@@ -41,7 +56,7 @@ class Profile extends StatelessWidget {
             ),
             SizedBox(height: 8.0),
             Text(
-              'usuario@example.com',
+              'Foodie Tier',
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.grey[600],
@@ -52,21 +67,21 @@ class Profile extends StatelessWidget {
             SizedBox(height: 16.0),
             ListTile(
               leading: Icon(Icons.edit, color: Colors.green),
-              title: Text('Editar Perfil'),
+              title: Text('Edit profile'),
               onTap: () {
                 // Acción para editar perfil
               },
             ),
             ListTile(
               leading: Icon(Icons.lock, color: Colors.green),
-              title: Text('Cambiar Contraseña'),
+              title: Text('Change password'),
               onTap: () {
                 // Acción para cambiar contraseña
               },
             ),
             ListTile(
               leading: Icon(Icons.logout, color: Colors.green),
-              title: Text('Cerrar Sesión'),
+              title: Text('Log out'),
               onTap: () {
                 // Acción para cerrar sesión
               },

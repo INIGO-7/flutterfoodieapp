@@ -10,7 +10,7 @@ import 'login.dart'; // Agregamos LoginScreen
 
 class MainScreen extends StatefulWidget {
   final bool isLogged;  // Propiedad para almacenar el valor
-  // Constructor para recibir el parámetro isLogged
+
   MainScreen({required this.isLogged});
 
   @override
@@ -34,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
     Label(),
     Add(),
     Notifications(),
-    Profile(), // Página de Profile añadida
+    Profile(),
     LoginScreen()
   ];
 
@@ -42,7 +42,11 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Guest Session'),
+        title: Text(
+          widget.isLogged
+              ? 'Welcome ${LoginScreen.getUserName()}'  // Llamar al método estático de LoginScreen
+              : 'Guest Session',
+        ),
       ),
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
@@ -101,7 +105,6 @@ class _MainScreenState extends State<MainScreen> {
         onPressed: () {
           if(index == 4){
             final isLogged = UserService().isUserLoggedIn();
-            print("isLogged: ${widget.isLogged}");
             if(widget.isLogged) // Si está logueado
               _pageController.jumpToPage(index); // Cambiar al índice correspondiente
             else
