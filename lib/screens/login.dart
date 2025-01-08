@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_foodybite/screens/profile.dart';
 import 'package:flutter_foodybite/screens/register.dart';
 import '../util/user_service.dart';
 import 'main_screen.dart'; // Asegúrate de importar MainScreen
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -31,8 +31,10 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.text,
       );
       if (isValid) {
-        _userService.setUserLoggedIn(true); // Establecer el estado de "logueado"
-        LoginScreen._userName = _usernameController.text; // Guardar el nombre de usuario en la propiedad estática
+        _userService
+            .setUserLoggedIn(true); // Establecer el estado de "logueado"
+        LoginScreen._userName = _usernameController
+            .text; // Guardar el nombre de usuario en la propiedad estática
         print(LoginScreen._userName);
         // Navegar al MainScreen, pasando el valor de isLogged como 'true'
         Navigator.pushReplacement(
