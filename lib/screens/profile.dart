@@ -39,24 +39,24 @@ void cambiarPassword() async {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text('Cambiar Contraseña'),
+        title: Text('Change Password'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: currentPasswordController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'Contraseña actual'),
+              decoration: InputDecoration(labelText: 'Current password'),
             ),
             TextFormField(
               controller: newPasswordController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'Nueva contraseña'),
+              decoration: InputDecoration(labelText: 'New password'),
             ),
             TextFormField(
               controller: confirmPasswordController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'Confirmar nueva contraseña'),
+              decoration: InputDecoration(labelText: 'Confirm new password'),
             ),
           ],
         ),
@@ -67,7 +67,7 @@ void cambiarPassword() async {
               backgroundColor: Colors.green,
               foregroundColor: Colors.white,
             ),
-            child: Text('Cancelar'),
+            child: Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -75,7 +75,7 @@ void cambiarPassword() async {
               backgroundColor: Colors.green,
               foregroundColor: Colors.white,
             ),
-            child: Text('Guardar'),
+            child: Text('Submit'),
           ),
         ],
       );
@@ -92,21 +92,21 @@ void cambiarPassword() async {
     // Validar contraseñas
     if (!await _userService.validateUser(username, currentPassword)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('La contraseña actual no es correcta')),
+        SnackBar(content: Text('Current password is not correct')),
       );
       return;
     }
 
     if (newPassword.isEmpty || confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('La nueva contraseña no puede estar vacía')),
+        SnackBar(content: Text('New password cannot be empty')),
       );
       return;
     }
 
     if (newPassword != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Las contraseñas no coinciden')),
+        SnackBar(content: Text('Passwords are not the same')),
       );
       return;
     }
@@ -115,7 +115,7 @@ void cambiarPassword() async {
     await _userService.updatePassword(username, newPassword);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Contraseña actualizada exitosamente')),
+      SnackBar(content: Text('Password updated correctly!')),
     );
   }
 }
@@ -129,10 +129,10 @@ void editarEstado() async {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text('Editar Estado'),
+        title: Text('Edit State'),
         content: TextFormField(
           controller: controller,
-          decoration: InputDecoration(labelText: 'Nuevo estado'),
+          decoration: InputDecoration(labelText: 'New state'),
         ),
         actions: [
           ElevatedButton(
@@ -141,7 +141,7 @@ void editarEstado() async {
               backgroundColor: Colors.green, // Color de fondo
               foregroundColor: Colors.white, // Color del texto
             ),
-            child: Text('Cancelar'),
+            child: Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(controller.text),
@@ -149,7 +149,7 @@ void editarEstado() async {
               backgroundColor: Colors.green, // Color de fondo
               foregroundColor: Colors.white, // Color del texto
             ),
-            child: Text('Guardar'),
+            child: Text('Submit'),
           ),
         ],
       );
@@ -163,7 +163,7 @@ void editarEstado() async {
     setState(() {
       estado = updatedEstado ?? "No estado";
     });
-    print('Nuevo estado cargado: $estado');
+    print('New state: $estado');
   }
 }
 

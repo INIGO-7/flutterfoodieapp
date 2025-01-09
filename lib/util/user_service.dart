@@ -15,7 +15,7 @@ class UserService {
       final content = await file.readAsString();
       return List<Map<String, dynamic>>.from(jsonDecode(content));
     } catch (e) {
-      throw Exception("Error al cargar usuarios: $e");
+      throw Exception("Error loading users: $e");
     }
   }
 
@@ -26,7 +26,7 @@ class UserService {
       final content = jsonEncode(users);
       await file.writeAsString(content);
     } catch (e) {
-      throw Exception("Error al guardar usuarios: $e");
+      throw Exception("Error saving users: $e");
     }
   }
 
@@ -46,7 +46,7 @@ class UserService {
   // Registra un nuevo usuario
   Future<void> registerUser(String username, String password) async {
     if (await userExists(username)) {
-      throw Exception('El usuario ya existe.');
+      throw Exception('User already exists.');
     }
     final users = await _loadUsers();
     users.add({'username': username, 'password': password, 'estado': 'Bronze Member'});
@@ -68,13 +68,13 @@ class UserService {
       if (user['username'] == username) {
         user['estado'] = nuevoEstado;
         encontrado = true;
-        print('Estado de $username actualizado a: $nuevoEstado');
+        print('State of $username changed to: $nuevoEstado');
         break;
       }
     }
 
     if (!encontrado) {
-      print('Usuario $username no encontrado.');
+      print('User $username could not be found.');
     }
 
     await _saveUsers(users);
@@ -90,14 +90,14 @@ Future<void> updatePassword(String username, String newPassword) async {
     if (user['username'] == username) {
       user['password'] = newPassword; // Actualiza la contraseña
       userFound = true;
-      print('Contraseña de $username actualizada a: $newPassword');
+      print('Password of $username changed to: $newPassword');
       break;
     }
   }
 
   // Si no se encontró el usuario, lanza un error
   if (!userFound) {
-    throw Exception('Usuario no encontrado: $username');
+    throw Exception('User not found: $username');
   }
 
   // Guarda los cambios en el archivo JSON
