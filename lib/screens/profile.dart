@@ -29,44 +29,144 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-  void editarEstado() async {
-    final nuevoEstado = await showDialog<String>(
-      context: context,
-      builder: (context) {
-        String nuevoEstado = estado;
-        return AlertDialog(
-          title: Text('Editar Estado'),
-          content: TextFormField(
-            initialValue: estado,
-            decoration: InputDecoration(labelText: 'Nuevo estado'),
-            onChanged: (value) {
-              nuevoEstado = value;
-            },
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(null),
-              child: Text('Cancelar'),
+
+void cambiarPassword() async {
+  final TextEditingController currentPasswordController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  final resultado = await showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Change Password'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: currentPasswordController,
+              obscureText: true,
+              decoration: InputDecoration(labelText: 'Current password'),
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(nuevoEstado),
-              child: Text('Guardar'),
+            TextFormField(
+              controller: newPasswordController,
+              obscureText: true,
+              decoration: InputDecoration(labelText: 'New password'),
+            ),
+            TextFormField(
+              controller: confirmPasswordController,
+              obscureText: true,
+              decoration: InputDecoration(labelText: 'Confirm new password'),
             ),
           ],
-        );
-      },
-    );
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+            ),
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+            ),
+            child: Text('Submit'),
+          ),
+        ],
+      );
+    },
+  );
 
-    if (nuevoEstado != null && nuevoEstado.isNotEmpty) {
-      final username = LoginScreen.getUserName()!;
-      await _userService.updateEstadoUsuario(username, nuevoEstado);
-      final updatedEstado = await _userService.getEstadoUsuario(username); // Recargar estado desde el servicio
-      setState(() {
-        estado = updatedEstado ?? "No estado";
-      });
-      print('Nuevo estado cargado: $estado');
+  if (resultado == true) {
+    final currentPassword = currentPasswordController.text;
+    final newPassword = newPasswordController.text;
+    final confirmPassword = confirmPasswordController.text;
+
+    final username = LoginScreen.getUserName()!;
+
+    // Validar contraseñas
+    if (!await _userService.validateUser(username, currentPassword)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Current password is not correct')),
+      );
+      return;
     }
+
+    if (newPassword.isEmpty || confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('New password cannot be empty')),
+      );
+      return;
+    }
+
+    if (newPassword != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Passwords are not the same')),
+      );
+      return;
+    }
+
+    // Actualizar contraseña en el archivo JSON
+    await _userService.updatePassword(username, newPassword);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Password updated correctly!')),
+    );
   }
+}
+
+
+
+void editarEstado() async {
+  final TextEditingController controller = TextEditingController(text: estado);
+
+  final nuevoEstado = await showDialog<String>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Edit State'),
+        content: TextFormField(
+          controller: controller,
+          decoration: InputDecoration(labelText: 'New state'),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(null),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green, // Color de fondo
+              foregroundColor: Colors.white, // Color del texto
+            ),
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(controller.text),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green, // Color de fondo
+              foregroundColor: Colors.white, // Color del texto
+            ),
+            child: Text('Submit'),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (nuevoEstado != null && nuevoEstado.isNotEmpty) {
+    final username = LoginScreen.getUserName()!;
+    await _userService.updateEstadoUsuario(username, nuevoEstado);
+    final updatedEstado = await _userService.getEstadoUsuario(username); // Recargar estado desde el servicio
+    setState(() {
+      estado = updatedEstado ?? "No estado";
+    });
+    print('New state: $estado');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +221,7 @@ class _ProfileState extends State<Profile> {
             ListTile(
               leading: Icon(Icons.lock, color: Colors.green),
               title: Text('Change password'),
-              onTap: () {
-                // Acción para cambiar contraseña
-              },
+              onTap: cambiarPassword,
             ),
             ListTile(
               leading: Icon(Icons.logout, color: Colors.green),
