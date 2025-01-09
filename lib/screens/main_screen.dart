@@ -4,7 +4,7 @@ import 'package:flutter_foodybite/screens/home.dart';
 import 'package:flutter_foodybite/screens/label.dart';
 import 'package:flutter_foodybite/screens/profile.dart'; // Asegúrate de importar Profile
 
-import 'package:flutter_foodybite/util/user_service.dart';
+//import 'package:flutter_foodybite/util/user_service.dart';
 import 'notifications.dart';
 import 'login.dart'; // Agregamos LoginScreen
 
@@ -41,13 +41,13 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: Text(
           widget.isLogged
               ? 'Welcome ${LoginScreen.getUserName()}'  // Llamar al método estático de LoginScreen
               : 'Guest Session',
         ),
-      ),
+      ),*/
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
@@ -104,7 +104,7 @@ class _MainScreenState extends State<MainScreen> {
             : Theme.of(context).colorScheme.primary,
         onPressed: () {
           if(index == 4){
-            final isLogged = UserService().isUserLoggedIn();
+            //final isLogged = UserService().isUserLoggedIn();
             if(widget.isLogged) // Si está logueado
               _pageController.jumpToPage(index); // Cambiar al índice correspondiente
             else
