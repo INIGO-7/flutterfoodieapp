@@ -80,6 +80,31 @@ class UserService {
     await _saveUsers(users);
   }
 
+Future<void> updatePassword(String username, String newPassword) async {
+  // Carga la lista de usuarios desde el archivo JSON
+  final users = await _loadUsers();
+  bool userFound = false;
+
+  // Busca al usuario por su username
+  for (var user in users) {
+    if (user['username'] == username) {
+      user['password'] = newPassword; // Actualiza la contraseña
+      userFound = true;
+      print('Contraseña de $username actualizada a: $newPassword');
+      break;
+    }
+  }
+
+  // Si no se encontró el usuario, lanza un error
+  if (!userFound) {
+    throw Exception('Usuario no encontrado: $username');
+  }
+
+  // Guarda los cambios en el archivo JSON
+  await _saveUsers(users);
+}
+
+
   // Métodos para manejar el estado de login
   Future<void> setUserLoggedIn(bool value) async {
     final prefs = await SharedPreferences.getInstance();
