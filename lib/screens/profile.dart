@@ -29,44 +29,51 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-  void editarEstado() async {
-    final nuevoEstado = await showDialog<String>(
-      context: context,
-      builder: (context) {
-        String nuevoEstado = estado;
-        return AlertDialog(
-          title: Text('Editar Estado'),
-          content: TextFormField(
-            initialValue: estado,
-            decoration: InputDecoration(labelText: 'Nuevo estado'),
-            onChanged: (value) {
-              nuevoEstado = value;
-            },
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(null),
-              child: Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(nuevoEstado),
-              child: Text('Guardar'),
-            ),
-          ],
-        );
-      },
-    );
+void editarEstado() async {
+  final TextEditingController controller = TextEditingController(text: estado);
 
-    if (nuevoEstado != null && nuevoEstado.isNotEmpty) {
-      final username = LoginScreen.getUserName()!;
-      await _userService.updateEstadoUsuario(username, nuevoEstado);
-      final updatedEstado = await _userService.getEstadoUsuario(username); // Recargar estado desde el servicio
-      setState(() {
-        estado = updatedEstado ?? "No estado";
-      });
-      print('Nuevo estado cargado: $estado');
-    }
+  final nuevoEstado = await showDialog<String>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Editar Estado'),
+        content: TextFormField(
+          controller: controller,
+          decoration: InputDecoration(labelText: 'Nuevo estado'),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(null),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green, // Color de fondo
+              foregroundColor: Colors.white, // Color del texto
+            ),
+            child: Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(controller.text),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green, // Color de fondo
+              foregroundColor: Colors.white, // Color del texto
+            ),
+            child: Text('Guardar'),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (nuevoEstado != null && nuevoEstado.isNotEmpty) {
+    final username = LoginScreen.getUserName()!;
+    await _userService.updateEstadoUsuario(username, nuevoEstado);
+    final updatedEstado = await _userService.getEstadoUsuario(username); // Recargar estado desde el servicio
+    setState(() {
+      estado = updatedEstado ?? "No estado";
+    });
+    print('Nuevo estado cargado: $estado');
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
