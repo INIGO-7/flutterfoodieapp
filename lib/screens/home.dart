@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/categories.dart';
 import 'package:flutter_foodybite/screens/trending.dart';
 import 'package:flutter_foodybite/util/categories.dart';
-import 'package:flutter_foodybite/util/friends.dart';
 import 'package:flutter_foodybite/util/restaurants.dart';
 import 'package:flutter_foodybite/util/review_service.dart';
 import 'package:flutter_foodybite/widgets/category_item.dart';
@@ -73,10 +72,6 @@ class _HomeState extends State<Home> {
               SizedBox(height: 10.0),
               buildCategoryList(context),
               SizedBox(height: 20.0),
-              buildCategoryRow('Friends', context),
-              SizedBox(height: 10.0),
-              buildFriendsList(),
-              SizedBox(height: 30.0),
             ],
           ),
         ),
@@ -196,31 +191,6 @@ class _HomeState extends State<Home> {
               title: restaurant["title"],
               address: restaurant["address"],
               rating: rating.toStringAsFixed(1), // Conversión a String
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  buildFriendsList() {
-    return Container(
-      height: 50.0,
-      child: ListView.builder(
-        primary: false,
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        itemCount: friends == null ? 0 : friends.length,
-        itemBuilder: (BuildContext context, int index) {
-          String img = friends[index];
-
-          return Padding(
-            padding: const EdgeInsets.only(right: 5.0),
-            child: CircleAvatar(
-              backgroundImage: AssetImage(
-                img,
-              ),
-              radius: 25.0,
             ),
           );
         },

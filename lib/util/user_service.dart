@@ -36,19 +36,19 @@ class UserService {
     return users.any((user) => user['username'] == username);
   }
 
-// Valida las credenciales del usuario
-Future<bool> validateUser(String username, String password) async {
-  final users = await _loadUsers();
-  final isValid = users.any((user) =>
-      user['username'] == username && user['password'] == password);
+  // Valida las credenciales del usuario
+  Future<bool> validateUser(String username, String password) async {
+    final users = await _loadUsers();
+    final isValid = users.any((user) =>
+        user['username'] == username && user['password'] == password);
 
-  if (isValid) {
-    // Si las credenciales son válidas, guardar el usuario logueado
-    await setLoggedUserName(username);
+    if (isValid) {
+      // Si las credenciales son válidas, guardar el usuario logueado
+      await setLoggedUserName(username);
+    }
+
+    return isValid;
   }
-
-  return isValid;
-}
 
   // Registra un nuevo usuario
   Future<void> registerUser(String username, String password) async {
@@ -87,30 +87,26 @@ Future<bool> validateUser(String username, String password) async {
     await _saveUsers(users);
   }
 
-Future<void> updatePassword(String username, String newPassword) async {
-  // Carga la lista de usuarios desde el archivo JSON
-  final users = await _loadUsers();
-  bool userFound = false;
+  // Actualiza la contraseña del usuario
+  Future<void> updatePassword(String username, String newPassword) async {
+    final users = await _loadUsers();
+    bool userFound = false;
 
-  // Busca al usuario por su username
-  for (var user in users) {
-    if (user['username'] == username) {
-      user['password'] = newPassword; // Actualiza la contraseña
-      userFound = true;
-      print('Password of $username changed to: $newPassword');
-      break;
+    for (var user in users) {
+      if (user['username'] == username) {
+        user['password'] = newPassword;
+        userFound = true;
+        print('Password of $username changed to: $newPassword');
+        break;
+      }
     }
+
+    if (!userFound) {
+      throw Exception('User not found: $username');
+    }
+
+    await _saveUsers(users);
   }
-
-  // Si no se encontró el usuario, lanza un error
-  if (!userFound) {
-    throw Exception('User not found: $username');
-  }
-
-  // Guarda los cambios en el archivo JSON
-  await _saveUsers(users);
-}
-
 
   // Métodos para manejar el estado de login
   Future<void> setUserLoggedIn(bool value) async {
@@ -123,26 +119,54 @@ Future<void> updatePassword(String username, String newPassword) async {
     return prefs.getBool('isLogged') ?? false;
   }
 
-  //Guarda el nombre de usuario loggeado
+  // Guarda el nombre de usuario logueado
   Future<void> setLoggedUserName(String username) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('loggedUserName', username);
   }
 
-  //Recupera el nombre de usuario loggeado
+  // Recupera el nombre de usuario logueado
   Future<String?> getLoggedUserName() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('loggedUserName');
   }
 
-  //Cierra la sesión del usuario
+  // Cierra la sesión del usuario
   Future<void> logoutUser() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('loggedUserName'); // Borra el nombre del usuario
     await prefs.setBool('isLogged', false); // Marca la sesión como cerrada
   }
 
-}
+  // MÉTODOS PARA LA IMAGEN DE PERFIL
 
+  // Obtiene la ruta de la imagen de perfil del usuario
+  Future<String?> getImagenPerfil(String username) async {
+    final users = await _loadUsers();
+    final user = users.firstWhere((user) => user['username'] == username, orElse: () => {});
+    return user['profilePicture'];
+  }
+
+  // Actualiza la ruta de la imagen de perfil del usuario
+  Future<void> updateImagenPerfil(String username, String nuevaImagen) async {
+    final users = await _loadUsers();
+    bool userFound = false;
+
+    for (var user in users) {
+      if (user['username'] == username) {
+        user['profilePicture'] = nuevaImagen;
+        userFound = true;
+        print('Profile image of $username updated to: $nuevaImagen');
+        break;
+      }
+    }
+
+    if (!userFound) {
+      throw Exception('User not found: $username');
+    }
+
+    await _saveUsers(users);
+  }
+}
 
 
