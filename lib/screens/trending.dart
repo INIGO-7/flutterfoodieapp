@@ -84,9 +84,9 @@ class _TrendingState extends State<Trending> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => RestaurantDetails(
-                          img: restaurant["img"],
-                          title: title,
-                          address: restaurant["address"],
+                          img: restaurant["img"]!,
+                          title: title!,
+                          address: restaurant["address"]!,
                           rating: rating,
                           reviews: reviews,
                         ),
@@ -94,9 +94,9 @@ class _TrendingState extends State<Trending> {
                     );
                   },
                   child: TrendingItem(
-                    img: restaurant["img"],
-                    title: title,
-                    address: restaurant["address"],
+                    img: restaurant["img"]!,
+                    title: title!,
+                    address: restaurant["address"]!,
                     rating: rating.toStringAsFixed(1),
                   ),
                 );

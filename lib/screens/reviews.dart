@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/util/restaurants.dart';
 import 'dart:convert';
-import '../util/user_service.dart';
 import 'dart:io';
 
 class ReviewService {
@@ -64,7 +63,7 @@ class ReviewService {
   }
 
   Future<void> addReview(
-      String restaurant, String comment, double rating, String username) async {
+      String restaurant, String comment, double rating) async {
     try {
       final reviews = await _loadReviews();
       print('Reviews cargadas: $reviews');
@@ -73,7 +72,6 @@ class ReviewService {
         'restaurant': restaurant,
         'comment': comment,
         'rating': rating,
-        'username': username, // Incluye el nombre de usuario
         'createdAt': DateTime.now().toIso8601String(),
       };
       print('Nueva reseña: $newReview');
@@ -110,8 +108,6 @@ class _ReviewScreenState extends State<ReviewScreen> {
     super.dispose();
   }
 
-  final UserService userService = UserService();
-
   Future<void> _submitReview() async {
     print('selectedRestaurant: $selectedRestaurant');
     print(reviewController.text);
@@ -120,25 +116,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
     if (_formKey.currentState!.validate()) {
       if (selectedRestaurant != null) {
         try {
-          // Verifica si el usuario está logueado
-          bool isLoggedIn = await userService.isUserLoggedIn();
-          if (!isLoggedIn) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text('You need to log in to add a review.')),
-            );
-            return;
-          }
-
-          // Obtener el nombre de usuario
-          final username = await userService.getLoggedUserName();
-
-          // Agregar la reseña si el usuario está logueado
           await reviewService.addReview(
             selectedRestaurant!,
             reviewController.text,
             rating,
-            username!,
           );
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Review submitted successfully!')),
@@ -181,6 +162,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Selección de restaurante
                 const Text(
                   'Select a restaurant:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -206,6 +188,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                       value == null ? 'Select a restaurant' : null,
                 ),
                 const SizedBox(height: 16),
+
+                // Sistema de calificación
                 const Text(
                   'What rating would you give?',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -229,6 +213,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   }),
                 ),
                 const SizedBox(height: 16),
+
+                // Campo de texto para la reseña
                 const Text(
                   'Write your review:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -253,6 +239,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   },
                 ),
                 const Spacer(),
+
+                // Botón de envío
                 ElevatedButton(
                   onPressed: _submitReview,
                   style: ElevatedButton.styleFrom(
