@@ -15,7 +15,7 @@ class Constants {
     colorScheme: ColorScheme.light(
       primary: lightPrimary,
       secondary: lightAccent,
-      background: lightBG,
+      surface: lightBG,
     ),
     scaffoldBackgroundColor: lightBG,
     textSelectionTheme: TextSelectionThemeData(
@@ -37,7 +37,7 @@ class Constants {
     colorScheme: ColorScheme.dark(
       primary: darkPrimary,
       secondary: darkAccent,
-      background: darkBG,
+      surface: darkBG,
     ),
     scaffoldBackgroundColor: darkBG,
     textSelectionTheme: TextSelectionThemeData(

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_foodybite/screens/add.dart';
+import 'package:flutter_foodybite/screens/reviews.dart';
 import 'package:flutter_foodybite/screens/home.dart';
 import 'package:flutter_foodybite/screens/label.dart';
 import 'package:flutter_foodybite/screens/profile.dart'; // Asegúrate de importar Profile
 
 //import 'package:flutter_foodybite/util/user_service.dart';
 import 'notifications.dart';
-import 'login.dart'; // Agregamos LoginScreen
+import 'login.dart';
 
 class MainScreen extends StatefulWidget {
-  final bool isLogged;  // Propiedad para almacenar el valor
+  final bool isLogged;
 
   MainScreen({required this.isLogged});
 
@@ -24,18 +24,18 @@ class _MainScreenState extends State<MainScreen> {
   List icons = [
     Icons.home,
     Icons.label,
-    Icons.add,
+    Icons.star, // Ícono de estrella para las reseñas
     Icons.notifications,
     Icons.person,
   ];
 
-  List pages = [
+  List<Widget> pages = [
     Home(),
     Label(),
-    Add(),
+    ReviewScreen(),
     Notifications(),
     Profile(),
-    LoginScreen()
+    LoginScreen(),
   ];
 
   @override
@@ -44,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
       /*appBar: AppBar(
         title: Text(
           widget.isLogged
-              ? 'Welcome ${LoginScreen.getUserName()}'  // Llamar al método estático de LoginScreen
+              ? 'Welcome ${LoginScreen.getUserName()}'
               : 'Guest Session',
         ),
       ),*/
@@ -52,68 +52,47 @@ class _MainScreenState extends State<MainScreen> {
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
-        children: List.generate(6, (index) => pages[index]),
+        children:
+            pages.sublist(0, 5), // Mostrar solo las 5 pestañas principales
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.green,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            buildTabIcon(0),
-            buildTabIcon(1),
-            buildTabIcon(3),
-            buildTabIcon(4), // Icono de Profile
-          ],
+          children: List.generate(icons.length, (index) => buildTabIcon(index)),
         ),
         shape: CircularNotchedRectangle(),
-      ),
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green.shade400,
-        elevation: 10.0,
-        child: Icon(
-          Icons.add,
-        ),
-        onPressed: () => _pageController.jumpToPage(2),
       ),
     );
   }
 
   void onPageChanged(int page) {
     setState(() {
-      this._page = page;
+      _page = page;
     });
   }
 
   buildTabIcon(int index) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(
-        index == 3 ? 30 : 0, 
-        0, 
-        index == 1 ? 30 : 0, 
-        0),
-      child: IconButton(
-        icon: Icon(
-          icons[index],
-          size: 24.0,
-        ),
-        color: _page == index
-            ? Theme.of(context).colorScheme.secondary
-            : Theme.of(context).colorScheme.primary,
-        onPressed: () {
-          if(index == 4){
-            //final isLogged = UserService().isUserLoggedIn();
-            if(widget.isLogged) // Si está logueado
-              _pageController.jumpToPage(index); // Cambiar al índice correspondiente
-            else
-              _pageController.jumpToPage(5); // Cambiar a la página de Login
-          }
-          else
-            _pageController.jumpToPage(index); // Cambiar al índice correspondiente
-        },
+    return IconButton(
+      icon: Icon(
+        icons[index],
+        size: 24.0,
       ),
+      color: _page == index
+          ? Theme.of(context).colorScheme.secondary
+          : Theme.of(context).colorScheme.primary,
+      onPressed: () {
+        if (index == 4) {
+          //final isLogged = UserService().isUserLoggedIn();
+          if (widget.isLogged)
+            _pageController.jumpToPage(index);
+          else
+            _pageController.jumpToPage(5); // Cambiar a la página de Login
+        } else {
+          _pageController.jumpToPage(index);
+        }
+      },
     );
   }
 }
