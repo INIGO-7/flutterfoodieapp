@@ -135,6 +135,7 @@ class UserService {
   Future<void> logoutUser() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('loggedUserName'); // Borra el nombre del usuario
+    this.setUserLoggedIn(false); // Marca la sesión como cerrada
     await prefs.setBool('isLogged', false); // Marca la sesión como cerrada
   }
 
