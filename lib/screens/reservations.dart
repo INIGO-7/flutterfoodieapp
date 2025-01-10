@@ -156,6 +156,23 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: <Widget>[
+                    // Primero los campos de fecha y hora
+                    ListTile(
+                      title: Text(
+                        'Date: ${formatDateWithSuffix(selectedDate)}',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      trailing: Icon(Icons.calendar_today),
+                      onTap: () => _selectDate(context),
+                    ),
+                    ListTile(
+                      title: Text('Time: ${selectedTime.format(context)}'),
+                      trailing: Icon(Icons.access_time),
+                      onTap: () => _selectTime(context),
+                    ),
+                    SizedBox(height: 20),
+
+                    // Luego los campos de nombre, teléfono, etc.
                     TextField(
                       controller: nameController,
                       decoration: InputDecoration(labelText: 'Your Name'),
@@ -209,21 +226,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     TextField(
                       controller: commentsController,
                       decoration: InputDecoration(labelText: 'Any Comments?'),
-                      maxLines: 3,
-                    ),
-                    SizedBox(height: 20),
-                    ListTile(
-                      title: Text(
-                        'Date: ${formatDateWithSuffix(selectedDate)}',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      trailing: Icon(Icons.calendar_today),
-                      onTap: () => _selectDate(context),
-                    ),
-                    ListTile(
-                      title: Text('Time: ${selectedTime.format(context)}'),
-                      trailing: Icon(Icons.access_time),
-                      onTap: () => _selectTime(context),
+                      //maxLines: 3,
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(
@@ -252,7 +255,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                       Divider(),
                                       SizedBox(height: 10),
                                       _buildInfoRow("DAY",
-                                          selectedDate.toLocal().toString().split(' ')[0]),
+                                        '${formatDateWithSuffix(selectedDate)}'),
                                       SizedBox(height: 10),
                                       _buildInfoRow("TIME",
                                           selectedTime.format(context)),
