@@ -3,6 +3,8 @@ import 'package:flutter_foodybite/screens/add.dart';
 import 'package:flutter_foodybite/screens/home.dart';
 import 'package:flutter_foodybite/screens/label.dart';
 import 'package:flutter_foodybite/screens/profile.dart';
+import 'package:flutter_foodybite/screens/reservations.dart';
+import 'package:flutter_foodybite/screens/reservations_agenda.dart';
 
 import 'notifications.dart';
 
@@ -18,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
 
   List icons = [
     Icons.home,
-    Icons.label,
+    Icons.calendar_month_outlined,
     Icons.add,
     Icons.notifications,
     Icons.person,
@@ -26,8 +28,9 @@ class _MainScreenState extends State<MainScreen> {
 
   List pages = [
     Home(),
-    Label(),
-    Add(),
+    //Label(),
+    ReservationsScreen(),
+    ReservationScreen(restaurantName: "NEW RESTAURANT",),
     Notifications(),
     Profile(),
   ];
@@ -39,19 +42,17 @@ class _MainScreenState extends State<MainScreen> {
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
-        children: List.generate(5, (index) =>  pages[index] ),
+        children: List.generate(5, (index) =>  pages[index]),
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            // SizedBox(width: 7),
             buildTabIcon(0),
             buildTabIcon(1),
             buildTabIcon(3),
             buildTabIcon(4),
-            // SizedBox(width: 7),
           ],
         ),
         color: Theme.of(context).primaryColor,
@@ -61,17 +62,12 @@ class _MainScreenState extends State<MainScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         elevation: 10.0,
-        child: Icon(
-          Icons.add,
-        ),
+        child: Icon(Icons.add),
         onPressed: () => _pageController.jumpToPage(2),
+        shape: CircleBorder(),
       ),
     );
   }
-
- // void navigationTapped(int page) {
- //    _pageController.jumpToPage(page);
- //  }
 
   @override
   void initState() {
@@ -92,19 +88,19 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   buildTabIcon(int index) {
-      return Container(
-        margin: EdgeInsets.fromLTRB( index == 3 ? 30 : 0, 0,  index == 1 ? 30 : 0, 0),
-        child: IconButton(
-          icon: Icon(
-            icons[index],
-            size: 24.0,
-          ),
-          color: _page == index
-
-              ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).colorScheme.primary,
-          onPressed: () => _pageController.jumpToPage(index),
+    // Ajuste para centrar el ícono y hacerlo más consistente en altura
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8.0), // Asegura que todos estén alineados a la misma altura
+      child: IconButton(
+        icon: Icon(
+          icons[index],
+          size: 28.0, // Ajuste del tamaño para hacer que los íconos se vean uniformes
         ),
-      );
+        color: _page == index
+            ? Theme.of(context).colorScheme.secondary // Ícono seleccionado con color diferente
+            : Theme.of(context).colorScheme.primary, // Ícono no seleccionado con color base
+        onPressed: () => _pageController.jumpToPage(index),
+      ),
+    );
   }
 }
