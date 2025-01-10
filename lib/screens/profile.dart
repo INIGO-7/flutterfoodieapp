@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../util/user_service.dart';
+import 'package:flutter/services.dart'; // Para cargar imágenes de los assets
+import '../util/user_service.dart'; // Tu clase de servicio de usuario
 import 'main_screen.dart';
 import 'login.dart';
 
@@ -13,6 +14,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String nombre = "Loading...";
   String estado = "Loading...";
+  String? imagenPerfil; // Para almacenar la ruta de la imagen seleccionada
   final UserService _userService = UserService();
 
   @override
@@ -24,111 +26,100 @@ class _ProfileState extends State<Profile> {
   void cargarDatosUsuario() async {
     final username = LoginScreen.getUserName() ?? "Failure";
     final userEstado = await _userService.getEstadoUsuario(username);
+    final userImagenPerfil = await _userService.getImagenPerfil(username);
     setState(() {
       nombre = username;
       estado = userEstado ?? "No estado";
+      imagenPerfil = userImagenPerfil;
     });
   }
 
-
-void cambiarPassword() async {
-  final TextEditingController currentPasswordController = TextEditingController();
-  final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
-
-  final resultado = await showDialog<bool>(
+void seleccionarImagen() async {
+  final imagenSeleccionada = await showDialog<String>(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text('Change Password'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              controller: currentPasswordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Current password'),
+        title: Text('Select a profile photo'),
+        content: Container(
+          height: 300.0, // Ajusta la altura según lo que necesites
+          child: SingleChildScrollView(
+            child: Wrap(
+              spacing: 8.0, // Espaciado entre las imágenes
+              runSpacing: 8.0, // Espaciado entre las filas
+              children: [
+                ListTile(
+                  leading: Image.asset('assets/Profile_pictures/Prf1.jpg', width: 40, height: 40),
+                  title: Text('Photo1'),
+                  onTap: () => Navigator.of(context).pop('assets/Profile_pictures/Prf1.jpg'),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/Profile_pictures/Prf2.jpg', width: 40, height: 40),
+                  title: Text('Photo2'),
+                  onTap: () => Navigator.of(context).pop('assets/Profile_pictures/Prf2.jpg'),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/Profile_pictures/Prf3.jpg', width: 40, height: 40),
+                  title: Text('Photo3'),
+                  onTap: () => Navigator.of(context).pop('assets/Profile_pictures/Prf3.jpg'),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/Profile_pictures/Prf4.jpg', width: 40, height: 40),
+                  title: Text('Photo4'),
+                  onTap: () => Navigator.of(context).pop('assets/Profile_pictures/Prf4.jpg'),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/Profile_pictures/Prf5.jpg', width: 40, height: 40),
+                  title: Text('Photo5'),
+                  onTap: () => Navigator.of(context).pop('assets/Profile_pictures/Prf5.jpg'),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/Profile_pictures/Prf6.jpg', width: 40, height: 40),
+                  title: Text('Photo6'),
+                  onTap: () => Navigator.of(context).pop('assets/Profile_pictures/Prf6.jpg'),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/Profile_pictures/Prf7.jpg', width: 40, height: 40),
+                  title: Text('Photo7'),
+                  onTap: () => Navigator.of(context).pop('assets/Profile_pictures/Prf7.jpg'),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/Profile_pictures/Prf8.jpg', width: 40, height: 40),
+                  title: Text('Photo8'),
+                  onTap: () => Navigator.of(context).pop('assets/Profile_pictures/Prf8.jpg'),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/Profile_pictures/Prf9.jpg', width: 40, height: 40),
+                  title: Text('Photo9'),
+                  onTap: () => Navigator.of(context).pop('assets/Profile_pictures/Prf9.jpg'),
+                ),
+              ],
             ),
-            TextFormField(
-              controller: newPasswordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'New password'),
-            ),
-            TextFormField(
-              controller: confirmPasswordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Confirm new password'),
-            ),
-          ],
+          ),
         ),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-            ),
-            child: Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.white,
-            ),
-            child: Text('Submit'),
-          ),
-        ],
       );
     },
   );
 
-  if (resultado == true) {
-    final currentPassword = currentPasswordController.text;
-    final newPassword = newPasswordController.text;
-    final confirmPassword = confirmPasswordController.text;
-
+  if (imagenSeleccionada != null) {
+    // Guarda la imagen seleccionada en el archivo JSON
     final username = LoginScreen.getUserName()!;
+    await _userService.updateImagenPerfil(username, imagenSeleccionada);
 
-    // Validar contraseñas
-    if (!await _userService.validateUser(username, currentPassword)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Current password is not correct')),
-      );
-      return;
-    }
-
-    if (newPassword.isEmpty || confirmPassword.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('New password cannot be empty')),
-      );
-      return;
-    }
-
-    if (newPassword != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Passwords are not the same')),
-      );
-      return;
-    }
-
-    // Actualizar contraseña en el archivo JSON
-    await _userService.updatePassword(username, newPassword);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Password updated correctly!')),
-    );
+    // Actualiza el estado con la imagen seleccionada
+    setState(() {
+      imagenPerfil = imagenSeleccionada;
+    });
   }
 }
 
 
 
-void editarEstado() async {
-  final TextEditingController controller = TextEditingController(text: estado);
 
-  final nuevoEstado = await showDialog<String>(
-    context: context,
-    builder: (context) {
+  // Actualiza el estado del usuario
+  void editarEstado() async {
+    final TextEditingController controller = TextEditingController(text: estado);
+
+    final nuevoEstado = await showDialog<String>(context: context, builder: (context) {
       return AlertDialog(
         title: Text('Edit State'),
         content: TextFormField(
@@ -154,20 +145,17 @@ void editarEstado() async {
           ),
         ],
       );
-    },
-  );
-
-  if (nuevoEstado != null && nuevoEstado.isNotEmpty) {
-    final username = LoginScreen.getUserName()!;
-    await _userService.updateEstadoUsuario(username, nuevoEstado);
-    final updatedEstado = await _userService.getEstadoUsuario(username); // Recargar estado desde el servicio
-    setState(() {
-      estado = updatedEstado ?? "No estado";
     });
-    print('New state: $estado');
-  }
-}
 
+    if (nuevoEstado != null && nuevoEstado.isNotEmpty) {
+      final username = LoginScreen.getUserName()!;
+      await _userService.updateEstadoUsuario(username, nuevoEstado);
+      final updatedEstado = await _userService.getEstadoUsuario(username); // Recargar estado desde el servicio
+      setState(() {
+        estado = updatedEstado ?? "No estado";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +174,19 @@ void editarEstado() async {
             CircleAvatar(
               radius: 50.0,
               backgroundColor: Colors.green,
-              child: Icon(Icons.person, size: 50.0, color: Colors.white),
+              child: GestureDetector(
+                onTap: seleccionarImagen, // Permite al usuario seleccionar una imagen
+                child: imagenPerfil == null
+                    ? Icon(Icons.person, size: 50.0, color: Colors.white) // Icono por defecto
+                    : ClipOval(
+                        child: Image.asset(
+                          imagenPerfil!,
+                          fit: BoxFit.cover,
+                          width: 100.0,
+                          height: 100.0,
+                        ),
+                      ),
+              ),
             ),
             SizedBox(height: 16.0),
             Text(
@@ -222,22 +222,21 @@ void editarEstado() async {
             ListTile(
               leading: Icon(Icons.lock, color: Colors.green),
               title: Text('Change password'),
-              onTap: cambiarPassword,
+              onTap: () async {
+                // Función de cambio de contraseña
+              },
             ),
             ListTile(
               leading: Icon(Icons.logout, color: Colors.green),
               title: Text('Log out'),
               onTap: () async {
-                // Llama a la función logoutUser para limpiar el estado de la sesión
                 await _userService.logoutUser();
-
-                // Redirigir al MainScreen con isLogged = false
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => MainScreen(isLogged: false),
                   ),
-                  (Route<dynamic> route) => false, // Eliminar todas las rutas anteriores
+                  (Route<dynamic> route) => false,
                 );
               },
             ),
