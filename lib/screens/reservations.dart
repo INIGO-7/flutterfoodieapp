@@ -79,6 +79,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
       'id': uuid.v4(),
       'restaurantName': widget.restaurantName,
       'restaurantAddress': widget.restaurantAddress,
+      'restaurantImage': widget.restaurantImage,
       'name': nameController.text,
       'phone': phoneController.text,
       'people': peopleController.text,
