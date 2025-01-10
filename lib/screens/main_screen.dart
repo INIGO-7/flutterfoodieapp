@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/reviews.dart';
 import 'package:flutter_foodybite/screens/home.dart';
 import 'package:flutter_foodybite/screens/label.dart';
+import '../screens/login.dart';
 import 'package:flutter_foodybite/screens/profile.dart'; // Asegúrate de importar Profile
 
 //import 'package:flutter_foodybite/util/user_service.dart';
 import 'notifications.dart';
-import 'login.dart';
 
 class MainScreen extends StatefulWidget {
   final bool isLogged;
@@ -34,8 +34,8 @@ class _MainScreenState extends State<MainScreen> {
     Label(),
     ReviewScreen(),
     Notifications(),
-    Profile(),
     LoginScreen(),
+    Profile(),
   ];
 
   @override
@@ -53,7 +53,7 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children:
-            pages.sublist(0, 5), // Mostrar solo las 5 pestañas principales
+            pages.sublist(0, 6), // Mostrar solo las 5 pestañas principales
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.green,
@@ -83,14 +83,18 @@ class _MainScreenState extends State<MainScreen> {
           ? Theme.of(context).colorScheme.secondary
           : Theme.of(context).colorScheme.primary,
       onPressed: () {
-        if (index == 4) {
-          //final isLogged = UserService().isUserLoggedIn();
-          if (widget.isLogged)
-            _pageController.jumpToPage(index);
-          else
-            _pageController.jumpToPage(5); // Cambiar a la página de Login
+        if (index == 4) { // Si el usuario hace clic en el ícono del perfil
+          print("Hola");
+          if (!widget.isLogged) { 
+            // Si el usuario no está logueado, lleva al login
+            _pageController.jumpToPage(4); // Índice de la pantalla de login
+            print("Aqui llega");
+          } else {
+            // Si el usuario está logueado, lleva a la pantalla de perfil
+            _pageController.jumpToPage(5); // Índice de la pantalla de perfil
+          }
         } else {
-          _pageController.jumpToPage(index);
+          _pageController.jumpToPage(index); // Otras páginas
         }
       },
     );
