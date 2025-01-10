@@ -68,7 +68,7 @@ const restaurants = [
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
     "foodType": "Nigerian",
-    "openingTime": "12:00",
+    "openingTime": "16:00",
     "closingTime": "23:00"
   },
   {

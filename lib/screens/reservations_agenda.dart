@@ -167,7 +167,12 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
       });
 
       return Scaffold(
-        appBar: AppBar(title: Text('Your Reservations')),
+        appBar: AppBar(
+          title: const Text('Your Reservations'),
+          automaticallyImplyLeading: false, // Elimina la flecha de retroceso
+          centerTitle: true,
+          backgroundColor: Colors.green,
+        ),
         body: ListView(
           children: groupedReservations.entries.map((entry) {
             return Column(
