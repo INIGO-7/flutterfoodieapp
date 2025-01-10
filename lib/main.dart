@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/main_screen.dart';
 import 'package:flutter_foodybite/util/const.dart';
+import 'package:flutter_foodybite/util/user_service.dart';
 
 void main() async {
   bool isLogged = false;
+  UserService userService = UserService();
+  userService.setUserLoggedIn(isLogged);
   runApp(MyApp(isLogged: isLogged)); // Pasamos el argumento isLogged
 }
 
