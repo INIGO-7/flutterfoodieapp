@@ -30,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
     Home(),
     //Label(),
     ReservationsScreen(),
-    ReservationScreen(restaurantName: "NEW RESTAURANT",),
+    ReservationScreen(restaurantName: "NEW RESTAURANT", restaurantAddress: "Dr.-Gessler-Strasse 15B", restaurantImage: "https://cdn-icons-png.flaticon.com/512/6643/6643359.png",),
     Notifications(),
     Profile(),
   ];

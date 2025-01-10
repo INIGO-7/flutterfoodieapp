@@ -7,8 +7,14 @@ import 'package:uuid/uuid.dart';
 
 class ReservationScreen extends StatefulWidget {
   final String restaurantName;
+  final String restaurantAddress;
+  final String restaurantImage;
 
-  ReservationScreen({required this.restaurantName});
+  ReservationScreen({
+    required this.restaurantName,
+    required this.restaurantAddress,
+    required this.restaurantImage,
+  });
 
   @override
   _ReservationScreenState createState() => _ReservationScreenState();
@@ -55,7 +61,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
         picked.minute,
       );
 
-      if (pickedDateTime.isAfter(now.add(Duration(hours: 1)))) {
+      if (pickedDateTime.isAfter(now.add(Duration(minutes: 59)))) {
         setState(() {
           selectedTime = picked;
         });
@@ -68,14 +74,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
   }
 
   Future<void> _saveReservation() async {
-    // Instancia de Uuid
     final uuid = Uuid();
-
-    // Crear reserva con un ID único
     final reservation = {
-      'id': uuid.v4(), // Genera un ID único
+      'id': uuid.v4(),
       'restaurantName': widget.restaurantName,
-      'restaurantAddress': widget.restaurantName, //Cambiar
+      'restaurantAddress': widget.restaurantAddress,
       'name': nameController.text,
       'phone': phoneController.text,
       'people': peopleController.text,
@@ -85,22 +88,18 @@ class _ReservationScreenState extends State<ReservationScreen> {
       'time': selectedTime.format(context),
     };
 
-    // Directorio relativo al proyecto
     final directory = Directory.current;
     final filePath = '${directory.path}/reservations.json';
     final file = File(filePath);
 
-    // Leer o crear el archivo
     List<Map<String, dynamic>> reservations = [];
     if (await file.exists()) {
       final fileContent = await file.readAsString();
       reservations = List<Map<String, dynamic>>.from(json.decode(fileContent));
     }
 
-    // Agregar la nueva reserva
     reservations.add(reservation);
 
-    // Guardar el archivo
     await file.writeAsString(json.encode(reservations));
     print('Reservation saved at: $filePath');
   }
@@ -124,152 +123,193 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isButtonEnabled = nameController.text.isNotEmpty && phoneController.text.isNotEmpty;
+    final String imageUrl = widget.restaurantImage;
+    final String location = widget.restaurantAddress;
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Reserve a Table at ${widget.restaurantName}"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(labelText: 'Your Name'),
-              onChanged: (_) => setState(() {}),
-            ),
-            TextField(
-              controller: phoneController,
-              decoration: InputDecoration(labelText: 'Your Phone'),
-              keyboardType: TextInputType.phone,
-              onChanged: (_) => setState(() {}),
-            ),
-            Row(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.remove),
-                  onPressed: () {
-                    int currentCount = int.tryParse(peopleController.text) ?? 1;
-                    if (currentCount > 1) {
-                      setState(() {
-                        peopleController.text = (currentCount - 1).toString();
-                      });
-                    }
-                  },
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: peopleController,
-                    decoration: InputDecoration(labelText: 'Number of People'),
-                    keyboardType: TextInputType.number,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: MediaQuery.of(context).size.height * 0.3,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    int currentCount = int.tryParse(peopleController.text) ?? 1;
-                    if (currentCount < 12) {
-                      setState(() {
-                        peopleController.text = (currentCount + 1).toString();
-                      });
-                    }
-                  },
-                ),
-              ],
+                  Container(
+                    color: Colors.black.withOpacity(0.3),
+                  ),
+                ],
+              ),
             ),
-            TextField(
-              controller: commentsController,
-              decoration: InputDecoration(labelText: 'Any Comments?'),
-              maxLines: 3,
-            ),
-            SizedBox(height: 20),
-          ListTile(
-            title: Text(
-              'Date: ${formatDateWithSuffix(selectedDate)}',
-              style: TextStyle(color: Colors.black),
-            ),
-            trailing: Icon(Icons.calendar_today),
-            onTap: () => _selectDate(context),
           ),
-            ListTile(
-              title: Text('Time: ${selectedTime.format(context)}'),
-              trailing: Icon(Icons.access_time),
-              onTap: () => _selectTime(context),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: isButtonEnabled
-                  ? () async {
-                      await _saveReservation();
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(labelText: 'Your Name'),
+                      onChanged: (_) => setState(() {}),
+                    ),
+                    SizedBox(height: 10),
+                    TextField(
+                      controller: phoneController,
+                      decoration: InputDecoration(labelText: 'Your Phone'),
+                      keyboardType: TextInputType.phone,
+                      onChanged: (_) => setState(() {}),
+                    ),
+                    SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          onPressed: () {
+                            int currentCount = int.tryParse(peopleController.text) ?? 1;
+                            if (currentCount > 1) {
+                              setState(() {
+                                peopleController.text = (currentCount - 1).toString();
+                              });
+                            }
+                          },
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: TextField(
+                            controller: peopleController,
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(labelText: 'Nº People'),
+                            keyboardType: TextInputType.number,
                           ),
-                          title: Center(
-                            child: Text(
-                              "RESERVATION REQUESTED",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Divider(),
-                              SizedBox(height: 10),
-                              _buildInfoRow("DAY", selectedDate.toLocal().toString().split(' ')[0]),
-                              SizedBox(height: 10),
-                              _buildInfoRow("TIME", selectedTime.format(context)),
-                              SizedBox(height: 10),
-                              _buildInfoRow("AMOUNT OF PEOPLE", peopleController.text),
-                              SizedBox(height: 10),
-                              _buildInfoRow("NAME OF WHO IS RESERVING", nameController.text),
-                              SizedBox(height: 20),
-                              Text(
-                                "The reservation must be accepted by the restaurant. You will be notified whether it is accepted or not.",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
-                          ),
-                          actions: [
-                            Center(
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () {
+                            int currentCount = int.tryParse(peopleController.text) ?? 1;
+                            if (currentCount < 12) {
+                              setState(() {
+                                peopleController.text = (currentCount + 1).toString();
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    TextField(
+                      controller: commentsController,
+                      decoration: InputDecoration(labelText: 'Any Comments?'),
+                      maxLines: 3,
+                    ),
+                    SizedBox(height: 20),
+                    ListTile(
+                      title: Text(
+                        'Date: ${formatDateWithSuffix(selectedDate)}',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      trailing: Icon(Icons.calendar_today),
+                      onTap: () => _selectDate(context),
+                    ),
+                    ListTile(
+                      title: Text('Time: ${selectedTime.format(context)}'),
+                      trailing: Icon(Icons.access_time),
+                      onTap: () => _selectTime(context),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: (nameController.text.isNotEmpty &&
+                              phoneController.text.isNotEmpty)
+                          ? () async {
+                              await _saveReservation();
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  backgroundColor: Colors.teal, // Color principal
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  //Navigator.pop(context);
-                                },
-                                child: Text(
-                                  "OK",
-                                  style: TextStyle(
-                                    color: Colors.white,
+                                  title: Center(
+                                    child: Text(
+                                      "RESERVATION REQUESTED",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Divider(),
+                                      SizedBox(height: 10),
+                                      _buildInfoRow("DAY",
+                                          selectedDate.toLocal().toString().split(' ')[0]),
+                                      SizedBox(height: 10),
+                                      _buildInfoRow("TIME",
+                                          selectedTime.format(context)),
+                                      SizedBox(height: 10),
+                                      _buildInfoRow(
+                                          "AMOUNT OF PEOPLE",
+                                          peopleController.text),
+                                      SizedBox(height: 10),
+                                      _buildInfoRow(
+                                          "NAME OF WHO IS RESERVING",
+                                          nameController.text),
+                                      SizedBox(height: 20),
+                                      Text(
+                                        "The reservation must be accepted by the restaurant. You will be notified whether it is accepted or not.",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  actions: [
+                                    Center(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          backgroundColor: Colors.teal,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          "OK",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  : null,
-              child: Text('Confirm Reservation'),
-            ),
-          ],
-        ),
+                              );
+                            }
+                          : null,
+                      child: Text('Confirm Reservation'),
+                    ),
+                    SizedBox(height: 30,)
+                  ],
+                ),
+              ),
+            ]),
+          ),
+        ],
       ),
     );
   }

@@ -19,7 +19,7 @@ class ReservaDetailScreen extends StatelessWidget {
     }
   }
 
-    Future<void> _cancelReservation(String reservationId) async {
+  Future<void> _cancelReservation(String reservationId) async {
     final directory = Directory.current;
     final filePath = '${directory.path}/reservations.json';
     final file = File(filePath);
@@ -53,7 +53,7 @@ class ReservaDetailScreen extends StatelessWidget {
     final String restaurantName = reservation['restaurantName'] ?? 'Restaurant';
     final String imageUrl = reservation['image'] ??
         'https://cdn-icons-png.flaticon.com/512/6643/6643359.png'; // URL de ejemplo
-    final String location = reservation['location'] ?? 'East Side Gallery, Berlin';
+    final String location = reservation['restaurantAddress'] ?? 'East Side Gallery, Berlin';
 
     return Scaffold(
       body: CustomScrollView(
