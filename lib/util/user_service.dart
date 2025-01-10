@@ -36,12 +36,19 @@ class UserService {
     return users.any((user) => user['username'] == username);
   }
 
-  // Valida las credenciales del usuario
-  Future<bool> validateUser(String username, String password) async {
-    final users = await _loadUsers();
-    return users.any((user) =>
-        user['username'] == username && user['password'] == password);
+// Valida las credenciales del usuario
+Future<bool> validateUser(String username, String password) async {
+  final users = await _loadUsers();
+  final isValid = users.any((user) =>
+      user['username'] == username && user['password'] == password);
+
+  if (isValid) {
+    // Si las credenciales son válidas, guardar el usuario logueado
+    await setLoggedUserName(username);
   }
+
+  return isValid;
+}
 
   // Registra un nuevo usuario
   Future<void> registerUser(String username, String password) async {
@@ -115,4 +122,27 @@ Future<void> updatePassword(String username, String newPassword) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('isLogged') ?? false;
   }
+
+  //Guarda el nombre de usuario loggeado
+  Future<void> setLoggedUserName(String username) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('loggedUserName', username);
+  }
+
+  //Recupera el nombre de usuario loggeado
+  Future<String?> getLoggedUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('loggedUserName');
+  }
+
+  //Cierra la sesión del usuario
+  Future<void> logoutUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('loggedUserName'); // Borra el nombre del usuario
+    await prefs.setBool('isLogged', false); // Marca la sesión como cerrada
+  }
+
 }
+
+
+

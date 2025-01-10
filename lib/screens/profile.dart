@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../util/user_service.dart';
+import 'main_screen.dart';
 import 'login.dart';
 
 class Profile extends StatefulWidget {
@@ -226,8 +227,18 @@ void editarEstado() async {
             ListTile(
               leading: Icon(Icons.logout, color: Colors.green),
               title: Text('Log out'),
-              onTap: () {
-                // Acción para cerrar sesión
+              onTap: () async {
+                // Llama a la función logoutUser para limpiar el estado de la sesión
+                await _userService.logoutUser();
+
+                // Redirigir al MainScreen con isLogged = false
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainScreen(isLogged: false),
+                  ),
+                  (Route<dynamic> route) => false, // Eliminar todas las rutas anteriores
+                );
               },
             ),
           ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_foodybite/screens/profile.dart';
 import 'package:flutter_foodybite/screens/register.dart';
 import '../util/user_service.dart';
 import 'main_screen.dart'; // Asegúrate de importar MainScreen
@@ -41,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Credenciales inválidas')),
+          SnackBar(content: Text('Invalid username or password')),
         );
       }
     }
