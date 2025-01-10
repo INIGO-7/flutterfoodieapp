@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/reviews.dart';
 import 'package:flutter_foodybite/screens/home.dart';
 import 'package:flutter_foodybite/screens/label.dart';
+
 import '../screens/login.dart';
 import 'package:flutter_foodybite/screens/profile.dart'; // Asegúrate de importar Profile
+import 'package:flutter_foodybite/screens/profile.dart';
+import 'package:flutter_foodybite/screens/reservations.dart';
+import 'package:flutter_foodybite/screens/reservations_agenda.dart';
 
 //import 'package:flutter_foodybite/util/user_service.dart';
 import 'notifications.dart';
@@ -23,15 +27,15 @@ class _MainScreenState extends State<MainScreen> {
 
   List icons = [
     Icons.home,
-    Icons.label,
-    Icons.star, // Ícono de estrella para las reseñas
+    Icons.calendar_month_outlined,
+    Icons.star,
     Icons.notifications,
     Icons.person,
   ];
 
   List<Widget> pages = [
     Home(),
-    Label(),
+    ReservationsScreen(),
     ReviewScreen(),
     Notifications(),
     LoginScreen(),
