@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static String appName = "Foody Bite";
-  static Color lightPrimary = Colors.green;
+  static Color lightPrimary = Colors.white;
   static Color darkPrimary = Colors.black;
   static Color lightAccent = Color(0xff5563ff);
   static Color darkAccent = Color(0xff5563ff);
@@ -19,7 +19,7 @@ class Constants {
       onPrimary: darkPrimary,  // Color del texto en elementos primarios
       onSecondary: darkPrimary, // Color del texto en elementos secundarios
       onBackground: darkPrimary, // Color del texto en fondo
-      surface: lightBG,
+      //surface: lightBG,
     ),
     scaffoldBackgroundColor: lightBG,
     textSelectionTheme: TextSelectionThemeData(
