@@ -1,106 +1,106 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_foodybite/screens/add.dart';
+import 'package:flutter_foodybite/screens/reviews.dart';
 import 'package:flutter_foodybite/screens/home.dart';
 import 'package:flutter_foodybite/screens/label.dart';
+
+import '../screens/login.dart';
+import 'package:flutter_foodybite/screens/profile.dart'; // Asegúrate de importar Profile
 import 'package:flutter_foodybite/screens/profile.dart';
 import 'package:flutter_foodybite/screens/reservations.dart';
 import 'package:flutter_foodybite/screens/reservations_agenda.dart';
 
+//import 'package:flutter_foodybite/util/user_service.dart';
 import 'notifications.dart';
 
 class MainScreen extends StatefulWidget {
+  final bool isLogged;
+
+  MainScreen({required this.isLogged});
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-
   PageController _pageController = PageController();
   int _page = 0;
 
   List icons = [
     Icons.home,
     Icons.calendar_month_outlined,
-    Icons.add,
+    Icons.star,
     Icons.notifications,
     Icons.person,
   ];
 
-  List pages = [
+  List<Widget> pages = [
     Home(),
-    //Label(),
     ReservationsScreen(),
-    ReservationScreen(restaurantName: "NEW RESTAURANT", restaurantAddress: "Dr.-Gessler-Strasse 15B", restaurantImage: "https://cdn-icons-png.flaticon.com/512/6643/6643359.png",),
+    ReviewScreen(),
     Notifications(),
+    LoginScreen(),
     Profile(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      /*appBar: AppBar(
+        title: Text(
+          widget.isLogged
+              ? 'Welcome ${LoginScreen.getUserName()}'
+              : 'Guest Session',
+        ),
+      ),*/
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
-        children: List.generate(5, (index) =>  pages[index]),
+        children:
+            pages.sublist(0, 6), // Mostrar solo las 5 pestañas principales
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.green,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            buildTabIcon(0),
-            buildTabIcon(1),
-            buildTabIcon(3),
-            buildTabIcon(4),
-          ],
+          children: List.generate(icons.length, (index) => buildTabIcon(index)),
         ),
-        color: Theme.of(context).primaryColor,
         shape: CircularNotchedRectangle(),
-      ),
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        elevation: 10.0,
-        child: Icon(Icons.add),
-        onPressed: () => _pageController.jumpToPage(2),
-        shape: CircleBorder(),
       ),
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _pageController.dispose();
-  }
-
   void onPageChanged(int page) {
     setState(() {
-      this._page = page;
+      _page = page;
     });
   }
 
   buildTabIcon(int index) {
-    // Ajuste para centrar el ícono y hacerlo más consistente en altura
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.0), // Asegura que todos estén alineados a la misma altura
-      child: IconButton(
-        icon: Icon(
-          icons[index],
-          size: 28.0, // Ajuste del tamaño para hacer que los íconos se vean uniformes
-        ),
-        color: _page == index
-            ? Theme.of(context).colorScheme.secondary // Ícono seleccionado con color diferente
-            : Theme.of(context).colorScheme.primary, // Ícono no seleccionado con color base
-        onPressed: () => _pageController.jumpToPage(index),
+    return IconButton(
+      icon: Icon(
+        icons[index],
+        size: 24.0,
       ),
+      color: _page == index
+          ? Theme.of(context).colorScheme.secondary
+          : Theme.of(context).colorScheme.primary,
+      onPressed: () {
+        if (index == 4) { // Si el usuario hace clic en el ícono del perfil
+          print("Hola");
+          if (!widget.isLogged) { 
+            // Si el usuario no está logueado, lleva al login
+            _pageController.jumpToPage(4); // Índice de la pantalla de login
+            print("Aqui llega");
+          } else {
+            // Si el usuario está logueado, lleva a la pantalla de perfil
+            _pageController.jumpToPage(5); // Índice de la pantalla de perfil
+          }
+        } else {
+          _pageController.jumpToPage(index); // Otras páginas
+        }
+      },
     );
   }
 }

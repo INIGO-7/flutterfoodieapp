@@ -19,6 +19,7 @@ class Constants {
       onPrimary: darkPrimary,  // Color del texto en elementos primarios
       onSecondary: darkPrimary, // Color del texto en elementos secundarios
       onBackground: darkPrimary, // Color del texto en fondo
+      surface: lightBG,
     ),
     scaffoldBackgroundColor: lightBG,
     textSelectionTheme: TextSelectionThemeData(
@@ -57,6 +58,7 @@ class Constants {
       onPrimary: lightPrimary,  // Color del texto en elementos primarios
       onSecondary: lightPrimary, // Color del texto en elementos secundarios
       onBackground: lightPrimary, // Color del texto en fondo
+      surface: darkBG,
     ),
     scaffoldBackgroundColor: darkBG,
     textSelectionTheme: TextSelectionThemeData(
