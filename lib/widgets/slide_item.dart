@@ -6,6 +6,7 @@ class SlideItem extends StatefulWidget {
   final String title;
   final String address;
   final String rating;
+  final bool opened;
 
   SlideItem({
     Key? key,
@@ -13,6 +14,7 @@ class SlideItem extends StatefulWidget {
     required this.address,
     required this.rating,
     required this.img,
+    required this.opened,
   }) : super(key: key);
 
   @override
@@ -80,14 +82,15 @@ class _SlideItemState extends State<SlideItem> {
                     left: 6.0,
                     child: Card(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(3.0)),
+                        borderRadius: BorderRadius.circular(3.0)
+                      ),
                       child: Padding(
                         padding: EdgeInsets.all(4.0),
                         child: Text(
-                          " OPEN ",
+                          widget.opened ? "OPEN" : "CLOSED",  // Cambia según el estado
                           style: TextStyle(
                             fontSize: 10.0,
-                            color: Colors.green,
+                            color: widget.opened ? Colors.green : Colors.red,  // Color verde si está abierto, rojo si está cerrado
                             fontWeight: FontWeight.bold,
                           ),
                         ),

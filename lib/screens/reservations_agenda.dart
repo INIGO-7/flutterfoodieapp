@@ -167,7 +167,12 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
       });
 
       return Scaffold(
-        appBar: AppBar(title: Text('Your Reservations')),
+        appBar: AppBar(
+          title: const Text('Your Reservations'),
+          automaticallyImplyLeading: false, // Elimina la flecha de retroceso
+          centerTitle: true,
+          backgroundColor: Colors.green,
+        ),
         body: ListView(
           children: groupedReservations.entries.map((entry) {
             return Column(
@@ -203,7 +208,10 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                                 borderRadius: BorderRadius.circular(8),
                                 image: DecorationImage(
                                   image: NetworkImage(
-                                      'https://cdn-icons-png.flaticon.com/512/6643/6643359.png'),
+                                    getSafeString(reservation, 'restaurantImage')?.isNotEmpty ?? false
+                                      ? getSafeString(reservation, 'restaurantImage')
+                                      : 'https://chin-chin-bar.de/wp-content/uploads/2022/08/Beitragsbild-chin-chin-restaurant-regensburg.jpg',
+                                  ),
                                   fit: BoxFit.cover,
                                 ),
                               ),

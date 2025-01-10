@@ -169,6 +169,15 @@ class _HomeState extends State<Home> {
     );
   }
 
+  bool isRestaurantOpen(String openingTime, String closingTime) {
+    // Obtener la hora actual en formato de 24 horas (ej. "09:30")
+    DateTime now = DateTime.now();
+    String currentTime = "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+
+    // Verificar si la hora actual está dentro del rango de apertura
+    return currentTime.compareTo(openingTime) >= 0 && currentTime.compareTo(closingTime) <= 0;
+  }
+
   buildRestaurantList(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height / 2.4,
@@ -190,6 +199,7 @@ class _HomeState extends State<Home> {
               img: restaurant["img"],
               title: restaurant["title"],
               address: restaurant["address"],
+              opened: isRestaurantOpen(restaurant["openingTime"], restaurant["closingTime"]),
               rating: rating.toStringAsFixed(1), // Conversión a String
             ),
           );

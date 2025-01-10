@@ -79,6 +79,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
       'id': uuid.v4(),
       'restaurantName': widget.restaurantName,
       'restaurantAddress': widget.restaurantAddress,
+      'restaurantImage': widget.restaurantImage,
       'name': nameController.text,
       'phone': phoneController.text,
       'people': peopleController.text,
@@ -128,7 +129,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Reserve a Table at ${widget.restaurantName}"),
+        title: const Text('Make Reservation'),
+        automaticallyImplyLeading: false, // Elimina la flecha de retroceso
+        centerTitle: true,
+        backgroundColor: Colors.green,
       ),
       body: CustomScrollView(
         slivers: [
