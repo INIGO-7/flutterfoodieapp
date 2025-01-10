@@ -63,7 +63,7 @@ class ReviewService {
   }
 
   Future<void> addReview(
-      String restaurant, String comment, double rating) async {
+      String restaurant, String comment, double rating, String username) async {
     try {
       final reviews = await loadReviews();
       print('Reviews cargadas: $reviews');
@@ -72,6 +72,7 @@ class ReviewService {
         'restaurant': restaurant,
         'comment': comment,
         'rating': rating,
+        'username': username, // Incluye el nombre de usuario en la reseña
         'createdAt': DateTime.now().toIso8601String(),
       };
       print('Nueva reseña: $newReview');

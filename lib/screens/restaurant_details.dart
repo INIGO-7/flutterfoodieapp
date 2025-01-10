@@ -112,7 +112,7 @@ class RestaurantDetails extends StatelessWidget {
                                       size: 30.0, color: Colors.grey[600]),
                                   SizedBox(width: 8.0),
                                   Text(
-                                    review['reviewer'] ?? 'Anonymous',
+                                    review['username'] ?? 'Anonymous',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.w600,
