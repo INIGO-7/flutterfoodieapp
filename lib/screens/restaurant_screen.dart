@@ -25,82 +25,92 @@ class RestaurantScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          // App Bar with image
-          SliverAppBar(
-            expandedHeight: 200,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(restaurantName),
-              background: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
+    return SafeArea(
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            // App Bar with image
+            SliverAppBar(
+              expandedHeight: 200,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(restaurantName),
+                background: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          
-          // Content
-          SliverPadding(
-            padding: const EdgeInsets.all(16),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                // Rating Section
-                RatingSection(rating: averageRating),
-                
-                const SizedBox(height: 24),
-                
-                // Location Section (placeholder for Google Maps)
-                const Text(
-                  'Location',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+            
+            // Content
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  // Rating Section
+                  RatingSection(rating: averageRating),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Location Section (placeholder for Google Maps)
+                  const Text(
+                    'Location',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                LocationTile(location: location),
-                
-                // Placeholder for Google Maps
-                Container(
-                  height: 200,
-                  margin: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(12),
+                  const SizedBox(height: 8),
+                  LocationTile(location: location),
+                  
+                  // Placeholder for Google Maps
+                  Container(
+                    height: 200,
+                    margin: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Center(
+                      child: Text('Google Maps will be implemented here'),
+                    ),
                   ),
-                  child: const Center(
-                    child: Text('Google Maps will be implemented here'),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Reviews Section
+                  const Text(
+                    'Reviews',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                
-                const SizedBox(height: 24),
-                
-                // Reviews Section
-                const Text(
-                  'Reviews',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ...reviews.map((review) => ReviewTile(review: review)),
-              ]),
+                  const SizedBox(height: 16),
+                  ...reviews.map((review) => ReviewTile(review: review)),
+                ]),
+              ),
             ),
+          ],
+        ),
+        
+        // Floating Reservation Button
+        floatingActionButton: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: FloatingActionButton.extended(
+            onPressed: () {
+              // TODO: Implement reservation functionality
+            },
+            label: const Text(
+              'RESERVE NOW',
+              style: TextStyle(color: Colors.black),
+            ),
+            icon: const Icon(Icons.calendar_today, color: Colors.black),
+            backgroundColor: Color(0xFF5563FF),
           ),
-        ],
-      ),
-      
-      // Floating Reservation Button
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // TODO: Implement reservation functionality
-        },
-        label: const Text('RESERVE NOW'),
-        icon: const Icon(Icons.calendar_today),
-      ),
+        ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      )
     );
   }
 }
