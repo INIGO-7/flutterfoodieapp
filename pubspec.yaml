@@ -21,6 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.2.0
+  image_picker: ^0.8.4+4
 
 
 
@@ -46,9 +47,10 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/Profile_pictures/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
