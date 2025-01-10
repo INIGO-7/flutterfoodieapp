@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'restaurant_screen.dart';
 
 class Notifications extends StatelessWidget {
   Notifications({Key? key}) : super(key: key);
 
-  final List<Map<String, String>> notifications = [
+  final List<Map<String, dynamic>> notifications = [
     {
       'image': 'assets/food2.jpeg',
       'title': 'El Sombrerito',
       'description': 'Craving something spicy? Our Sriracha-inspired dishes bring the heat!',
+      'restaurantData': { 
+        'imageUrl': 'assets/food2.jpeg',
+        'location': 'Fischgässel 4, 93047 Regensburg',
+        'reviews': [
+          {
+            'reviewerName': 'Roger',
+            'rating': 4.5,
+            'comment': 'The dining experience was pretty authentic and the personal was great!'
+          },
+          {
+            'reviewerName': 'Charles',
+            'rating': 3.0,
+            'comment': 'The dining experience was pretty authentic and the personal was nice.'
+          },
+        ],
+      }
     },
     {
       'image': 'assets/food3.jpeg',
@@ -45,6 +62,27 @@ class Notifications extends StatelessWidget {
       'description': 'We are guilty of having the best tasting pizza in all of Regensburg... Come try!',
     }
   ];
+
+  void _navigateToRestaurant(BuildContext context, Map<String, dynamic> notification) {
+    final restaurantData = notification['restaurantData'] as Map<String, dynamic>;
+    final reviews = (restaurantData['reviews'] as List).map((review) => Review(
+          reviewerName: review['reviewerName'] as String,
+          rating: review['rating'] as double,
+          comment: review['comment'] as String,
+        )).toList();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RestaurantScreen(
+          restaurantName: notification['title'],
+          imageUrl: restaurantData['imageUrl'],
+          reviews: reviews,
+          location: restaurantData['location'],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +122,11 @@ class Notifications extends StatelessWidget {
                     notification['description']!,
                     style: TextStyle(color: Colors.grey[300]),
                   ),
+                  onTap: () {
+                    if (notification['restaurantData'] != null) {
+                      _navigateToRestaurant(context, notification);  // Pass the whole notification
+                    }
+                  },
                 ),
               ),
             );
