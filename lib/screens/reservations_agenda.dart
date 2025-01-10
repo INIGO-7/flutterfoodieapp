@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_foodybite/screens/login.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import necesario para SharedPreferences
@@ -109,13 +110,27 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'You must be logged in to view your reservations.',
-                style: TextStyle(fontSize: 16),
+              Align(
+                alignment: Alignment.center, // Asegura que el texto esté centrado
+                child: Text(
+                  'You must be logged in to view your reservations.',
+                  style: TextStyle(fontSize: 16),
+                  textAlign: TextAlign.center, // Centra el texto dentro del widget
+                ),
               ),
               SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {}, // Aquí deberías añadir la acción para iniciar sesión
+                onPressed: () {
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()), // Asegúrate de importar LoginScreen
+                ).then((_) {
+                  checkLoginStatus();
+                  if (isLoggedIn) {
+                    loadReservations();
+                  }
+                });
+                }, // Aquí deberías añadir la acción para iniciar sesión
                 child: Text('Login'),
               ),
             ],

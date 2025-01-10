@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static String appName = "Foody Bite";
-  static Color lightPrimary = Colors.white;
+  static Color lightPrimary = Color.fromARGB(255, 64, 64, 65);
   static Color darkPrimary = Colors.black;
   static Color lightAccent = Color(0xff5563ff);
   static Color darkAccent = Color(0xff5563ff);
-  static Color lightBG = Color(0xfffcfcff);
+  static Color lightBG = Colors.white;
   static Color darkBG = Colors.black;
   static Color ratingBG = Color.fromARGB(255, 255, 218, 52);
 
@@ -15,11 +15,10 @@ class Constants {
     colorScheme: ColorScheme.light(
       primary: lightPrimary,
       secondary: lightAccent,
-      background: lightBG,
       onPrimary: darkPrimary, // Color del texto en elementos primarios
       onSecondary: darkPrimary, // Color del texto en elementos secundarios
-      onBackground: darkPrimary, // Color del texto en fondo
-      //surface: lightBG,
+      onSurface: darkPrimary, // Color del texto en fondo
+      surface: lightBG,
     ),
     scaffoldBackgroundColor: lightBG,
     textSelectionTheme: TextSelectionThemeData(
@@ -56,10 +55,9 @@ class Constants {
     colorScheme: ColorScheme.dark(
       primary: darkPrimary,
       secondary: darkAccent,
-      background: darkBG,
       onPrimary: lightPrimary, // Color del texto en elementos primarios
       onSecondary: lightPrimary, // Color del texto en elementos secundarios
-      onBackground: lightPrimary, // Color del texto en fondo
+      onSurface: lightPrimary, // Color del texto en fondo
       surface: darkBG,
     ),
     scaffoldBackgroundColor: darkBG,

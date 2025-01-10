@@ -37,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
     Home(),
     ReservationsScreen(),
     ReviewScreen(),
-    Notifications(),
+    ReservationScreen(restaurantName: "RESTO", restaurantAddress: "Dr.-Gessler-Strasse 15B", restaurantImage: "https://chin-chin-bar.de/wp-content/uploads/2022/08/Beitragsbild-chin-chin-restaurant-regensburg.jpg",),
     LoginScreen(),
     Profile(),
   ];
