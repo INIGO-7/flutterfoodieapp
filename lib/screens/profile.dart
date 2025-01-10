@@ -65,7 +65,7 @@ void cambiarPassword() async {
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(false),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
             child: Text('Cancel'),

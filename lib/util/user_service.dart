@@ -56,7 +56,7 @@ Future<bool> validateUser(String username, String password) async {
       throw Exception('User already exists.');
     }
     final users = await _loadUsers();
-    users.add({'username': username, 'password': password, 'estado': 'Bronze Member'});
+    users.add({'username': username, 'password': password, 'estado': 'Hey there! I am using FoodyBite'});
     await _saveUsers(users);
   }
 
