@@ -35,7 +35,7 @@ class RestaurantScreen extends StatelessWidget {
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(restaurantName),
-                background: Image.network(
+                background: Image.asset(
                   imageUrl,
                   fit: BoxFit.cover,
                 ),
