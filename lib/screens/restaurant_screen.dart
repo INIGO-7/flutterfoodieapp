@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../util/app_constants.dart';
 
 import '../widgets/rating_section.dart';
 import '../util/review.dart';
@@ -45,7 +46,13 @@ class RestaurantScreen extends StatelessWidget {
               expandedHeight: 200,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                title: Text(restaurantName),
+                title: Text(
+                  restaurantName,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25
+                    ),
+                  ),
                 background: Image.asset(
                   imageUrl,
                   fit: BoxFit.cover,
@@ -62,6 +69,8 @@ class RestaurantScreen extends StatelessWidget {
                   RatingSection(rating: averageRating),
                   
                   const SizedBox(height: 24),
+
+                  ReviewTile(reviews: reviews),
                   
                   // Location Section (placeholder for Google Maps)
                   const Text(
@@ -71,8 +80,7 @@ class RestaurantScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  LocationTile(location: location),
+                  //const SizedBox(height: 8),
                   
                   // Placeholder for Google Maps
                   GestureDetector(
@@ -91,8 +99,10 @@ class RestaurantScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
+                  LocationTile(location: location),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 8),
                   
                   // Reviews Section
                   const Text(
@@ -102,8 +112,7 @@ class RestaurantScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  ...reviews.map((review) => ReviewTile(review: review)),
+                  const SizedBox(height: 30),
                 ]),
               ),
             ),
@@ -122,7 +131,7 @@ class RestaurantScreen extends StatelessWidget {
               style: TextStyle(color: Colors.black),
             ),
             icon: const Icon(Icons.calendar_today, color: Colors.black),
-            backgroundColor: Color(0xFF5563FF),
+            backgroundColor: AppConstants.accentColor,
           ),
         ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
