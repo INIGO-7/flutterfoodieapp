@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/register.dart';
 import '../util/user_service.dart';
 import 'main_screen.dart'; // Asegúrate de importar MainScreen
+import 'RestaurantRegister.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -53,6 +54,13 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const RegisterScreen()),
+    );
+  }
+
+  void _registerRestaurant(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const RestaurantRegister()),
     );
   }
 
@@ -113,7 +121,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: _goToRegister,
-                child: Text('Register'),
+                child: Text('Register new user'),
+              ),
+               SizedBox(height: 8), // Espacio entre botones
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: _registerRestaurant,
+                child: Text('Register new restaurant'),
               ),
             ],
           ),

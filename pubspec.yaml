@@ -49,6 +49,7 @@ flutter:
 
   assets:
     - assets/
+    - assets/restaurant_photos/
     - assets/Profile_pictures/
 
 
