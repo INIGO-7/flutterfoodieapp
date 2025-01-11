@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../widgets/rating_section.dart';
 import '../util/review.dart';
 import '../widgets/review_tile.dart';
@@ -21,6 +23,15 @@ class RestaurantScreen extends StatelessWidget {
   double get averageRating {
     if (reviews.isEmpty) return 0;
     return reviews.map((r) => r.rating).reduce((a, b) => a + b) / reviews.length;
+  }
+
+  void _launchMaps(String location) async {
+    final Uri googleMapsUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$location');
+    if (await canLaunchUrl(googleMapsUrl)) {
+      await launchUrl(googleMapsUrl);
+    } else {
+      throw 'Could not launch $googleMapsUrl';
+    }
   }
 
   @override
@@ -64,15 +75,20 @@ class RestaurantScreen extends StatelessWidget {
                   LocationTile(location: location),
                   
                   // Placeholder for Google Maps
-                  Container(
-                    height: 200,
-                    margin: const EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Center(
-                      child: Text('Google Maps will be implemented here'),
+                  GestureDetector(
+                    onTap: () {
+                      _launchMaps(location);
+                    },
+                    child: Container(
+                      height: 200,
+                      margin: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Center(
+                        child: Text('Google Maps will be implemented here'),
+                      ),
                     ),
                   ),
                   
