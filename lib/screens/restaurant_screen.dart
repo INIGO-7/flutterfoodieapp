@@ -65,22 +65,26 @@ class RestaurantScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  // Rating Section
+
+                  const SizedBox(height: 10),
+                  
                   RatingSection(rating: averageRating),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 14),
 
                   ReviewTile(reviews: reviews),
                   
                   // Location Section (placeholder for Google Maps)
-                  const Text(
-                    'Location',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: const Text(
+                      'Location',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  //const SizedBox(height: 8),
                   
                   // Placeholder for Google Maps
                   GestureDetector(
@@ -89,9 +93,9 @@ class RestaurantScreen extends StatelessWidget {
                     },
                     child: Container(
                       height: 200,
-                      margin: const EdgeInsets.symmetric(vertical: 16),
+                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: AppConstants.secondaryColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Center(
@@ -102,17 +106,7 @@ class RestaurantScreen extends StatelessWidget {
 
                   LocationTile(location: location),
                   
-                  const SizedBox(height: 8),
-                  
-                  // Reviews Section
-                  const Text(
-                    'Reviews',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 80),
                 ]),
               ),
             ),

@@ -17,84 +17,103 @@ class ReviewTile extends StatelessWidget {
         .take(2)
         .toList();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Display top two reviews
-        ...topReviews.map((review) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      decoration: BoxDecoration(
+        color: AppConstants.secondaryColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Display top two reviews
+          ...topReviews.map((review) => Column(
                 children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: review.avatarPath != null
-                        ? AssetImage(review.avatarPath!)
-                        : null,
-                    child: review.avatarPath == null
-                        ? Text(
-                            review.reviewerName[0],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        : null,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              '${review.reviewerName} - ${review.rating}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            const Icon(Icons.star, color: AppConstants.accentColor, size: 20),
-                          ],
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundImage: review.avatarPath != null
+                              ? AssetImage(review.avatarPath!)
+                              : null,
+                          child: review.avatarPath == null
+                              ? Text(
+                                  review.reviewerName[0],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : null,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          review.comment,
-                          style: const TextStyle(
-                            color: Colors.grey,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    '${review.reviewerName} - ${review.rating}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  const Icon(Icons.star,
+                                      color: AppConstants.accentColor, size: 20),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                review.comment,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
+                  if (review != topReviews.last) // Add white divider except for last review
+                    const Divider(
+                      color: Colors.white,
+                      height: 24,
+                      thickness: 1,
+                    ),
                 ],
-              ),
-            )),
+              )),
+          const SizedBox(height: 4), // Space between reviews and button
 
-        // Divider
-        const Divider(height: 24, thickness: 1),
-
-        // "Go to reviews" button
-        Center(
-          child: TextButton(
-            onPressed: () {
-              // Navigate to the reviews page
-              Navigator.pushNamed(context, '/reviews');
-            },
-            child: const Text(
-              'Go to reviews',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+          // "Go to reviews" button
+          Center(
+            child: TextButton(
+              onPressed: () {
+                // Navigate to the reviews page
+                Navigator.pushNamed(context, '/reviews');
+              },
+              child: const Text(
+                'Go to reviews',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: AppConstants.accentColor, // Highlight button color
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
