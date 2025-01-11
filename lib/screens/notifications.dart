@@ -17,12 +17,14 @@ class Notifications extends StatelessWidget {
           {
             'reviewerName': 'Roger',
             'rating': 4.5,
-            'comment': 'The dining experience was pretty authentic and the personal was great!'
+            'comment': 'The dining experience was pretty authentic and the personal was great!',
+            'avatarPath': 'assets/character9.jpeg'
           },
           {
             'reviewerName': 'Charles',
             'rating': 3.0,
-            'comment': 'The dining experience was pretty authentic and the personal was nice.'
+            'comment': 'The dining experience was pretty authentic and the personal was nice.',
+            'avatarPath': 'assets/character7.jpeg'
           },
         ],
       }
@@ -70,6 +72,7 @@ class Notifications extends StatelessWidget {
           reviewerName: review['reviewerName'] as String,
           rating: review['rating'] as double,
           comment: review['comment'] as String,
+          avatarPath: review['avatarPath'] as String          
         )).toList();
 
     Navigator.push(

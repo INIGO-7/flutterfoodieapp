@@ -22,12 +22,9 @@ class ReviewTile extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage: review.avatarUrl != null
-                      ? NetworkImage(review.avatarUrl!)
-                      : null,
-                  child: review.avatarUrl == null
-                      ? Text(review.reviewerName[0])
-                      : null,
+                  backgroundImage: review.avatarPath != null
+                      ? AssetImage(review.avatarPath!)
+                      : null
                 ),
                 const SizedBox(width: 12),
                 Expanded(
