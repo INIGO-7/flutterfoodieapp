@@ -27,72 +27,73 @@ class ReviewTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Display top two reviews
           ...topReviews.map((review) => Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundImage: review.avatarPath != null
-                              ? AssetImage(review.avatarPath!)
-                              : null,
-                          child: review.avatarPath == null
-                              ? Text(
-                                  review.reviewerName[0],
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                              : null,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4), // Reduced bottom padding
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center, // Center aligns avatar with text
+                  children: [
+                    CircleAvatar(
+                      radius: 27,
+                      backgroundImage: review.avatarPath != null
+                          ? AssetImage(review.avatarPath!)
+                          : null,
+                      child: review.avatarPath == null
+                          ? Text(
+                              review.reviewerName[0],
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : null,
+                    ),
+                    const SizedBox(width: 16), // Reduced horizontal spacing
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min, // Ensures the text doesn't expand unnecessarily
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    '${review.reviewerName} - ${review.rating}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  const Icon(Icons.star,
-                                      color: AppConstants.accentColor, size: 20),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
                               Text(
-                                review.comment,
+                                '${review.reviewerName} - ${review.rating}',
                                 style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                 ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
                               ),
+                              const SizedBox(width: 3), // Reduced spacing
+                              const Icon(Icons.star,
+                                  color: AppConstants.accentColor, size: 18), // Slightly smaller icon
                             ],
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 2), // Reduced spacing between name and comment
+                          Text(
+                            review.comment,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  if (review != topReviews.last) // Add white divider except for last review
-                    const Divider(
-                      color: Colors.white,
-                      height: 24,
-                      thickness: 1,
-                    ),
-                ],
-              )),
+                  ],
+                ),
+              ),
+              if (review != topReviews.last)
+                const Divider(
+                  color: Colors.white,
+                  height: 16, // Reduced height for less vertical spacing
+                  thickness: 1,
+                ),
+            ],
+          )),
+
           const SizedBox(height: 4), // Space between reviews and button
 
           // "Go to reviews" button
@@ -129,12 +130,26 @@ class LocationTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.location_on, color: Colors.red),
+        // const Icon(Icons.location_on, color: AppConstants.accentColor), // Uncomment if needed
         const SizedBox(width: 8),
         Expanded(
-          child: Text(
-            location,
-            style: const TextStyle(fontSize: 16),
+          child: Text.rich(
+            TextSpan(
+              text: 'Located at - ',
+              style: AppConstants.robotoFlexBlack,
+              children: [
+                TextSpan(
+                  text: location,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: AppConstants.accentColor,
+                    decoration: TextDecoration.underline,
+                    decorationColor: AppConstants.accentColor,
+                    decorationThickness: 1.5
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
