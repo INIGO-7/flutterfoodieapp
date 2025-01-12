@@ -21,15 +21,6 @@ class RestaurantScreen extends StatelessWidget {
   final List<Review> reviews;
   final Map<String, dynamic> location;
 
-  void _launchMaps(String address) async {
-    final Uri googleMapsUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$address');
-    if (await canLaunchUrl(googleMapsUrl)) {
-      await launchUrl(googleMapsUrl);
-    } else {
-      throw 'Could not launch $googleMapsUrl';
-    }
-  }
-
   double get averageRating {
     if (reviews.isEmpty) return 0;
     return reviews.map((r) => r.rating).reduce((a, b) => a + b) / reviews.length;
@@ -70,12 +61,10 @@ class RestaurantScreen extends StatelessWidget {
                   const SizedBox(height: 14),
                   ReviewTile(reviews: reviews),
 
-                  GestureDetector(
-                    onTap: () => _launchMaps(location['address']),
-                    child: OSMMapContainer(
-                      latitude: location['latitude'],
-                      longitude: location['longitude'],
-                    ),
+                  OSMMapContainer(
+                    latitude: location['latitude'],
+                    longitude: location['longitude'],
+                    address: location['address']
                   ),
 
                   Container(
