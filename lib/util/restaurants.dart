@@ -1,6 +1,6 @@
 const restaurants = [
   {
-    "img": "assets/food1.jpeg",
+    "img": "assets/restaurant_photos/food1.jpeg",
     "title": "La Trattoria Italiana",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -11,7 +11,7 @@ const restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/food2.jpeg",
+    "img": "assets/restaurant_photos/food2.jpeg",
     "title": "Bamboo Garden",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -22,7 +22,7 @@ const restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/food3.jpeg",
+    "img": "assets/restaurant_photos/food3.jpeg",
     "title": "Savor Nigeria",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -33,7 +33,7 @@ const restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/food4.jpeg",
+    "img": "assets/restaurant_photos/food4.jpeg",
     "title": "El Sabor de España",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -44,7 +44,7 @@ const restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/food5.jpeg",
+    "img": "assets/restaurant_photos/food5.jpeg",
     "title": "Fiesta Mexicana",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -55,7 +55,7 @@ const restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/food6.jpeg",
+    "img": "assets/restaurant_photos/food6.jpeg",
     "title": "Pasta e Basta",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -66,7 +66,7 @@ const restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/food7.jpeg",
+    "img": "assets/restaurant_photos/food7.jpeg",
     "title": "Chinatown Bistro",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -77,7 +77,7 @@ const restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/food8.jpeg",
+    "img": "assets/restaurant_photos/food8.jpeg",
     "title": "Taste of Nigeria",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -88,7 +88,7 @@ const restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/food9.jpeg",
+    "img": "assets/restaurant_photos/food9.jpeg",
     "title": "Taberna Española",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
