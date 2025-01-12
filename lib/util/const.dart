@@ -4,7 +4,7 @@ class Constants {
   static String appName = "Foody Bite";
   static Color lightPrimary = Color.fromARGB(255, 64, 64, 65);
   static Color darkPrimary = Colors.black;
-  static Color lightAccent = Color(0xff5563ff);
+  static Color lightAccent = Color.fromARGB(255, 85, 99, 255);
   static Color darkAccent = Color(0xff5563ff);
   static Color lightBG = Colors.white;
   static Color darkBG = Colors.black;

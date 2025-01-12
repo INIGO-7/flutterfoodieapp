@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/widgets/trending_item.dart';
-import 'restaurant_details.dart'; // Importar la nueva pantalla
+import 'restaurant_screen.dart';
 import 'package:flutter_foodybite/util/review_service.dart';
 import 'package:flutter_foodybite/util/restaurants.dart';
 
@@ -78,17 +78,25 @@ class _TrendingState extends State<Trending> {
                 final reviews = reviewsByRestaurant[title] ?? [];
                 final rating = restaurantRatings[title] ?? 0.0;
 
+                //TODO: make this work with the
+                // final reviews = (reviews['reviews'] as List).map((review) => Review(
+                //   reviewerName: review['reviewerName'] as String,
+                //   rating: review['rating'] as double,
+                //   comment: review['comment'] as String,
+                //   avatarPath: review['avatarPath'] as String          
+                // )).toList();
+
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RestaurantDetails(
-                          img: restaurant["img"]!,
-                          title: title!,
-                          address: restaurant["address"]!,
-                          rating: rating,
-                          reviews: reviews,
+                        builder: (context) => RestaurantScreen(
+                          restaurantName: title!,
+                          //TODO: edit this to work
+                          imageUrl: '',
+                          reviews: [],
+                          location: {},
                         ),
                       ),
                     );

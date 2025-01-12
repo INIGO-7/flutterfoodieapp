@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/reviews.dart';
 import 'package:flutter_foodybite/screens/home.dart';
-import 'package:flutter_foodybite/screens/label.dart';
 
 import '../screens/login.dart';
 import 'package:flutter_foodybite/screens/profile.dart'; // Asegúrate de importar Profile
-import 'package:flutter_foodybite/screens/profile.dart';
-import 'package:flutter_foodybite/screens/reservations.dart';
 import 'package:flutter_foodybite/screens/reservations_agenda.dart';
 
-//import 'package:flutter_foodybite/util/user_service.dart';
 import 'notifications.dart';
 
 class MainScreen extends StatefulWidget {
@@ -31,13 +27,14 @@ class _MainScreenState extends State<MainScreen> {
     Icons.star,
     Icons.notifications,
     Icons.person,
+    Icons.bookmarks
   ];
 
   List<Widget> pages = [
     Home(),
     ReservationsScreen(),
     ReviewScreen(),
-    ReservationScreen(restaurantName: "RESTO", restaurantAddress: "Dr.-Gessler-Strasse 15B", restaurantImage: "https://chin-chin-bar.de/wp-content/uploads/2022/08/Beitragsbild-chin-chin-restaurant-regensburg.jpg",),
+    Notifications(),
     LoginScreen(),
     Profile(),
   ];

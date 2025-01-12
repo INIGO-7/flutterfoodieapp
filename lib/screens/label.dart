@@ -8,6 +8,7 @@ class Label extends StatelessWidget {
     return Container(
       child: Center(
         child: Text('Label'),
+        
       ),
     );
   }

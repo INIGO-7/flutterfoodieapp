@@ -1,16 +1,19 @@
 class Review {
-  final String restaurant; // El nombre o identificador del restaurante
-  final String comment; // El comentario de la reseña
-  final double rating; // La calificación
-  final DateTime createdAt; // La fecha de creación de la reseña
-  final String username; // El nombre de usuario que creó la reseña
+  
+  final String username;
+  final String restaurant;
+  final double rating;
+  final String comment;
+  final DateTime createdAt;
+  final String? avatarPath;
 
-  Review({
+  const Review({
     required this.restaurant,
-    required this.comment,
-    required this.rating,
-    required this.createdAt,
     required this.username,
+    required this.rating,
+    required this.comment,
+    required this.createdAt,
+    this.avatarPath,
   });
 
   // Método para crear una reseña desde un Map
