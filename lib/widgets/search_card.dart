@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/restaurant_screen.dart';
+import 'package:flutter_foodybite/util/review.dart';
+import 'package:flutter_foodybite/util/review_service.dart';
 import 'package:flutter_foodybite/util/restaurants.dart';
+
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class SearchCard extends StatefulWidget {
   @override
   _SearchCardState createState() => _SearchCardState();
 }
 
-class _SearchCardState extends State<SearchCard> with WidgetsBindingObserver {
+class _SearchCardState extends State<SearchCard> with RouteAware {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   List<Map> _filteredRestaurants = [];
+  final ReviewService reviewService = ReviewService();
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-
     _searchController.addListener(() {
       _filterRestaurants(_searchController.text);
     });
@@ -34,12 +37,21 @@ class _SearchCardState extends State<SearchCard> with WidgetsBindingObserver {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final route = ModalRoute.of(context);
-    if (route != null) {
-      route.addScopedWillPopCallback(() async {
-        _hideOverlay(); // Cierra el overlay si el usuario retrocede
-        return true;
-      });
+    if (route is PageRoute) {
+      routeObserver.subscribe(this, route);
     }
+  }
+
+  @override
+  void didPop() {
+    super.didPop();
+    _hideOverlay(); // Ocultar overlay cuando se haga pop
+  }
+
+  @override
+  void didPush() {
+    super.didPush();
+    _hideOverlay(); // Opcionalmente ocultar overlay al empujar una nueva ruta
   }
 
   @override
@@ -122,7 +134,8 @@ class _SearchCardState extends State<SearchCard> with WidgetsBindingObserver {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          onTap: () {
+                          onTap: () async {
+                            List<Review> reviews = await reviewService.getReviewsByRestaurant(restaurant["title"]);
                             _hideOverlay(); // Cerrar overlay
                             Navigator.push(
                               context,
@@ -130,8 +143,12 @@ class _SearchCardState extends State<SearchCard> with WidgetsBindingObserver {
                                 builder: (context) => RestaurantScreen(
                                   imageUrl: restaurant["img"],
                                   restaurantName: restaurant["title"],
-                                  location: restaurant["address"],
-                                  reviews: restaurant["reviews"],
+                                  reviews: reviews,
+                                  location: {
+                                    'latitude': double.parse(restaurant["latitude"]),  // Reemplaza con el valor correcto
+                                    'longitude': double.parse(restaurant["longitude"]), // Reemplaza con el valor correcto
+                                    'address': restaurant["address"],     // Asegúrate de que 'address' es una cadena
+                                  }, 
                                 ),
                               ),
                             );
@@ -150,6 +167,11 @@ class _SearchCardState extends State<SearchCard> with WidgetsBindingObserver {
     );
   }
 
+  // Método para cerrar el overlay desde fuera
+  void closeOverlay() {
+    _hideOverlay();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
@@ -160,7 +182,11 @@ class _SearchCardState extends State<SearchCard> with WidgetsBindingObserver {
             controller: _searchController,
             focusNode: _focusNode,
             onTap: () {
-              _focusNode.hasFocus ? _showOverlay() : _hideOverlay();
+              if (_focusNode.hasFocus) {
+                _showOverlay();
+              } else {
+                _hideOverlay();
+              }
             },
             onEditingComplete: () {
               _hideOverlay();
@@ -182,7 +208,10 @@ class _SearchCardState extends State<SearchCard> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    // Desuscribir del RouteObserver
+    if (ModalRoute.of(context) is PageRoute) {
+      routeObserver.unsubscribe(this);
+    }
     _hideOverlay();
     _searchController.dispose();
     _focusNode.dispose();

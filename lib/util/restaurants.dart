@@ -6,7 +6,9 @@ const restaurants = [
     "rating": "4.5",
     "foodType": "Italian",
     "openingTime": "10:00",
-    "closingTime": "22:00"
+    "closingTime": "22:00",
+    "latitude": "39.1005",
+    "longitude": "-94.5794"
   },
   {
     "img": "assets/food2.jpeg",
@@ -15,7 +17,9 @@ const restaurants = [
     "rating": "4.5",
     "foodType": "Chinese",
     "openingTime": "11:00",
-    "closingTime": "23:00"
+    "closingTime": "23:00",
+    "latitude": "39.1005",
+    "longitude": "-94.5794"
   },
   {
     "img": "assets/food3.jpeg",
@@ -24,7 +28,9 @@ const restaurants = [
     "rating": "4.5",
     "foodType": "Nigerian",
     "openingTime": "12:00",
-    "closingTime": "22:00"
+    "closingTime": "22:00",
+    "latitude": "39.1005",
+    "longitude": "-94.5794"
   },
   {
     "img": "assets/food4.jpeg",
@@ -33,7 +39,9 @@ const restaurants = [
     "rating": "4.5",
     "foodType": "Spanish",
     "openingTime": "10:30",
-    "closingTime": "21:30"
+    "closingTime": "21:30",
+    "latitude": "39.1005",
+    "longitude": "-94.5794"
   },
   {
     "img": "assets/food5.jpeg",
@@ -42,7 +50,9 @@ const restaurants = [
     "rating": "4.5",
     "foodType": "Mexican",
     "openingTime": "11:00",
-    "closingTime": "22:00"
+    "closingTime": "22:00",
+    "latitude": "39.1005",
+    "longitude": "-94.5794"
   },
   {
     "img": "assets/food6.jpeg",
@@ -51,7 +61,9 @@ const restaurants = [
     "rating": "4.5",
     "foodType": "Italian",
     "openingTime": "09:00",
-    "closingTime": "22:00"
+    "closingTime": "22:00",
+    "latitude": "39.1005",
+    "longitude": "-94.5794"
   },
   {
     "img": "assets/food7.jpeg",
@@ -60,7 +72,9 @@ const restaurants = [
     "rating": "4.5",
     "foodType": "Chinese",
     "openingTime": "11:00",
-    "closingTime": "22:00"
+    "closingTime": "22:00",
+    "latitude": "39.1005",
+    "longitude": "-94.5794"
   },
   {
     "img": "assets/food8.jpeg",
@@ -69,7 +83,9 @@ const restaurants = [
     "rating": "4.5",
     "foodType": "Nigerian",
     "openingTime": "16:00",
-    "closingTime": "23:00"
+    "closingTime": "23:00",
+    "latitude": "39.1005",
+    "longitude": "-94.5794"
   },
   {
     "img": "assets/food9.jpeg",
@@ -78,6 +94,8 @@ const restaurants = [
     "rating": "4.5",
     "foodType": "Spanish",
     "openingTime": "10:00",
-    "closingTime": "21:00"
+    "closingTime": "21:00",
+    "latitude": "39.1005",
+    "longitude": "-94.5794"
   }
 ];

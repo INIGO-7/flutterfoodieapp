@@ -92,7 +92,7 @@ class RestaurantScreen extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => ReservationScreen(
                     restaurantName: restaurantName, 
-                    restaurantAddress: location['Address'], 
+                    restaurantAddress: location['address'], 
                     restaurantImage: imageUrl
                   )
                 ),

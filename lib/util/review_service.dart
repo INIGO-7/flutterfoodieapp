@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_foodybite/util/review.dart';
+
 class ReviewService {
   late final String _filePath;
 
@@ -59,6 +61,28 @@ class ReviewService {
     } catch (e) {
       print('Error al guardar las reseñas: $e');
       throw Exception("Error al guardar reseñas: $e");
+    }
+  }
+
+  Future<List<Review>> getReviewsByRestaurant(String restaurantName) async {
+    try {
+      final reviews = await loadReviews();
+      print('Reseñas cargadas: $reviews');
+
+      // Filtrar las reseñas que correspondan al restaurante
+      final filteredReviews = reviews.where((review) {
+        return review['restaurant'] == restaurantName;
+      }).toList();
+
+      // Convertir las reseñas filtradas a objetos de tipo Review
+      final reviewList = filteredReviews.map((reviewJson) {
+        return Review.fromJson(reviewJson);
+      }).toList();
+
+      return reviewList;
+    } catch (e) {
+      print("Error al obtener las reseñas del restaurante: $e");
+      return [];
     }
   }
 

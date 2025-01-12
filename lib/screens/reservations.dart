@@ -143,8 +143,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
-                    imageUrl,
+                  Image.asset(
+                    widget.restaurantImage,
                     fit: BoxFit.cover,
                   ),
                   Container(

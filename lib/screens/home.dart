@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/categories.dart';
+import 'package:flutter_foodybite/screens/restaurant_screen.dart';
 import 'package:flutter_foodybite/screens/trending.dart';
 import 'package:flutter_foodybite/util/categories.dart';
 import 'package:flutter_foodybite/util/restaurants.dart';
@@ -52,10 +53,12 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        // Este GestureDetector cierra el foco (y también el overlay)
         FocusScopeNode currentFocus = FocusScope.of(context);
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
         }
+
       },
       child: Scaffold(
         body: Padding(
@@ -195,12 +198,32 @@ class _HomeState extends State<Home> {
 
           return Padding(
             padding: const EdgeInsets.only(right: 10.0),
-            child: SlideItem(
-              img: restaurant["img"],
-              title: restaurant["title"],
-              address: restaurant["address"],
-              opened: isRestaurantOpen(restaurant["openingTime"], restaurant["closingTime"]),
-              rating: rating.toStringAsFixed(1), // Conversión a String
+            child: GestureDetector(
+              onTap: () {
+                // Aquí puedes agregar lo que deseas hacer al tocar el SlideItem
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RestaurantScreen(
+                      imageUrl: restaurant["img"],
+                      restaurantName: restaurant["title"],
+                      location: {
+                        'latitude': double.parse(restaurant["latitude"].toString()),
+                        'longitude': double.parse(restaurant["longitude"].toString()),
+                        'address': restaurant["address"],
+                      },
+                      reviews: [], // Agrega las reseñas que necesites
+                    ),
+                  ),
+                );
+              },
+              child: SlideItem(
+                img: restaurant["img"],
+                title: restaurant["title"],
+                address: restaurant["address"],
+                opened: isRestaurantOpen(restaurant["openingTime"], restaurant["closingTime"]),
+                rating: rating.toStringAsFixed(1), // Conversión a String
+              ),
             ),
           );
         },
