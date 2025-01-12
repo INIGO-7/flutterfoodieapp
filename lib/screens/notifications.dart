@@ -1,77 +1,47 @@
 import 'package:flutter/material.dart';
 import 'restaurant_screen.dart';
+import 'package:flutter/services.dart';
+import 'dart:convert';
+
 import '../util/review.dart';
 
-class Notifications extends StatelessWidget {
-  Notifications({Key? key}) : super(key: key);
+class Notifications extends StatefulWidget {
+  const Notifications({Key? key}) : super(key: key);
 
-  final List<Map<String, dynamic>> notifications = [
-    {
-      'image': 'assets/food2.jpeg',
-      'title': 'El Sombrerito',
-      'description': 'Craving something spicy? Our Sriracha-inspired dishes bring the heat!',
-      'restaurantData': { 
-        'imageUrl': 'assets/food2.jpeg',
-        'location': {
-            'address': 'Fischgässel 4, 93047 Regensburg',
-            'latitude': 49.02077738427102,
-            'longitude': 12.09520907943992
-          },
-        'reviews': [
-          {
-            'reviewerName': 'Roger',
-            'rating': 4.5,
-            'comment': 'The dining experience was pretty authentic and the personal was great!',
-            'avatarPath': 'assets/character9.jpeg'
-          },
-          {
-            'reviewerName': 'Charles',
-            'rating': 3.0,
-            'comment': 'The dining experience was pretty authentic and the personal was nice.',
-            'avatarPath': 'assets/character7.jpeg'
-          },
-        ],
-      }
-    },
-    {
-      'image': 'assets/food3.jpeg',
-      'title': 'Burgerheart Regensburg',
-      'description': 'Dive into the ultimate flavor with our new Smoky BBQ Bacon Burger!',
-    },
-    {
-      'image': 'assets/food6.jpeg',
-      'title': 'Andoni\'s Bistro',
-      'description': 'Our new Dry-Aged Tomahawk will take your steak experience to a new level.',
-    },
-    {
-      'image': 'assets/food1.jpeg',
-      'title': 'Montevideo',
-      'description': 'Looking for a light meal? Our salads are perfect for a guilt-free indulgence!',
-    },
-    {
-      'image': 'assets/food7.jpeg',
-      'title': 'Happy Jones',
-      'description': 'We are guilty of having the best tasting pizza in all of Regensburg... Come try!',
-    },
-    {
-      'image': 'assets/food6.jpeg',
-      'title': 'Andoni\'s Bistro',
-      'description': 'Our new Dry-Aged Tomahawk will take your steak experience to a new level.',
-    },
-    {
-      'image': 'assets/food1.jpeg',
-      'title': 'Montevideo',
-      'description': 'Looking for a light meal? Our salads are perfect for a guilt-free indulgence!',
-    },
-    {
-      'image': 'assets/food7.jpeg',
-      'title': 'Happy Jones',
-      'description': 'We are guilty of having the best tasting pizza in all of Regensburg... Come try!',
+  @override
+  State<Notifications> createState() => _NotificationsState();
+}
+
+class _NotificationsState extends State<Notifications> {
+  
+  Future<List<dynamic>> loadNotifications() async {
+    try {
+      // Load the JSON file as a string
+      final String jsonString = await rootBundle.loadString('data/notifications.json');  // Make sure your file has .json extension
+      //Decode the json and return it
+      Map<String, dynamic> jsonData = json.decode(jsonString);
+      return jsonData['notifications'] as List<dynamic>;
+
+    } catch (e) {
+      print('Error loading notifications: $e');
+      return [];
     }
-  ];
+  }
 
   void _navigateToRestaurant(BuildContext context, Map<String, dynamic> notification) {
-    final restaurantData = notification['restaurantData'] as Map<String, dynamic>;
+    // First check if restaurantData exists
+    final restaurantData = notification['restaurantData'];
+    if (restaurantData == null) {
+      // Show a snackbar or some other feedback that this restaurant's details aren't available
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Restaurant details not available yet'),
+        ),
+      );
+      return;
+    }
+
+    final locationData = restaurantData['location'] as Map<String, dynamic>;
     final reviews = (restaurantData['reviews'] as List).map((review) => Review(
           reviewerName: review['reviewerName'] as String,
           rating: review['rating'] as double,
@@ -86,7 +56,7 @@ class Notifications extends StatelessWidget {
           restaurantName: notification['title'],
           imageUrl: restaurantData['imageUrl'],
           reviews: reviews,
-          location: restaurantData['location'],
+          location: locationData,
         ),
       ),
     );
@@ -97,59 +67,82 @@ class Notifications extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Notifications',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.black,
       ),
-      body: ListView.builder(
-        itemCount: notifications.length + 1, // Add 1 for the footer
-        itemBuilder: (context, index) {
-          if (index < notifications.length) {
-            final notification = notifications[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Card(
-                color: Colors.grey[900],
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: AssetImage(notification['image']!),
-                    radius: 30,
-                  ),
-                  title: Text(
-                    notification['title']!,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  subtitle: Text(
-                    notification['description']!,
-                    style: TextStyle(color: Colors.grey[300]),
-                  ),
-                  onTap: () {
-                    if (notification['restaurantData'] != null) {
-                      _navigateToRestaurant(context, notification);  // Pass the whole notification
-                    }
-                  },
-                ),
-              ),
-            );
-          } else {
-            // Footer message
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30.0),
-              child: Center(
-                child: Text(
-                  'No notifications remaining!',
-                  style: TextStyle(color: Colors.grey[500], fontSize: 16),
-                ),
+      body: FutureBuilder<List<dynamic>>(
+        future: loadNotifications(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
               ),
             );
           }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error loading notifications',
+                style: TextStyle(color: Colors.grey[500]),
+              ),
+            );
+          }
+
+          final notifications = snapshot.data ?? [];
+
+          return ListView.builder(
+            itemCount: notifications.length + 1,
+            itemBuilder: (context, index) {
+              if (index < notifications.length) {
+                final notification = notifications[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Card(
+                    color: Colors.grey[900],
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: notification['image'] != null 
+                          ? AssetImage(notification['image'])
+                          : null,
+                        radius: 30,
+                      ),
+                      title: Text(
+                        notification['title'] ?? 'Untitled',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      subtitle: Text(
+                        notification['description'] ?? '',
+                        style: TextStyle(color: Colors.grey[300]),
+                      ),
+                      onTap: () {
+                        _navigateToRestaurant(context, notification);
+                      },
+                    ),
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 30.0),
+                  child: Center(
+                    child: Text(
+                      'No notifications remaining!',
+                      style: TextStyle(color: Colors.grey[500], fontSize: 16),
+                    ),
+                  ),
+                );
+              }
+            },
+          );
         },
       ),
     );
