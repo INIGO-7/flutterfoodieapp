@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../util/app_constants.dart';
 
+import '../util/app_constants.dart';
 import '../widgets/rating_section.dart';
 import '../util/review.dart';
 import '../widgets/review_tile.dart';
+import '../widgets/osm_map.dart';
 
 class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({
@@ -18,21 +19,20 @@ class RestaurantScreen extends StatelessWidget {
   final String restaurantName;
   final String imageUrl;
   final List<Review> reviews;
-  final String location;
+  final Map<String, dynamic> location;
 
-  // Calculate average rating from reviews
-  double get averageRating {
-    if (reviews.isEmpty) return 0;
-    return reviews.map((r) => r.rating).reduce((a, b) => a + b) / reviews.length;
-  }
-
-  void _launchMaps(String location) async {
-    final Uri googleMapsUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$location');
+  void _launchMaps(String address) async {
+    final Uri googleMapsUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$address');
     if (await canLaunchUrl(googleMapsUrl)) {
       await launchUrl(googleMapsUrl);
     } else {
       throw 'Could not launch $googleMapsUrl';
     }
+  }
+
+  double get averageRating {
+    if (reviews.isEmpty) return 0;
+    return reviews.map((r) => r.rating).reduce((a, b) => a + b) / reviews.length;
   }
 
   @override
@@ -48,71 +48,48 @@ class RestaurantScreen extends StatelessWidget {
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
                   restaurantName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 25
-                    ),
+                    fontSize: 25,
                   ),
+                ),
                 background: Image.asset(
                   imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            
+
             // Content
             SliverPadding(
               padding: const EdgeInsets.all(16),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-
                   const SizedBox(height: 10),
-                  
                   RatingSection(rating: averageRating),
-                  
                   const SizedBox(height: 14),
-
                   ReviewTile(reviews: reviews),
-                  
-                  // Location Section (placeholder for Google Maps)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: const Text(
-                      'Location',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  
-                  // Placeholder for Google Maps
+
                   GestureDetector(
-                    onTap: () {
-                      _launchMaps(location);
-                    },
-                    child: Container(
-                      height: 200,
-                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: AppConstants.secondaryColor,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Center(
-                        child: Text('Google Maps will be implemented here'),
-                      ),
+                    onTap: () => _launchMaps(location['address']),
+                    child: OSMMapContainer(
+                      latitude: location['latitude'],
+                      longitude: location['longitude'],
                     ),
                   ),
 
-                  LocationTile(location: location),
-                  
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                    child: LocationTile(location: location['address']),
+                  ),
+
                   const SizedBox(height: 80),
                 ]),
               ),
             ),
           ],
         ),
-        
+
         // Floating Reservation Button
         floatingActionButton: SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
@@ -128,8 +105,8 @@ class RestaurantScreen extends StatelessWidget {
             backgroundColor: AppConstants.accentColor,
           ),
         ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      )
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      ),
     );
   }
 }

@@ -12,7 +12,11 @@ class Notifications extends StatelessWidget {
       'description': 'Craving something spicy? Our Sriracha-inspired dishes bring the heat!',
       'restaurantData': { 
         'imageUrl': 'assets/food2.jpeg',
-        'location': 'Fischgässel 4, 93047 Regensburg',
+        'location': {
+            'address': 'Fischgässel 4, 93047 Regensburg',
+            'latitude': 49.02077738427102,
+            'longitude': 12.09520907943992
+          },
         'reviews': [
           {
             'reviewerName': 'Roger',
