@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
         ),
         TextButton(
           child: Text(
-            "See all (9)",
+            "See all (" + restaurants.length.toString() + ")",
             style: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
             ),
@@ -125,7 +125,7 @@ class _HomeState extends State<Home> {
         ),
         TextButton(
           child: Text(
-            "See all (9)",
+            "See all (" + categories.length.toString() + ")",
             style: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
             ),

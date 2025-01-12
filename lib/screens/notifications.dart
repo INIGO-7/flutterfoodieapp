@@ -43,10 +43,12 @@ class _NotificationsState extends State<Notifications> {
 
     final locationData = restaurantData['location'] as Map<String, dynamic>;
     final reviews = (restaurantData['reviews'] as List).map((review) => Review(
-          reviewerName: review['reviewerName'] as String,
+          restaurant: notification['title'],
+          username: review['reviewerName'] as String,
           rating: review['rating'] as double,
           comment: review['comment'] as String,
-          avatarPath: review['avatarPath'] as String          
+          avatarPath: review['avatarPath'] as String,
+          createdAt: DateTime.now(),   //FIX         
         )).toList();
 
     Navigator.push(

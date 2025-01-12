@@ -105,7 +105,12 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
   Widget build(BuildContext context) {
     if (!isLoggedIn) {
       return Scaffold(
-        appBar: AppBar(title: Text('Your Reservations')),
+        appBar: AppBar(
+          title: const Text('Your Reservations'),
+          automaticallyImplyLeading: false, // Elimina la flecha de retroceso
+          centerTitle: true,
+          backgroundColor: Colors.green,
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -140,7 +145,12 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
     } else {
       if (reservations.isEmpty) {
         return Scaffold(
-          appBar: AppBar(title: Text('Your Reservations')),
+          appBar: AppBar(
+            title: const Text('Your Reservations'),
+            automaticallyImplyLeading: false, // Elimina la flecha de retroceso
+            centerTitle: true,
+            backgroundColor: Colors.green,
+          ),
           body: Center(
             child: Text(
               'You have no reservations pending.',

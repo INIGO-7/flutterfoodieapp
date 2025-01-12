@@ -25,6 +25,7 @@ class Review {
       createdAt: DateTime.parse(
           json['createdAt']), // Convierte la fecha del JSON a DateTime
       username: json['username'], // Obtiene el nombre de usuario del JSON
+      avatarPath: json['avatarPath'],
     );
   }
 
@@ -37,6 +38,7 @@ class Review {
       'createdAt':
           createdAt.toIso8601String(), // Convierte DateTime a String ISO 8601
       'username': username, // Agrega el nombre de usuario al JSON
+      'avatarPath': avatarPath,
     };
   }
 }

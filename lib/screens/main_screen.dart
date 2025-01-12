@@ -27,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
     Icons.star,
     Icons.notifications,
     Icons.person,
-    Icons.bookmarks
+    //Icons.bookmarks
   ];
 
   List<Widget> pages = [

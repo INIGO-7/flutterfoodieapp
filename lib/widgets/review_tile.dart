@@ -41,7 +41,7 @@ class ReviewTile extends StatelessWidget {
                           : null,
                       child: review.avatarPath == null
                           ? Text(
-                              review.reviewerName[0],
+                              review.username[0],
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -58,7 +58,7 @@ class ReviewTile extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                '${review.reviewerName} - ${review.rating}',
+                                '${review.username} - ${review.rating}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
