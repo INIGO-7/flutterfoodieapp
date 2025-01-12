@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:flutter/material.dart';
+
 import '../util/restaurants.dart'; // Asegúrate de que la ruta sea correcta
 
 class RestaurantRegister extends StatefulWidget {
@@ -38,7 +39,6 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
         restaurants.addAll(jsonData.map((data) => Map<String, String>.from(data)));
       }
     } catch (e) {
-      // Handle error if necessary
       debugPrint('Error loading persisted restaurants: $e');
     }
   }
@@ -48,7 +48,6 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
       final file = File(filePath);
       await file.writeAsString(jsonEncode(restaurants));
     } catch (e) {
-      // Handle error if necessary
       debugPrint('Error persisting restaurants: $e');
     }
   }
@@ -92,7 +91,12 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register Restaurant'),
+        backgroundColor: Colors.green,
+        title: const Text(
+          'Register Restaurant',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -100,6 +104,35 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Center(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: seleccionarImagen,
+                      child: CircleAvatar(
+                        radius: 50.0,
+                        backgroundColor: Colors.green,
+                        child: imgController.text.isEmpty
+                            ? const Icon(Icons.restaurant, size: 50.0, color: Colors.white)
+                            : ClipOval(
+                                child: Image.asset(
+                                  imgController.text,
+                                  fit: BoxFit.cover,
+                                  width: 100.0,
+                                  height: 100.0,
+                                ),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      'Tap to select an image',
+                      style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24.0),
               TextField(
                 controller: adminNameController,
                 decoration: const InputDecoration(
@@ -115,18 +148,6 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
                   hintText: 'Enter a secure password',
                 ),
                 obscureText: true,
-              ),
-              const SizedBox(height: 16.0),
-              TextField(
-                controller: imgController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'Image Path',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.photo_library),
-                    onPressed: seleccionarImagen,
-                  ),
-                ),
               ),
               const SizedBox(height: 16.0),
               TextField(
@@ -153,26 +174,38 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
                 ),
               ),
               const SizedBox(height: 16.0),
-              TextField(
-                controller: openingTimeController,
-                decoration: const InputDecoration(
-                  labelText: 'Opening Time',
-                  hintText: 'e.g., 11:00',
-                ),
-                keyboardType: TextInputType.datetime,
-              ),
-              const SizedBox(height: 16.0),
-              TextField(
-                controller: closingTimeController,
-                decoration: const InputDecoration(
-                  labelText: 'Closing Time',
-                  hintText: 'e.g., 22:00',
-                ),
-                keyboardType: TextInputType.datetime,
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: openingTimeController,
+                      decoration: const InputDecoration(
+                        labelText: 'Opening Time',
+                        hintText: 'e.g., 11:00',
+                      ),
+                      keyboardType: TextInputType.datetime,
+                    ),
+                  ),
+                  const SizedBox(width: 16.0),
+                  Expanded(
+                    child: TextField(
+                      controller: closingTimeController,
+                      decoration: const InputDecoration(
+                        labelText: 'Closing Time',
+                        hintText: 'e.g., 22:00',
+                      ),
+                      keyboardType: TextInputType.datetime,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 24.0),
               Center(
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green, // Botón del mismo color que el banner
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                  ),
                   onPressed: () async {
                     final newRestaurant = {
                       "adminName": adminNameController.text,
@@ -185,10 +218,8 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
                       "closingTime": closingTimeController.text,
                     };
 
-                    // Add new restaurant to the list
                     restaurants.add(newRestaurant);
 
-                    // Persist restaurants
                     await _persistRestaurants();
 
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -197,7 +228,10 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
                       ),
                     );
                   },
-                  child: const Text('Save Restaurant Data'),
+                  child: const Text(
+                    'Save Restaurant Data',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ],

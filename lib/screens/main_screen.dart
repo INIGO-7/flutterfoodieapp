@@ -84,11 +84,9 @@ class _MainScreenState extends State<MainScreen> {
           : Theme.of(context).colorScheme.primary,
       onPressed: () {
         if (index == 4) { // Si el usuario hace clic en el ícono del perfil
-          print("Hola");
           if (!widget.isLogged) { 
             // Si el usuario no está logueado, lleva al login
             _pageController.jumpToPage(4); // Índice de la pantalla de login
-            print("Aqui llega");
           } else {
             // Si el usuario está logueado, lleva a la pantalla de perfil
             _pageController.jumpToPage(5); // Índice de la pantalla de perfil

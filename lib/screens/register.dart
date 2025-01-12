@@ -64,7 +64,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
               style: TextStyle(color: Colors.white),
             ),
             automaticallyImplyLeading: false, // Elimina la flecha hacia atrás
-            leading: null, // Esto asegura que no haya widget de navegación
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                // Regresar a la pantalla principal
+                bool isLogged = false;
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainScreen(isLogged: isLogged)),
+                );
+              },
+            ),
           ),
         ),
         body: Padding(
