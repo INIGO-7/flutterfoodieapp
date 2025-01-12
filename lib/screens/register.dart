@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           bool isLogged = false;
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => MainScreen(isLogged: isLogged)),
+            MaterialPageRoute(builder: (context) => MainScreen(isLogged: isLogged, userType: 'user',)),
           );
         });
       } catch (e) {
@@ -71,7 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 bool isLogged = false;
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MainScreen(isLogged: isLogged)),
+                  MaterialPageRoute(builder: (context) => MainScreen(isLogged: isLogged, userType: 'user',)),
                 );
               },
             ),

@@ -234,7 +234,7 @@ void seleccionarImagen() async {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MainScreen(isLogged: false),
+                    builder: (context) => MainScreen(isLogged: false, userType: 'user',),
                   ),
                   (Route<dynamic> route) => false,
                 );

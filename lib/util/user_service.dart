@@ -36,6 +36,15 @@ class UserService {
     return users.any((user) => user['username'] == username);
   }
 
+  Future<Map<String, dynamic>?> getUser(String username, String password) async {
+  // Busca el usuario en la lista por credenciales
+    final users = await _loadUsers();
+    final user = users.firstWhere(
+      (user) => user['username'] == username && user['password'] == password
+    );
+    return user;
+  }
+
   // Valida las credenciales del usuario
   Future<bool> validateUser(String username, String password) async {
     final users = await _loadUsers();

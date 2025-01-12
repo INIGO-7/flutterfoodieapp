@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _userService = UserService();
 
-  void _login() async {
+/*   void _login() async {
     if (_formKey.currentState!.validate()) {
       final isValid = await _userService.validateUser(
         _usernameController.text,
@@ -42,6 +42,40 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(builder: (context) => MainScreen(isLogged: true)),
         );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Invalid username or password')),
+        );
+      }
+    }
+  }
+ */
+  void _login() async {
+    if (_formKey.currentState!.validate()) {
+      final isValid = await _userService.validateUser(
+        _usernameController.text,
+        _passwordController.text,
+      );
+
+      if (isValid) {
+        final user = await _userService.getUser(
+          _usernameController.text,
+          _passwordController.text,
+        );
+
+        if (user != null) {
+          final userType = user['type']; // Aquí obtienes el tipo de usuario
+          LoginScreen._userName = _usernameController.text;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainScreen(
+                isLogged: true,
+                userType: userType, // Pasamos el tipo de usuario
+              ),
+            ),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Invalid username or password')),

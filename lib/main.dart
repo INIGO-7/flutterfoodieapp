@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       title: Constants.appName,
       theme: Constants.lightTheme,
       darkTheme: Constants.darkTheme,
-      home: MainScreen(isLogged : widget.isLogged), // Aquí puedes usar widget.isLogged si es necesario
+      home: MainScreen(isLogged : widget.isLogged, userType: 'user',), // Aquí puedes usar widget.isLogged si es necesario
     );
   }
 }
