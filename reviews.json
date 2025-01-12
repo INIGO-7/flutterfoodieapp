@@ -1,1 +1,42 @@
-[{"restaurant":"Happy Jones3","comment":"xd","rating":5.0,"createdAt":"2025-01-10T10:28:34.139932"},{"restaurant":"Happy Jones3","comment":"jioj","rating":0.0,"username":"german","createdAt":"2025-01-10T13:05:14.225296"},{"restaurant":"Happy Jones7","comment":"asfda","rating":4.0,"username":"german","createdAt":"2025-01-10T13:48:32.113314"},{"restaurant":"Savor Nigeria","comment":"asdf","rating":0.0,"createdAt":"2025-01-10T13:53:24.299930"},{"restaurant":"Savor Nigeria","comment":"jioi","rating":0.0,"createdAt":"2025-01-12T18:06:07.526279"}]
+[
+  {
+    "restaurant": "Happy Jones3",
+    "comment": "xd",
+    "rating": 5.0,
+    "createdAt": "2025-01-10T10:28:34.139932",
+    "username": "anonymous",
+    "avatarPath": "assets/Profile_pictures/Prf5.jpg"
+  },
+  {
+    "restaurant": "Happy Jones3",
+    "comment": "jioj",
+    "rating": 0.0,
+    "username": "german",
+    "createdAt": "2025-01-10T13:05:14.225296",
+    "avatarPath": "assets/Profile_pictures/Prf1.jpg"
+  },
+  {
+    "restaurant": "Happy Jones7",
+    "comment": "asfda",
+    "rating": 4.0,
+    "username": "german",
+    "createdAt": "2025-01-10T13:48:32.113314",
+    "avatarPath": "assets/Profile_pictures/Prf1.jpg"
+  },
+  {
+    "restaurant": "Savor Nigeria",
+    "comment": "asdf",
+    "rating": 0.0,
+    "createdAt": "2025-01-10T13:53:24.299930",
+    "username": "anonymous",
+    "avatarPath": "assets/Profile_pictures/Prf5.jpg"
+  },
+  {
+    "restaurant": "Savor Nigeria",
+    "comment": "jioi",
+    "rating": 0.0,
+    "createdAt": "2025-01-12T18:06:07.526279",
+    "username": "anonymous",
+    "avatarPath": "assets/Profile_pictures/Prf5.jpg"
+  }
+]

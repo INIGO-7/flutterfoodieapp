@@ -136,7 +136,6 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
                           ),
                           onTap: () async {
                             List<Review> reviews = await reviewService.getReviewsByRestaurant(restaurant["title"]);
-                            _hideOverlay(); // Cerrar overlay
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -145,13 +144,16 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
                                   restaurantName: restaurant["title"],
                                   reviews: reviews,
                                   location: {
-                                    'latitude': double.parse(restaurant["latitude"]),  // Reemplaza con el valor correcto
-                                    'longitude': double.parse(restaurant["longitude"]), // Reemplaza con el valor correcto
-                                    'address': restaurant["address"],     // Asegúrate de que 'address' es una cadena
-                                  }, 
+                                    'latitude': double.parse(restaurant["latitude"]),
+                                    'longitude': double.parse(restaurant["longitude"]),
+                                    'address': restaurant["address"],
+                                  },
                                 ),
                               ),
-                            );
+                            ).then((_) {
+                              // Asegúrate de que el overlay se oculta también después de la navegación, en caso de que se quede abierto.
+                              _hideOverlay();
+                            });
                           },
                         );
                       },

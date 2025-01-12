@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/widgets/trending_item.dart';
 import 'restaurant_screen.dart';
 import 'package:flutter_foodybite/util/review_service.dart';
+import 'package:flutter_foodybite/util/review.dart'; // Asegúrate de importar la clase Review
 
 class RestaurantCategory extends StatefulWidget {
   final String categoryName;
@@ -62,7 +63,7 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        title: Text(widget.categoryName), // Mostrar el nombre de la categoría
+        title: Text(widget.categoryName),
         centerTitle: true,
       ),
       body: Padding(
@@ -72,35 +73,49 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
             final title = restaurant["title"];
             final reviews = reviewsByRestaurant[title] ?? [];
             final rating = restaurantRatings[title] ?? 0.0;
-            
-            //TODO: make this work with the
-            // final reviews = (reviews['reviews'] as List).map((review) => Review(
-            //   reviewerName: review['reviewerName'] as String,
-            //   rating: review['rating'] as double,
-            //   comment: review['comment'] as String,
-            //   avatarPath: review['avatarPath'] as String          
-            // )).toList();
+            final imageUrl = restaurant["img"] ?? ''; 
+            final address = restaurant["address"] ?? '';
+            final latitude = double.parse(restaurant["latitude"].toString());
+            final longitude = double.parse(restaurant["longitude"].toString());
 
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RestaurantScreen(
-                      restaurantName: title!,
-                      //TODO: edit this to work
-                      imageUrl: '',
-                      reviews: [],
-                      location: {},
+            // Convertimos las reseñas de mapa a objetos Review
+            List<Review> reviewList = reviews.map((reviewMap) {
+              return Review(
+                username: reviewMap['reviewerName'],
+                restaurant: reviewMap['restaurant'],
+                rating: reviewMap['rating'],
+                comment: reviewMap['comment'],
+                avatarPath: reviewMap['avatarPath'],
+                createdAt: reviewMap['createdAt'],
+              );
+            }).toList();
+
+            return Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RestaurantScreen(
+                        restaurantName: title!,
+                        imageUrl: imageUrl,
+                        reviews: reviewList, // Pasamos la lista de objetos Review
+                        location: {
+                          'latitude': latitude,
+                          'longitude': longitude,
+                          'address': address
+                        }, // Asegúrate de pasar correctamente la ubicación
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: TrendingItem(
-                img: restaurant["img"]!,
-                title: title!,
-                address: restaurant["address"]!,
-                rating: rating.toStringAsFixed(1),
+                  );
+                },
+                child: TrendingItem(
+                  img: imageUrl,
+                  title: title!,
+                  address: address,
+                  rating: rating.toStringAsFixed(1),
+                ),
               ),
             );
           }).toList(),

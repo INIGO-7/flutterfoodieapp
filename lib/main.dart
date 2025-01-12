@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/main_screen.dart';
 import 'package:flutter_foodybite/util/const.dart';
 import 'package:flutter_foodybite/util/user_service.dart';
+import 'package:window_size/window_size.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
   bool isLogged = false;
   UserService userService = UserService();
   userService.setUserLoggedIn(isLogged);
+
+    // Establecer el tamaño de la ventana antes de ejecutar la app
+  WidgetsFlutterBinding.ensureInitialized();
+  setWindowTitle("Mi App Flutter");
+
   runApp(MyApp(isLogged: isLogged)); // Pasamos el argumento isLogged
 }
 

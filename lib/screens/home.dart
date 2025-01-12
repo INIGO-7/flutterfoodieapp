@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/categories.dart';
 import 'package:flutter_foodybite/screens/restaurant_screen.dart';
+import 'package:flutter_foodybite/screens/restaurants_category.dart';
 import 'package:flutter_foodybite/screens/trending.dart';
 import 'package:flutter_foodybite/util/categories.dart';
 import 'package:flutter_foodybite/util/restaurants.dart';
@@ -164,8 +165,26 @@ class _HomeState extends State<Home> {
         itemBuilder: (BuildContext context, int index) {
           Map cat = categories[index];
 
-          return CategoryItem(
-            cat: cat,
+          return GestureDetector(
+            onTap: () {
+              // Filtrar restaurantes por categoría y navegar a RestaurantCategory
+              var filteredRestaurants = restaurants.where((restaurant) {
+                return restaurant['foodType'] == cat['name']; // Filtra por tipo de comida
+              }).toList();
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RestaurantCategory(
+                    categoryName: cat["name"], // Nombre de la categoría
+                    filteredRestaurants: filteredRestaurants, // Restaurantes filtrados
+                  ),
+                ),
+              );
+            },
+            child: CategoryItem(
+              cat: cat,
+            ),
           );
         },
       ),

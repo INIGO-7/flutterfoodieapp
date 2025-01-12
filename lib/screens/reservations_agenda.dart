@@ -43,6 +43,10 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
     final filePath = '${directory.path}/reservations.json';
     final file = File(filePath);
 
+    final UserService userServices = UserService();
+
+    String? username = await userServices.getLoggedUserName();
+
     if (await file.exists()) {
       final fileContent = await file.readAsString();
       final data = json.decode(fileContent);
@@ -53,8 +57,9 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
       setState(() {
         reservations = data.where((reservation) {
           DateTime date = DateTime.parse(reservation['date'].split('T')[0]);
-          return date.isAfter(startOfToday) || date.isAtSameMomentAs(startOfToday);
-        }).toList();
+          return (date.isAfter(startOfToday) || date.isAtSameMomentAs(startOfToday)) &&
+             reservation['user'] == username;  // Asegúrate de que 'username' sea igual al del logueado
+          }).toList();
 
         reservations.sort((a, b) {
           DateTime dateA = DateTime.parse(a['date']);
@@ -99,6 +104,11 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
     DateTime parsedTime1 = format.parse(time1);
     DateTime parsedTime2 = format.parse(time2);
     return parsedTime1.compareTo(parsedTime2);
+  }
+
+  // Función para verificar si una URL es válida
+  bool isValidUrl(String url) {
+    return Uri.tryParse(url)?.hasAbsolutePath ?? false;
   }
 
   @override
@@ -161,6 +171,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
       }
 
       Map<String, List<dynamic>> groupedReservations = {};
+
       for (var reservation in reservations) {
         String date = getSafeString(reservation, 'date');
         String dateOnly = date.split('T')[0];
@@ -197,6 +208,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                 ),
                 Column(
                   children: entry.value.map<Widget>((reservation) {
+                    String imagePath = getSafeString(reservation, 'restaurantImage');
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -217,11 +229,9 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 image: DecorationImage(
-                                  image: NetworkImage(
-                                    getSafeString(reservation, 'restaurantImage')?.isNotEmpty ?? false
-                                      ? getSafeString(reservation, 'restaurantImage')
-                                      : 'https://chin-chin-bar.de/wp-content/uploads/2022/08/Beitragsbild-chin-chin-restaurant-regensburg.jpg',
-                                  ),
+                                  image: isValidUrl(imagePath)
+                                      ? NetworkImage(imagePath)
+                                      : AssetImage(imagePath) as ImageProvider,
                                   fit: BoxFit.cover,
                                 ),
                               ),

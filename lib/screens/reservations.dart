@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_foodybite/util/user_service.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -75,6 +76,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
   Future<void> _saveReservation() async {
     final uuid = Uuid();
+
+    final UserService userServices = UserService();
+
+    String? username = await userServices.getLoggedUserName();
+
     final reservation = {
       'id': uuid.v4(),
       'restaurantName': widget.restaurantName,
@@ -87,6 +93,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
       'status': 'Pending',
       'date': selectedDate.toIso8601String(),
       'time': selectedTime.format(context),
+      'user': username,
     };
 
     final directory = Directory.current;

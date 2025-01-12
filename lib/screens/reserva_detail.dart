@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ReservaDetailScreen extends StatelessWidget {
@@ -51,9 +50,16 @@ class ReservaDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String restaurantName = reservation['restaurantName'] ?? 'Restaurant';
-    final String imageUrl = reservation['image'] ??
+    final String imageUrl = reservation['restaurantImage'] ?? 
         'https://cdn-icons-png.flaticon.com/512/6643/6643359.png'; // URL de ejemplo
     final String location = reservation['restaurantAddress'] ?? 'East Side Gallery, Berlin';
+
+    Widget imageWidget;
+    if (imageUrl.startsWith('http') || imageUrl.startsWith('https')) {
+      imageWidget = Image.network(imageUrl, fit: BoxFit.cover); // Imagen desde URL
+    } else {
+      imageWidget = Image.asset(imageUrl, fit: BoxFit.cover); // Imagen desde asset
+    }
 
     return Scaffold(
       body: CustomScrollView(
@@ -124,10 +130,7 @@ class ReservaDetailScreen extends StatelessWidget {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
-                    imageUrl,
-                    fit: BoxFit.cover,
-                  ),
+                  imageWidget,
                   Container(
                     color: Colors.black.withOpacity(0.3), // Opacidad en la imagen
                   ),
@@ -141,7 +144,7 @@ class ReservaDetailScreen extends StatelessWidget {
             ),
           ),
           SliverList(
-            delegate: SliverChildListDelegate([
+            delegate: SliverChildListDelegate([ 
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
