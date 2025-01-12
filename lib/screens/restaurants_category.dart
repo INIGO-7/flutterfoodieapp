@@ -28,6 +28,9 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
 
   Future<void> _loadReviewsAndRatings() async {
     final reviews = await _reviewService.loadReviews();
+    print('---------------------------------------------------------------------------------');
+    print('Reviews obtenidas');
+    print(reviews);
     final Map<String, List<Map<String, dynamic>>> groupedReviews = {};
     final Map<String, List<double>> ratingsMap = {};
 
@@ -46,16 +49,25 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
       ratingsMap[restaurant]?.add(rating);
     }
 
+    print('////////////////////////////////////////////////////////////////////////////////////////////');
+    print(groupedReviews);
+
     final Map<String, double> computedRatings = {};
     ratingsMap.forEach((restaurant, ratings) {
       computedRatings[restaurant] =
           ratings.reduce((a, b) => a + b) / ratings.length;
     });
 
+    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+    print(computedRatings);
+    
+
     setState(() {
       reviewsByRestaurant = groupedReviews;
       restaurantRatings = computedRatings;
     });
+
+    print('Funcion llega hasta el final');
   }
 
   @override
@@ -78,17 +90,23 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
             final latitude = double.parse(restaurant["latitude"].toString());
             final longitude = double.parse(restaurant["longitude"].toString());
 
+            print('-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/');
+            print(reviews);
+
             // Convertimos las reseñas de mapa a objetos Review
             List<Review> reviewList = reviews.map((reviewMap) {
               return Review(
-                username: reviewMap['reviewerName'],
+                username: reviewMap['username'],
                 restaurant: reviewMap['restaurant'],
                 rating: reviewMap['rating'],
                 comment: reviewMap['comment'],
                 avatarPath: reviewMap['avatarPath'],
-                createdAt: reviewMap['createdAt'],
+                createdAt: DateTime.parse(reviewMap['createdAt']),
               );
             }).toList();
+
+            print('************************************************************************************');
+            print(reviewList);
 
             return Padding(
               padding: const EdgeInsets.only(right: 10.0),

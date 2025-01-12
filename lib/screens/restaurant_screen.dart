@@ -94,12 +94,13 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     child: LocationTile(location: widget.location['address']),
                   ),
 
-                  const SizedBox(height: 80),
+                  const SizedBox(height: 100),
                 ]),
               ),
             ),
           ],
         ),
+        
 
         // Floating Reservation Button
         floatingActionButton: Column(

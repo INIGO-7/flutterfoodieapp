@@ -18,6 +18,7 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
   final ReviewService reviewService = ReviewService();
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
+  bool showingOverlay = false;
 
   @override
   void initState() {
@@ -27,7 +28,7 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
     });
 
     _focusNode.addListener(() {
-      if (!_focusNode.hasFocus) {
+      if (!_focusNode.hasFocus && showingOverlay) {
         _hideOverlay();
       }
     });
@@ -75,11 +76,13 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
   }
 
   void _showOverlay() {
+    showingOverlay = !showingOverlay;
     _overlayEntry = _createOverlayEntry();
     Overlay.of(context)?.insert(_overlayEntry!);
   }
 
   void _hideOverlay() {
+    showingOverlay = !showingOverlay;
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -87,6 +90,7 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
   void _updateOverlay() {
     _overlayEntry?.remove();
     _overlayEntry = _createOverlayEntry();
+    showingOverlay = true;
     Overlay.of(context)?.insert(_overlayEntry!);
   }
 
@@ -136,7 +140,8 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
                           ),
                           onTap: () async {
                             List<Review> reviews = await reviewService.getReviewsByRestaurant(restaurant["title"]);
-                            Navigator.push(
+                            print('Se hizo onTap');
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => RestaurantScreen(
@@ -150,10 +155,8 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
                                   },
                                 ),
                               ),
-                            ).then((_) {
-                              // Asegúrate de que el overlay se oculta también después de la navegación, en caso de que se quede abierto.
-                              _hideOverlay();
-                            });
+                            );
+                            _hideOverlay();
                           },
                         );
                       },
@@ -184,7 +187,7 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
             controller: _searchController,
             focusNode: _focusNode,
             onTap: () {
-              if (_focusNode.hasFocus) {
+              if (_focusNode.hasFocus && !showingOverlay) {
                 _showOverlay();
               } else {
                 _hideOverlay();
