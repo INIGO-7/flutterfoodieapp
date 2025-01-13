@@ -151,7 +151,14 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text("Reservations"),
+        title: Text(
+          'Reservations'.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        centerTitle: true,
       ),
       body: Column(
         children: [

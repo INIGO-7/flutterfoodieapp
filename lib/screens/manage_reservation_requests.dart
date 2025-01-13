@@ -140,7 +140,14 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Manage Reservation Requests'),
+        title: Text(
+          'Manage Reservation'.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        centerTitle: true,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -149,10 +156,18 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('No pending reservations.', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Center(
+                        child: Text('No pending reservations.', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      ),
                       SizedBox(height: 20),
-                      Text('There are no reservations waiting for your approval at the moment.',
-                          style: TextStyle(fontSize: 16, color: Colors.grey)),
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child:Text('There are no reservations waiting for your approval at the moment.',
+                            style: TextStyle(fontSize: 16, color: Colors.grey,),
+                            textAlign: TextAlign.center,),
+                        ),
+                      ),
                     ],
                   ),
                 )

@@ -150,10 +150,15 @@ class _ReviewScreenState extends State<ReviewScreen> {
       onWillPop: () async => false, // Previene regresar atrás
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Rate Restaurants'),
-          automaticallyImplyLeading: false, // Elimina la flecha de retroceso
-          centerTitle: true,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'RATE RESTAURANT'.toUpperCase(),
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
           backgroundColor: Colors.green,
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -165,11 +170,12 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 // Selección de restaurante
                 const Text(
                   'Select a restaurant:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18,),
                 ),
                 const SizedBox(height: 8),
                 DropdownButtonFormField<String>(
                   isExpanded: true,
+                  menuMaxHeight: 200,
                   value: selectedRestaurant,
                   hint: const Text('Select a restaurant'),
                   items:
@@ -192,32 +198,34 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 // Sistema de calificación
                 const Text(
                   'What rating would you give?',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18,),
                 ),
                 const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: List.generate(5, (index) {
-                    return IconButton(
-                      icon: Icon(
-                        index < rating ? Icons.star : Icons.star_border,
-                        color: Colors.amber,
-                        size: 32,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          rating = index + 1.0;
-                        });
-                      },
-                    );
-                  }),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(5, (index) {
+                      return IconButton(
+                        icon: Icon(
+                          index < rating ? Icons.star : Icons.star_border,
+                          color: Colors.amber,
+                          size: 32,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            rating = index + 1.0;
+                          });
+                        },
+                      );
+                    }),
+                  ),
                 ),
                 const SizedBox(height: 16),
 
                 // Campo de texto para la reseña
                 const Text(
                   'Write your review:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 8),
                 TextFormField(
@@ -252,8 +260,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                     elevation: 5.0,
                   ),
                   child: const Text(
-                    'Submit Your Review',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    'Submit',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ],

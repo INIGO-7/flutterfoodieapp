@@ -121,11 +121,59 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
     await file.writeAsString(updatedReservations);
   }
 
+  Future<bool> _showCustomDialog(BuildContext context) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), // Bordes redondeados
+          ),
+          title: Text(
+            'Confirm Cancellation',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.red, // Color principal de la app
+            ),
+            textAlign: TextAlign.center,
+          ),
+          content: Text(
+            'Are you sure you want to cancel this reservation?',
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.grey, // Color para la acción negativa
+              ),
+              child: Text('No'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red, // Fondo verde para la acción positiva
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    ) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!isLoggedIn) {
       return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             'YOUR RESERVATIONS'.toUpperCase(),
             style: TextStyle(
@@ -158,6 +206,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
+                    elevation: 5,
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -181,6 +230,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
       if (reservations.isEmpty) {
         return Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             title: Text(
               'YOUR RESERVATIONS'.toUpperCase(),
               style: TextStyle(
@@ -218,6 +268,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
 
       return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             'YOUR RESERVATIONS'.toUpperCase(),
             style: TextStyle(
@@ -293,7 +344,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: TextButton(
                                   onPressed: () async {
-                                    bool confirmCancellation = await showDialog(
+                                    /* bool confirmCancellation = await showDialog(
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
@@ -315,7 +366,8 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                                           ],
                                         );
                                       },
-                                    );
+                                    ); */
+                                    bool confirmCancellation = await _showCustomDialog(context);
 
                                     if (confirmCancellation) {
                                       cancelReservation(reservation);

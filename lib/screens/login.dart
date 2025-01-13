@@ -135,6 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      elevation: 5.0,
                     ),
                     onPressed: _login,
                     child: Text('Sign In', style: TextStyle(fontSize: 16)),
@@ -170,6 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      elevation: 5.0,
                     ),
                     child: Text(
                       'Register as user',
@@ -188,6 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      elevation: 5.0,
                     ),
                     child: Text(
                       'Register as restaurant',

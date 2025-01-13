@@ -89,7 +89,7 @@ class _MainScreenState extends State<MainScreen> {
             : Icons.person, // El icono de perfil es común
         size: 27.0,
       ),
-      color: _page == index
+      color: _page == index || (index == 4 && _page == 5)
           ? Colors.white
           : Colors.grey.shade400,
       onPressed: () {
