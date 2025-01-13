@@ -31,4 +31,16 @@ List categories = [
     "color2": Color.fromARGB(100, 0, 0, 0),
     "img": "assets/restaurant_photos/food5.jpeg"
   },
+  {
+    "name": "American",
+    "color1": Color.fromARGB(100, 0, 0, 0),
+    "color2": Color.fromARGB(100, 0, 0, 0),
+    "img": "assets/restaurant_photos/american.jpg"
+  },
+  {
+    "name": "Steakhouse",
+    "color1": Color.fromARGB(100, 0, 0, 0),
+    "color2": Color.fromARGB(100, 0, 0, 0),
+    "img": "assets/restaurant_photos/steakhouse-augsburg.jpg"
+  }
 ];

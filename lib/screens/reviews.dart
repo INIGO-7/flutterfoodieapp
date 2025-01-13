@@ -118,11 +118,23 @@ class _ReviewScreenState extends State<ReviewScreen> {
     super.dispose();
   }
 
+  final UserService userService = UserService();
+
   // Método para enviar la reseña
   Future<void> _submitReview(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       if (selectedRestaurant != null) {
         try {
+          // Verifica si el usuario está logueado
+          bool isLoggedIn = await userService.isUserLoggedIn();
+          if (!isLoggedIn) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text('You need to log in to add a review.')),
+            );
+            return;
+          }
+
           // Agregar la reseña
           await reviewService.addReview(
             selectedRestaurant!,
@@ -186,7 +198,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 // Selección de restaurante
                 const Text(
                   'Select a restaurant:',
-                  style: TextStyle(fontSize: 18,),
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 DropdownButtonFormField<String>(
@@ -214,7 +228,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 // Sistema de calificación
                 const Text(
                   'What rating would you give?',
-                  style: TextStyle(fontSize: 18,),
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Center(

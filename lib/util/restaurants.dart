@@ -33,11 +33,11 @@ List<Map<String, String>> restaurants = [
     "longitude": "12.09520907943992"
   },
   {
-    "img": "assets/restaurant_photos/food1.jpeg",
+    "img": "assets/restaurant_photos/uruguay.jpg",
     "title": "Montevideo",
     "address": "Fischgässel 4, 93047 Regensburg",
     "rating": "4.5",
-    "foodType": "Healthy",
+    "foodType": "Steakhouse",
     "openingTime": "10:00",
     "closingTime": "22:00",
     "latitude": "49.02077738427102",
@@ -48,14 +48,14 @@ List<Map<String, String>> restaurants = [
     "title": "Happy Jones",
     "address": "Fischgässel 4, 93047 Regensburg",
     "rating": "4.5",
-    "foodType": "Pizza",
+    "foodType": "Italian",
     "openingTime": "11:00",
     "closingTime": "23:00",
     "latitude": "49.02077738427102",
     "longitude": "12.09520907943992"
   },
   {
-    "img": "assets/restaurant_photos/food1.jpeg",
+    "img": "assets/restaurant_photos/tratoria.png",
     "title": "La Trattoria Italiana",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -66,7 +66,7 @@ List<Map<String, String>> restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/restaurant_photos/food2.jpeg",
+    "img": "assets/restaurant_photos/BambooGarden.jpeg",
     "title": "Bamboo Garden",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -77,7 +77,7 @@ List<Map<String, String>> restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/restaurant_photos/food3.jpeg",
+    "img": "assets/restaurant_photos/SavorNigeria.jpeg",
     "title": "Savor Nigeria",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -88,7 +88,7 @@ List<Map<String, String>> restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/restaurant_photos/food4.jpeg",
+    "img": "assets/restaurant_photos/ElSaborDeEspaña.jpg",
     "title": "El Sabor de España",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -99,7 +99,7 @@ List<Map<String, String>> restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/restaurant_photos/food5.jpeg",
+    "img": "assets/restaurant_photos/FiestaMexicana.jpg",
     "title": "Fiesta Mexicana",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -110,7 +110,7 @@ List<Map<String, String>> restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/restaurant_photos/food6.jpeg",
+    "img": "assets/restaurant_photos/PastaEBasta.jpeg",
     "title": "Pasta e Basta",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -121,7 +121,7 @@ List<Map<String, String>> restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/restaurant_photos/food7.jpeg",
+    "img": "assets/restaurant_photos/ChinatownBistro.jpg",
     "title": "Chinatown Bistro",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -132,7 +132,7 @@ List<Map<String, String>> restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/restaurant_photos/food8.jpeg",
+    "img": "assets/restaurant_photos/TasteOfNigeria.jpeg",
     "title": "Taste of Nigeria",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
@@ -143,7 +143,7 @@ List<Map<String, String>> restaurants = [
     "longitude": "-94.5794"
   },
   {
-    "img": "assets/restaurant_photos/food9.jpeg",
+    "img": "assets/restaurant_photos/TabernaEspañola.jpg",
     "title": "Taberna Española",
     "address": "1278 Loving Acres Road, Kansas City, MO 64110",
     "rating": "4.5",
