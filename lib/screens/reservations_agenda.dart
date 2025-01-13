@@ -161,15 +161,15 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                   ),
                   onPressed: () {
                     Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()), // Asegúrate de importar LoginScreen
-                  ).then((_) {
-                    checkLoginStatus();
-                    if (isLoggedIn) {
-                      loadReservations();
-                    }
-                  });
-                  }, // Aquí deberías añadir la acción para iniciar sesión
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()), // Asegúrate de importar LoginScreen
+                    ).then((_) {
+                      checkLoginStatus();
+                      if (isLoggedIn) {
+                        loadReservations();
+                      }
+                    });
+                  },
                   child: Text('Sign in'),
                 ),
               ),
