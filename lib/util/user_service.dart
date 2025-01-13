@@ -61,12 +61,12 @@ class UserService {
   }
 
   // Registra un nuevo usuario
-  Future<void> registerUser(String username, String password) async {
+  Future<void> registerUser(String username, String password, String image) async {
     if (await userExists(username)) {
       throw Exception('User already exists.');
     }
     final users = await _loadUsers();
-    users.add({'username': username, 'password': password, 'estado': 'Hey there! I am using FoodyBite', 'type': 'user'});
+    users.add({'username': username, 'password': password, 'profilePicture': image ,'estado': 'Hey there! I am using FoodieBite', 'type': 'user'});
     await _saveUsers(users);
   }
 
