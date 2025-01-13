@@ -18,10 +18,14 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
   bool _isLoading = true;
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
+    initialize();
+  }
+
+  void initialize() async {
     await _loadUserRestaurant();
-    _loadReservations();
+    await _loadReservations();
   }
 
     // Cargar el nombre del restaurante que administra el usuario logeado
@@ -38,13 +42,15 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
           final userContent = await userFile.readAsString();
           final userData = json.decode(userContent) as List<dynamic>;
 
+          print(userData);
+
           // Encontrar al usuario logeado
           final adminUser = userData.firstWhere(
-            (user) => user['username'] == username, // Coincide con el nombre de usuario logeado
-            orElse: () => null,
+            (user) => user['username'] == username,
           );
 
           if (adminUser != null) {
+            print(adminUser);
             restaurantName = adminUser['restaurantAdmin'];
             print("Restaurante administrado por el usuario logeado: $restaurantName");
           }
@@ -58,24 +64,38 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
 
   // Cargar las reservas desde el archivo JSON
   Future<void> _loadReservations() async {
-    final directory = Directory.current;
-    final filePath = '${directory.path}/reservations.json';
-    final file = File(filePath);
+    try {
+      final directory = Directory.current;
+      final filePath = '${directory.path}/reservations.json';
+      final file = File(filePath);
 
-    if (await file.exists()) {
-      final fileContent = await file.readAsString();
-      final data = json.decode(fileContent);
+      print('---------------------------------------------------------------------');
+      print('Cargando reservas');
 
-      // Filtrar las reservas con status 'Pending'
-      List<dynamic> pendingReservations = data
-          .where((reservation) => reservation['status'] == 'Pending' && reservation['restaurantName'] == restaurantName)
-          .toList();
+      if (await file.exists()) {
+        final fileContent = await file.readAsString();
+        final data = json.decode(fileContent);
 
-      setState(() {
-        _reservations = pendingReservations;
-        _isLoading = false;
-      });
-    } else {
+        print(data);
+
+        List<dynamic> pendingReservations = data
+            .where((reservation) =>
+                reservation['status'] == 'Pending' &&
+                reservation['restaurantName'] == restaurantName)
+            .toList();
+
+        setState(() {
+          _reservations = pendingReservations;
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _reservations = [];
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print("Error loading reservations: $e");
       setState(() {
         _reservations = [];
         _isLoading = false;
@@ -127,11 +147,23 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _reservations.isEmpty
-              ? Center(child: Text('No pending reservations.'))
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('No pending reservations.', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 20),
+                      Text('There are no reservations waiting for your approval at the moment.',
+                          style: TextStyle(fontSize: 16, color: Colors.grey)),
+                    ],
+                  ),
+                )
               : ListView.builder(
                   itemCount: _reservations.length,
                   itemBuilder: (context, index) {
                     var reservation = _reservations[index];
+                    print('*********************************************************************************************');
+                    print(reservation);
                     return Card(
                       margin: EdgeInsets.all(8.0),
                       child: ListTile(

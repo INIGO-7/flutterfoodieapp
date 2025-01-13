@@ -1,1 +1,65 @@
-[{"username":"mamarco13","password":"12345","estado":"GOAT","profilePicture":"assets/Profile_pictures/Prf5.jpg","type":"user"},{"username":"germandc","password":"12345","estado":"Silver Member","profilePicture":"assets/Profile_pictures/Prf1.jpg","type":"restaurant"},{"username":"gg","password":"12345","estado":"Bronze Member","profilePicture":"assets/Profile_pictures/Prf1.jpg","type":"user"},{"username":"prueba","password":"12345","estado":"Bronze Member","profilePicture":"assets/Profile_pictures/Prf1.jpg","type":"user"},{"username":"andoni","password":"12345","estado":"Bronze Member","profilePicture":"assets/Profile_pictures/Prf1.jpg","type":"user"},{"username":"json","password":"12345","estado":"Silver Member","profilePicture":"assets/restaurant_photos/food3.jpeg","type":"restaurant","restaurantAdmin":"Json"},{"username":"probando","password":"12345","estado":"Restaurant","profilePicture":"assets/restaurant_photos/food1.jpeg","type":"restaurant","restaurantAdmin":"PROBANDO"},{"username":"paco","password":"12345","estado":"Hey there! I am using FoodyBite"},{"username":"corona","password":"12345","estado":"Hey there! I am using FoodyBite","type":"user"}]
+[
+  {
+    "username": "mamarco13",
+    "password": "12345",
+    "estado": "GOAT",
+    "profilePicture": "assets/Profile_pictures/Prf5.jpg",
+    "type": "user"
+  },
+  {
+    "username": "germandc",
+    "password": "12345",
+    "estado": "Silver Member",
+    "profilePicture": "assets/Profile_pictures/Prf1.jpg",
+    "type": "restaurant",
+    "restaurantAdmin": "NEW RESTAURANT"
+  },
+  {
+    "username": "gg",
+    "password": "12345",
+    "estado": "Bronze Member",
+    "profilePicture": "assets/Profile_pictures/Prf1.jpg",
+    "type": "user"
+  },
+  {
+    "username": "prueba",
+    "password": "12345",
+    "estado": "Bronze Member",
+    "profilePicture": "assets/Profile_pictures/Prf1.jpg",
+    "type": "user"
+  },
+  {
+    "username": "andoni",
+    "password": "12345",
+    "estado": "Bronze Member",
+    "profilePicture": "assets/Profile_pictures/Prf1.jpg",
+    "type": "user"
+  },
+  {
+    "username": "json",
+    "password": "12345",
+    "estado": "Silver Member",
+    "profilePicture": "assets/restaurant_photos/food3.jpeg",
+    "type": "restaurant",
+    "restaurantAdmin": "Json"
+  },
+  {
+    "username": "probando",
+    "password": "12345",
+    "estado": "Restaurant",
+    "profilePicture": "assets/restaurant_photos/food1.jpeg",
+    "type": "restaurant",
+    "restaurantAdmin": "PROBANDO"
+  },
+  {
+    "username": "paco",
+    "password": "12345",
+    "estado": "Hey there! I am using FoodyBite"
+  },
+  {
+    "username": "corona",
+    "password": "12345",
+    "estado": "Hey there! I am using FoodyBite",
+    "type": "user"
+  }
+]
