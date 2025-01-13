@@ -37,7 +37,8 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
 
   Future<void> _getCoordinatesFromAddress() async {
     try {
-      List<Location> locations = await locationFromAddress(addressController.text);
+      List<Location> locations =
+          await locationFromAddress(addressController.text);
       if (locations.isNotEmpty) {
         _selectedLocation = locations.first;
       }
@@ -61,7 +62,8 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
     };
 
     final directory = Directory.current;
-    final restaurantFile = File('${directory.path}/assets/restaurants_data.json');
+    final restaurantFile =
+        File('${directory.path}/assets/restaurants_data.json');
     List<dynamic> restaurantList = [];
     if (await restaurantFile.exists()) {
       restaurantList = jsonDecode(await restaurantFile.readAsString());
@@ -101,7 +103,8 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
                 spacing: 8.0,
                 runSpacing: 8.0,
                 children: List.generate(12, (index) {
-                  final imageName = 'food${index + 1}.${index == 11 ? 'jpg' : 'jpeg'}';
+                  final imageName =
+                      'food${index + 1}.${index == 11 ? 'jpg' : 'jpeg'}';
                   final imagePath = 'assets/restaurant_photos/$imageName';
                   return ListTile(
                     leading: Image.asset(imagePath, width: 40, height: 40),
@@ -127,6 +130,20 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: Colors.green, // Color principal del picker
+            colorScheme: ColorScheme.light(
+                primary: Colors.green), // Color del encabezado
+            buttonTheme: ButtonThemeData(
+              textTheme: ButtonTextTheme
+                  .primary, // Asegura que los botones sean legibles
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
       setState(() {
@@ -166,10 +183,11 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: const Text(
-          'Register Restaurant',
+        title: Text(
+          'Register Restaurant'.toUpperCase(),
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
       ),
       body: Padding(
@@ -187,7 +205,8 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
                         radius: 50.0,
                         backgroundColor: Colors.green,
                         child: imgController.text.isEmpty
-                            ? const Icon(Icons.restaurant, size: 50.0, color: Colors.white)
+                            ? const Icon(Icons.restaurant,
+                                size: 50.0, color: Colors.white)
                             : ClipOval(
                                 child: Image.asset(
                                   imgController.text,
@@ -236,7 +255,8 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
                 controller: addressController,
                 decoration: const InputDecoration(
                   labelText: 'Address',
-                  hintText: 'e.g., 1278 Loving Acres Road, Kansas City, MO 64110',
+                  hintText:
+                      'e.g., 1278 Loving Acres Road, Kansas City, MO 64110',
                 ),
               ),
               const SizedBox(height: 16.0),
@@ -294,21 +314,30 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
               ),
               const SizedBox(height: 24.0),
               Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
-                  ),
-                  onPressed: _isFormValid
-                      ? () async {
-                          await _getCoordinatesFromAddress();
-                          await _saveData();
-                          _showSuccessDialog();
-                        }
-                      : null,
-                  child: const Text(
-                    'Save Restaurant Data',
-                    style: TextStyle(color: Colors.white),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width *
+                      0.6, // 60% del ancho de la pantalla
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 14.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 5.0,
+                    ),
+                    onPressed: _isFormValid
+                        ? () async {
+                            await _getCoordinatesFromAddress();
+                            await _saveData();
+                            _showSuccessDialog();
+                          }
+                        : null,
+                    child: const Text(
+                      'Register Restaurant',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),

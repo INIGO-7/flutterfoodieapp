@@ -31,7 +31,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           bool isLogged = false;
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => MainScreen(isLogged: isLogged, userType: 'user',)),
+            MaterialPageRoute(
+                builder: (context) => MainScreen(
+                      isLogged: isLogged,
+                      userType: 'user',
+                    )),
           );
         });
       } catch (e) {
@@ -71,7 +75,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 bool isLogged = false;
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MainScreen(isLogged: isLogged, userType: 'user',)),
+                  MaterialPageRoute(
+                      builder: (context) => MainScreen(
+                            isLogged: isLogged,
+                            userType: 'user',
+                          )),
                 );
               },
             ),
@@ -89,6 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: InputDecoration(
                     labelText: 'Username',
                     border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.person),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -103,6 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.lock),
                   ),
                   obscureText: true,
                   validator: (value) {
@@ -113,13 +123,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
                 SizedBox(height: 16),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
+                Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width *
+                        0.6, // 60% del ancho de la pantalla
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 14.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 5.0,
+                      ),
+                      onPressed: _register,
+                      child: Text('Register'),
+                    ),
                   ),
-                  onPressed: _register,
-                  child: Text('Register'),
                 ),
               ],
             ),
