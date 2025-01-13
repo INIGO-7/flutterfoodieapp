@@ -87,11 +87,11 @@ class _MainScreenState extends State<MainScreen> {
         index < (widget.userType == 'restaurant' ? 3 : 5)
             ? (widget.userType == 'restaurant' ? restaurantIcons[index] : userIcons[index])
             : Icons.person, // El icono de perfil es común
-        size: 24.0,
+        size: 27.0,
       ),
       color: _page == index
-          ? Theme.of(context).colorScheme.secondary
-          : Theme.of(context).colorScheme.primary,
+          ? Colors.white
+          : Colors.grey.shade400,
       onPressed: () {
         // Si el icono seleccionado es el de perfil
         if (index == (widget.userType == 'restaurant' ? 2 : 4)) {

@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     child: Text(
-                      'Register new user',
+                      'Register as user',
                       style: TextStyle(fontSize: 16, color: Colors.green),
                     ),
                   ),
@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     child: Text(
-                      'Register new restaurant',
+                      'Register as restaurant',
                       style: TextStyle(fontSize: 16, color: Colors.green),
                     ),
                   ),

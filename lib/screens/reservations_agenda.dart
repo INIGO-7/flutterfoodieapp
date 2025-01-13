@@ -106,9 +106,19 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
     return parsedTime1.compareTo(parsedTime2);
   }
 
-  // Función para verificar si una URL es válida
-  bool isValidUrl(String url) {
-    return Uri.tryParse(url)?.hasAbsolutePath ?? false;
+  Future<void> cancelReservation(Map<String, dynamic> reservation) async {
+    // Actualizar la lista de reservas y eliminar la reserva cancelada
+    setState(() {
+      reservations.remove(reservation);
+    });
+
+    // Aquí puedes agregar la lógica para eliminar la reserva del archivo o servidor
+    final directory = Directory.current;
+    final filePath = '${directory.path}/reservations.json';
+    final file = File(filePath);
+    final updatedReservations = json.encode(reservations);
+
+    await file.writeAsString(updatedReservations);
   }
 
   @override
@@ -116,10 +126,14 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
     if (!isLoggedIn) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Your Reservations'),
-          automaticallyImplyLeading: false, // Elimina la flecha de retroceso
-          centerTitle: true,
+          title: Text(
+            'YOUR RESERVATIONS'.toUpperCase(),
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
           backgroundColor: Colors.green,
+          centerTitle: true, // Centra el texto
         ),
         body: Center(
           child: Column(
@@ -133,20 +147,31 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                   textAlign: TextAlign.center, // Centra el texto dentro del widget
                 ),
               ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()), // Asegúrate de importar LoginScreen
-                ).then((_) {
-                  checkLoginStatus();
-                  if (isLoggedIn) {
-                    loadReservations();
-                  }
-                });
-                }, // Aquí deberías añadir la acción para iniciar sesión
-                child: Text('Login'),
+              SizedBox(height: 20),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 14.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()), // Asegúrate de importar LoginScreen
+                  ).then((_) {
+                    checkLoginStatus();
+                    if (isLoggedIn) {
+                      loadReservations();
+                    }
+                  });
+                  }, // Aquí deberías añadir la acción para iniciar sesión
+                  child: Text('Sign in'),
+                ),
               ),
             ],
           ),
@@ -156,10 +181,14 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
       if (reservations.isEmpty) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Your Reservations'),
-            automaticallyImplyLeading: false, // Elimina la flecha de retroceso
-            centerTitle: true,
+            title: Text(
+              'YOUR RESERVATIONS'.toUpperCase(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
             backgroundColor: Colors.green,
+            centerTitle: true, // Centra el texto
           ),
           body: Center(
             child: Text(
@@ -189,10 +218,14 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
 
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Your Reservations'),
-          automaticallyImplyLeading: false, // Elimina la flecha de retroceso
-          centerTitle: true,
+          title: Text(
+            'YOUR RESERVATIONS'.toUpperCase(),
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
           backgroundColor: Colors.green,
+          centerTitle: true, // Centra el texto
         ),
         body: ListView(
           children: groupedReservations.entries.map((entry) {
@@ -255,21 +288,54 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                                 ],
                               ),
                             ),
-                            TextButton(
-                              onPressed: () async {
-                                // Implementar lógica de cancelación
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                            if (getSafeString(reservation, 'status') != 'Rejected') 
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: TextButton(
+                                  onPressed: () async {
+                                    bool confirmCancellation = await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('Confirm Cancellation'),
+                                          content: Text('Are you sure you want to cancel this reservation?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(false);
+                                              },
+                                              child: Text('No'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(true);
+                                              },
+                                              child: Text('Yes'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+
+                                    if (confirmCancellation) {
+                                      cancelReservation(reservation);
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  ),
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              child: Text(
-                                'Cancel',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -282,5 +348,9 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
         ),
       );
     }
+  }
+
+  bool isValidUrl(String url) {
+    return Uri.tryParse(url)?.hasAbsolutePath ?? false;
   }
 }
