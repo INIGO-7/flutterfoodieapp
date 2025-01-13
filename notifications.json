@@ -54,11 +54,11 @@
       }
     },
     {
-      "image": "assets/restaurant_photos/food1.jpeg",
+      "image": "assets/restaurant_photos/uruguay.jpg",
       "title": "Montevideo",
       "description": "Looking for a light meal? Our salads are perfect for a guilt-free indulgence!",
       "restaurantData": {
-        "imageUrl": "assets/restaurant_photos/food1.jpeg",
+        "imageUrl": "assets/restaurant_photos/uruguay.jpg",
         "location": {
           "address": "1278 Loving Acres Road, Kansas City, MO 64110",
           "latitude": 39.1005,
@@ -80,11 +80,11 @@
       }
     },
     {
-      "image": "assets/restaurant_photos/food1.jpeg",
+      "image": "assets/restaurant_photos/tratoria.png",
       "title": "La Trattoria Italiana",
       "description": "Craving some delicious Italian food? Enjoy authentic pasta and pizza!",
       "restaurantData": {
-        "imageUrl": "assets/restaurant_photos/food1.jpeg",
+        "imageUrl": "assets/restaurant_photos/tratoria.png",
         "location": {
           "address": "1278 Loving Acres Road, Kansas City, MO 64110",
           "latitude": 39.1005,
@@ -93,11 +93,11 @@
       }
     },
     {
-      "image": "assets/restaurant_photos/food2.jpeg",
+      "image": "assets/restaurant_photos/BambooGarden.jpeg",
       "title": "Bamboo Garden",
       "description": "Savor the best of Chinese cuisine with mouthwatering dishes and a cozy atmosphere.",
       "restaurantData": {
-        "imageUrl": "assets/restaurant_photos/food2.jpeg",
+        "imageUrl": "assets/restaurant_photos/BambooGarden.jpeg",
         "location": {
           "address": "1278 Loving Acres Road, Kansas City, MO 64110",
           "latitude": 39.1005,
@@ -106,11 +106,11 @@
       }
     },
     {
-      "image": "assets/restaurant_photos/food3.jpeg",
+      "image": "assets/restaurant_photos/SavorNigeria.jpeg",
       "title": "Savor Nigeria",
       "description": "Experience the vibrant and rich flavors of Nigerian cuisine, from spicy suya to savory stews.",
       "restaurantData": {
-        "imageUrl": "assets/restaurant_photos/food3.jpeg",
+        "imageUrl": "assets/restaurant_photos/SavorNigeria.jpeg",
         "location": {
           "address": "1278 Loving Acres Road, Kansas City, MO 64110",
           "latitude": 39.1005,
@@ -119,11 +119,11 @@
       }
     },
     {
-      "image": "assets/restaurant_photos/food4.jpeg",
+      "image": "assets/restaurant_photos/ElSaborDeEspaña.jpg",
       "title": "El Sabor de España",
       "description": "Taste the passion of Spain in every dish. From tapas to paella, we bring you the best!",
       "restaurantData": {
-        "imageUrl": "assets/restaurant_photos/food4.jpeg",
+        "imageUrl": "assets/restaurant_photos/ElSaborDeEspaña.jpg",
         "location": {
           "address": "1278 Loving Acres Road, Kansas City, MO 64110",
           "latitude": 39.1005,
@@ -132,11 +132,11 @@
       }
     },
     {
-      "image": "assets/restaurant_photos/food5.jpeg",
+      "image": "assets/restaurant_photos/FiestaMexicana.jpg",
       "title": "Fiesta Mexicana",
       "description": "Join us for a fiesta of flavor with authentic Mexican dishes, margaritas, and more!",
       "restaurantData": {
-        "imageUrl": "assets/restaurant_photos/food5.jpeg",
+        "imageUrl": "assets/restaurant_photos/FiestaMexicana.jpg",
         "location": {
           "address": "1278 Loving Acres Road, Kansas City, MO 64110",
           "latitude": 39.1005,
@@ -145,11 +145,11 @@
       }
     },
     {
-      "image": "assets/restaurant_photos/food6.jpeg",
+      "image": "assets/restaurant_photos/PastaEBasta.jpeg",
       "title": "Pasta e Basta",
       "description": "Indulge in freshly made pasta, classic Italian dishes, and exceptional wines.",
       "restaurantData": {
-        "imageUrl": "assets/restaurant_photos/food6.jpeg",
+        "imageUrl": "assets/restaurant_photos/PastaEBasta.jpeg",
         "location": {
           "address": "1278 Loving Acres Road, Kansas City, MO 64110",
           "latitude": 39.1005,
@@ -158,11 +158,11 @@
       }
     },
     {
-      "image": "assets/restaurant_photos/food7.jpeg",
+      "image": "assets/restaurant_photos/ChinatownBistro.jpg",
       "title": "Chinatown Bistro",
       "description": "Take your taste buds on a journey with our exquisite Chinese cuisine and dim sum.",
       "restaurantData": {
-        "imageUrl": "assets/restaurant_photos/food7.jpeg",
+        "imageUrl": "assets/restaurant_photos/ChinatownBistro.jpg",
         "location": {
           "address": "1278 Loving Acres Road, Kansas City, MO 64110",
           "latitude": 39.1005,
@@ -171,11 +171,11 @@
       }
     },
     {
-      "image": "assets/restaurant_photos/food8.jpeg",
+      "image": "assets/restaurant_photos/TasteOfNigeria.jpeg",
       "title": "Taste of Nigeria",
       "description": "Immerse yourself in the rich culture of Nigerian food with delicious jollof rice and grilled meats.",
       "restaurantData": {
-        "imageUrl": "assets/restaurant_photos/food8.jpeg",
+        "imageUrl": "assets/restaurant_photos/TasteOfNigeria.jpeg",
         "location": {
           "address": "1278 Loving Acres Road, Kansas City, MO 64110",
           "latitude": 39.1005,
@@ -184,11 +184,11 @@
       }
     },
     {
-      "image": "assets/restaurant_photos/food9.jpeg",
+      "image": "assets/restaurant_photos/TabernaEspañola.jpg",
       "title": "Taberna Española",
       "description": "Savor the essence of Spain with traditional dishes and a welcoming atmosphere.",
       "restaurantData": {
-        "imageUrl": "assets/restaurant_photos/food9.jpeg",
+        "imageUrl": "assets/restaurant_photos/TabernaEspañola.jpg",
         "location": {
           "address": "1278 Loving Acres Road, Kansas City, MO 64110",
           "latitude": 39.1005,
