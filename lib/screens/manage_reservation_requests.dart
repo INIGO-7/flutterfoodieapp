@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/reserva_restaurante_detail.dart';
+import 'package:flutter_foodybite/util/user_service.dart';
 
 class ManageReservationRequests extends StatefulWidget {
   const ManageReservationRequests({Key? key}) : super(key: key);
@@ -13,13 +14,47 @@ class ManageReservationRequests extends StatefulWidget {
 
 class _ManageReservationRequestsState extends State<ManageReservationRequests> {
   List<dynamic> _reservations = [];
+  String? restaurantName; 
   bool _isLoading = true;
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
+    await _loadUserRestaurant();
     _loadReservations();
   }
+
+    // Cargar el nombre del restaurante que administra el usuario logeado
+  Future<void> _loadUserRestaurant() async {
+    try {
+      final UserService userServices = UserService();
+      String? username = await userServices.getLoggedUserName();
+      if (username != null) {
+        final directory = Directory.current;
+        final userFilePath = '${directory.path}/users.json';
+        final userFile = File(userFilePath);
+
+        if (await userFile.exists()) {
+          final userContent = await userFile.readAsString();
+          final userData = json.decode(userContent) as List<dynamic>;
+
+          // Encontrar al usuario logeado
+          final adminUser = userData.firstWhere(
+            (user) => user['username'] == username, // Coincide con el nombre de usuario logeado
+            orElse: () => null,
+          );
+
+          if (adminUser != null) {
+            restaurantName = adminUser['restaurantAdmin'];
+            print("Restaurante administrado por el usuario logeado: $restaurantName");
+          }
+        }
+      }
+    } catch (e) {
+      print("Error al cargar el restaurante del usuario: $e");
+    }
+  }
+
 
   // Cargar las reservas desde el archivo JSON
   Future<void> _loadReservations() async {
@@ -33,7 +68,7 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
 
       // Filtrar las reservas con status 'Pending'
       List<dynamic> pendingReservations = data
-          .where((reservation) => reservation['status'] == 'Pending')
+          .where((reservation) => reservation['status'] == 'Pending' && reservation['restaurantName'] == restaurantName)
           .toList();
 
       setState(() {

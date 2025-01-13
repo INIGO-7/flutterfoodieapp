@@ -65,7 +65,7 @@ class UserService {
       throw Exception('User already exists.');
     }
     final users = await _loadUsers();
-    users.add({'username': username, 'password': password, 'estado': 'Hey there! I am using FoodyBite'});
+    users.add({'username': username, 'password': password, 'estado': 'Hey there! I am using FoodyBite', 'type': 'user'});
     await _saveUsers(users);
   }
 
