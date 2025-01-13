@@ -216,18 +216,13 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
                       "foodType": foodTypeController.text,
                       "openingTime": openingTimeController.text,
                       "closingTime": closingTimeController.text,
-                      "type": "restaurant",
                     };
 
                     restaurants.add(newRestaurant);
 
-                    await _persistRestaurants();
+                    print(restaurants);
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Restaurant data saved successfully!'),
-                      ),
-                    );
+                    await _persistRestaurants();
                   },
                   child: const Text(
                     'Save Restaurant Data',

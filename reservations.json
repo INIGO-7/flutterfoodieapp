@@ -9,7 +9,7 @@
     "comments": "",
     "date": "2025-01-09T19:13:31.417824",
     "time": "9:13 PM",
-    "status": "Pending",
+    "status": "Rejected",
     "user": "gg"
   },
   {
@@ -22,7 +22,7 @@
     "comments": "",
     "date": "2025-01-09T19:13:31.417824",
     "time": "9:13 PM",
-    "status": "Pending",
+    "status": "Accepted",
     "user": "andoni"
   },
   {
@@ -35,7 +35,7 @@
     "comments": "",
     "date": "2025-01-09T19:22:01.289988",
     "time": "9:22 PM",
-    "status": "Pending",
+    "status": "Rejected",
     "user": "mamarco13"
   },
   {
@@ -48,7 +48,7 @@
     "comments": "",
     "date": "2025-01-09T19:22:01.289988",
     "time": "9:22 PM",
-    "status": "Pending",
+    "status": "Accepted",
     "user": "gg"
   },
   {
@@ -61,7 +61,7 @@
     "comments": "",
     "date": "2025-01-09T19:32:25.334236",
     "time": "9:32 PM",
-    "status": "Pending",
+    "status": "Accepted",
     "user": "andoni"
   },
   {
@@ -72,7 +72,7 @@
     "phone": "1340298",
     "people": "4",
     "comments": "A table near the window",
-    "status": "Pending",
+    "status": "Accepted",
     "date": "2025-01-13T00:00:00.000",
     "time": "8:45 PM",
     "user": "germandc"
@@ -86,7 +86,7 @@
     "phone": "232",
     "people": "4",
     "comments": "adsf",
-    "status": "Pending",
+    "status": "Accepted",
     "date": "2025-01-10T02:08:50.082049",
     "time": "4:08 AM",
     "user": "prueba"
@@ -100,7 +100,7 @@
     "phone": "23203934",
     "people": "4",
     "comments": "No",
-    "status": "Pending",
+    "status": "Accepted",
     "date": "2025-01-11T00:00:00.000",
     "time": "10:00 PM",
     "user": "gg"
@@ -114,7 +114,7 @@
     "phone": "12",
     "people": "4",
     "comments": "",
-    "status": "Pending",
+    "status": "Rejected",
     "date": "2025-01-24T00:00:00.000",
     "time": "3:41 PM",
     "user": "mamarco13"
@@ -128,7 +128,7 @@
     "phone": "1245332",
     "people": "4",
     "comments": "",
-    "status": "Pending",
+    "status": "Rejected",
     "date": "2025-01-14T00:00:00.000",
     "time": "11:40 PM",
     "user": "prueba"
@@ -156,7 +156,7 @@
     "phone": "1245332",
     "people": "4",
     "comments": "",
-    "status": "Pending",
+    "status": "Rejected",
     "date": "2025-01-14T00:00:00.000",
     "time": "11:40 PM",
     "user": "andoni"
@@ -170,7 +170,7 @@
     "phone": "1245332",
     "people": "4",
     "comments": "",
-    "status": "Pending",
+    "status": "Rejected",
     "date": "2025-01-14T00:00:00.000",
     "time": "11:40 PM",
     "user": "germandc"
@@ -198,7 +198,7 @@
     "phone": "1245332",
     "people": "4",
     "comments": "",
-    "status": "Pending",
+    "status": "Rejected",
     "date": "2025-01-17T00:00:00.000",
     "time": "11:40 PM",
     "user": "germandc"

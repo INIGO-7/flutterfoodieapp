@@ -1,4 +1,4 @@
-const restaurants = [
+List<Map<String, String>> restaurants = [
   {
     "img": "assets/restaurant_photos/food1.jpeg",
     "title": "La Trattoria Italiana",
