@@ -57,7 +57,8 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
       _hideOverlay();
     }
   }
@@ -67,8 +68,8 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
       _filteredRestaurants = restaurants.take(5).toList();
     } else {
       _filteredRestaurants = restaurants
-          .where((restaurant) =>
-              (restaurant["title"]?.toLowerCase() ?? "").contains(query.toLowerCase()))
+          .where((restaurant) => (restaurant["title"]?.toLowerCase() ?? "")
+              .contains(query.toLowerCase()))
           .take(5)
           .toList();
     }
@@ -139,7 +140,8 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
                             overflow: TextOverflow.ellipsis,
                           ),
                           onTap: () async {
-                            List<Review> reviews = await reviewService.getReviewsByRestaurant(restaurant["title"]);
+                            List<Review> reviews = await reviewService
+                                .getReviewsByRestaurant(restaurant["title"]);
                             print('Se hizo onTap');
                             await Navigator.push(
                               context,
@@ -147,10 +149,11 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
                                 builder: (context) => RestaurantScreen(
                                   imageUrl: restaurant["img"],
                                   restaurantName: restaurant["title"],
-                                  reviews: reviews,
                                   location: {
-                                    'latitude': double.parse(restaurant["latitude"]),
-                                    'longitude': double.parse(restaurant["longitude"]),
+                                    'latitude':
+                                        double.parse(restaurant["latitude"]),
+                                    'longitude':
+                                        double.parse(restaurant["longitude"]),
                                     'address': restaurant["address"],
                                   },
                                 ),

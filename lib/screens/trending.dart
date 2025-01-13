@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/widgets/trending_item.dart';
 import 'restaurant_screen.dart';
 import 'package:flutter_foodybite/util/review_service.dart';
+import 'package:flutter_foodybite/util/review.dart';
 import 'package:flutter_foodybite/util/restaurants.dart';
 
 class Trending extends StatefulWidget {
@@ -61,10 +62,7 @@ class _TrendingState extends State<Trending> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 0,
-          horizontal: 10.0,
-        ),
+        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
         child: ListView(
           children: [
             ListView.builder(
@@ -75,37 +73,52 @@ class _TrendingState extends State<Trending> {
               itemBuilder: (BuildContext context, int index) {
                 final restaurant = restaurants[index];
                 final title = restaurant["title"];
-                final reviews = reviewsByRestaurant[title] ?? [];
                 final rating = restaurantRatings[title] ?? 0.0;
+                final imageUrl = restaurant["img"] ?? '';
+                final address = restaurant["address"] ?? '';
+                final latitude =
+                    double.parse(restaurant["latitude"].toString());
+                final longitude =
+                    double.parse(restaurant["longitude"].toString());
 
-                //TODO: make this work with the
-                // final reviews = (reviews['reviews'] as List).map((review) => Review(
-                //   reviewerName: review['reviewerName'] as String,
-                //   rating: review['rating'] as double,
-                //   comment: review['comment'] as String,
-                //   avatarPath: review['avatarPath'] as String          
-                // )).toList();
+                // Convertimos las reseñas de mapa a objetos Review
+                final reviews = reviewsByRestaurant[title] ?? [];
+                List<Review> reviewList = reviews.map((reviewMap) {
+                  return Review(
+                    username: reviewMap['username'],
+                    restaurant: reviewMap['restaurant'],
+                    rating: reviewMap['rating'],
+                    comment: reviewMap['comment'],
+                    avatarPath: reviewMap['avatarPath'],
+                    createdAt: DateTime.parse(reviewMap['createdAt']),
+                  );
+                }).toList();
 
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RestaurantScreen(
-                          restaurantName: title!,
-                          //TODO: edit this to work
-                          imageUrl: '',
-                          reviews: [],
-                          location: {},
+                return Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RestaurantScreen(
+                            restaurantName: title!,
+                            imageUrl: imageUrl,
+                            location: {
+                              'latitude': latitude,
+                              'longitude': longitude,
+                              'address': address,
+                            },
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  child: TrendingItem(
-                    img: restaurant["img"]!,
-                    title: title!,
-                    address: restaurant["address"]!,
-                    rating: rating.toStringAsFixed(1),
+                      );
+                    },
+                    child: TrendingItem(
+                      img: imageUrl,
+                      title: title!,
+                      address: address,
+                      rating: rating.toStringAsFixed(1),
+                    ),
                   ),
                 );
               },
