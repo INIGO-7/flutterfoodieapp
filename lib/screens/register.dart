@@ -16,6 +16,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _userService = UserService();
 
+  bool _isButtonEnabled = false;
+
   void _register() async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -77,6 +79,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Escucha cambios en los controladores
+    _usernameController.addListener(_updateButtonState);
+    _passwordController.addListener(_updateButtonState);
+    imgController.addListener(_updateButtonState);
+  }
+
+  void _updateButtonState() {
+    setState(() {
+      _isButtonEnabled = _usernameController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty &&
+          imgController.text.isNotEmpty;
+    });
   }
 
   @override
@@ -180,33 +199,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false, // Previene regresar atrás
+      onWillPop: () async => false,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(56.0), // Altura estándar de AppBar
-          child: AppBar(
-            backgroundColor: Colors.green,
-            centerTitle: true,
-            title: Text(
-              'Register',
-              style: TextStyle(color: Colors.white),
-            ),
-            automaticallyImplyLeading: false, // Elimina la flecha hacia atrás
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () {
-                // Regresar a la pantalla principal
-                bool isLogged = false;
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MainScreen(
-                            isLogged: isLogged,
-                            userType: 'user',
-                          )),
-                );
-              },
-            ),
+        appBar: AppBar(
+          backgroundColor: Colors.green,
+          centerTitle: true,
+          title: Text(
+            'Register',
+            style: TextStyle(color: Colors.white),
+          ),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              bool isLogged = false;
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MainScreen(
+                          isLogged: isLogged,
+                          userType: 'user',
+                        )),
+              );
+            },
           ),
         ),
         body: Padding(
@@ -216,39 +231,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: seleccionarImagen,
-                        child: CircleAvatar(
-                          radius: 50.0,
-                          backgroundColor: Colors.green,
-                          child: imgController.text.isEmpty
-                              ? const Icon(Icons.person,
-                                  size: 50.0, color: Colors.white)
-                              : ClipOval(
-                                  child: Image.asset(
-                                    imgController.text,
-                                    fit: BoxFit.cover,
-                                    width: 100.0,
-                                    height: 100.0,
-                                  ),
-                                ),
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      Text(
-                        'Tap to select an image',
-                        style:
-                            TextStyle(fontSize: 16.0, color: Colors.grey[600]),
-                      ),
-                    ],
+                GestureDetector(
+                  onTap: seleccionarImagen,
+                  child: CircleAvatar(
+                    radius: 50.0,
+                    backgroundColor: Colors.green,
+                    child: imgController.text.isEmpty
+                        ? const Icon(Icons.person, size: 50.0, color: Colors.white)
+                        : ClipOval(
+                            child: Image.asset(
+                              imgController.text,
+                              fit: BoxFit.cover,
+                              width: 100.0,
+                              height: 100.0,
+                            ),
+                          ),
                   ),
                 ),
-                SizedBox(
-                  height: 32,
+                const SizedBox(height: 16.0),
+                Text(
+                  'Tap to select an image',
+                  style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
                 ),
+                const SizedBox(height: 32.0),
                 TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(
@@ -263,7 +268,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16.0),
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
@@ -279,23 +284,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16.0),
                 Center(
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width *
-                        0.6, // 60% del ancho de la pantalla
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 14.0),
+                        padding: const EdgeInsets.symmetric(vertical: 14.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                         elevation: 5.0,
                       ),
-                      onPressed: _register,
-                      child: Text('Register'),
+                      onPressed: _isButtonEnabled ? _register : null,
+                      child: const Text('Register'),
                     ),
                   ),
                 ),
