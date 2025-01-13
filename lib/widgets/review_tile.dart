@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../util/review.dart';
-import '../util/app_constants.dart';
 
 class ReviewTile extends StatelessWidget {
   final List<Review> reviews;
@@ -19,7 +18,7 @@ class ReviewTile extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppConstants.secondaryColor,
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(8),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -42,8 +41,8 @@ class ReviewTile extends StatelessWidget {
                       child: review.avatarPath == null
                           ? Text(
                               review.username[0],
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary,
                                 fontWeight: FontWeight.bold,
                               ),
                             )
@@ -59,21 +58,25 @@ class ReviewTile extends StatelessWidget {
                             children: [
                               Text(
                                 '${review.username} - ${review.rating}',
-                                style: const TextStyle(
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onPrimary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
                               ),
                               const SizedBox(width: 3), // Reduced spacing
-                              const Icon(Icons.star,
-                                  color: AppConstants.accentColor, size: 18), // Slightly smaller icon
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).colorScheme.secondary, 
+                                size: 18
+                              ), // Slightly smaller icon
                             ],
                           ),
                           const SizedBox(height: 2), // Reduced spacing between name and comment
                           Text(
                             review.comment,
-                            style: const TextStyle(
-                              color: Colors.grey,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSecondary,
                               fontSize: 14,
                             ),
                             maxLines: 2,
@@ -103,56 +106,18 @@ class ReviewTile extends StatelessWidget {
                 // Navigate to the reviews page
                 Navigator.pushNamed(context, '/reviews');
               },
-              child: const Text(
+              child: Text(
                 'Go to reviews',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: AppConstants.accentColor, // Highlight button color
+                  color: Theme.of(context).colorScheme.secondary
                 ),
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-}
-class LocationTile extends StatelessWidget {
-  final String location;
-
-  const LocationTile({
-    Key? key,
-    required this.location,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        // const Icon(Icons.location_on, color: AppConstants.accentColor), // Uncomment if needed
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text.rich(
-            TextSpan(
-              text: 'Located at - ',
-              style: AppConstants.robotoFlexBlack,
-              children: [
-                TextSpan(
-                  text: location,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: AppConstants.accentColor,
-                    decoration: TextDecoration.underline,
-                    decorationColor: AppConstants.accentColor,
-                    decorationThickness: 1.5
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

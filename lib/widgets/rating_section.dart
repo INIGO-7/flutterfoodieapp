@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../util/app_constants.dart';
 
 class RatingSection extends StatelessWidget {
   final double rating;
@@ -25,8 +24,8 @@ class RatingSection extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppConstants.accentColor,
-                    Colors.white,
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary
                   ],
                   stops: [
                     rating / 5, // Filled portion of the gradient
@@ -43,7 +42,7 @@ class RatingSection extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8), // Spacing between stars
                   child: Icon(
                     index < rating.floor() ? Icons.star : Icons.star_border,
-                    color: AppConstants.accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                     size: 32,
                   ),
                 );
@@ -54,10 +53,10 @@ class RatingSection extends StatelessWidget {
         // Rating text
         Text(
           '${rating.toStringAsFixed(1)} / 5 stars',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
       ],

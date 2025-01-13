@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/reservations.dart';
 import 'package:flutter_foodybite/util/review.dart';
-import '../util/app_constants.dart';
+
 import '../util/user_service.dart';
 import '../widgets/rating_section.dart';
 import '../widgets/review_tile.dart';
+import '../widgets/location_tile.dart';
 import '../widgets/osm_map.dart';
 
 class RestaurantScreen extends StatefulWidget {
@@ -55,20 +56,32 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
           slivers: [
             // App Bar with image
             SliverAppBar(
-              expandedHeight: 200,
+              expandedHeight: 260,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
                   widget.restaurantName,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
                     color: Colors.white
                   ),
                 ),
-                background: Image.asset(
-                  widget.imageUrl,
-                  fit: BoxFit.cover,
+                background: Padding(
+                  padding: const EdgeInsets.all(10), // 10px padding all around
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15), // rounded corners
+                    child: ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.2),
+                        BlendMode.darken,
+                      ),
+                      child: Image.asset(
+                        widget.imageUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -78,9 +91,13 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               padding: const EdgeInsets.all(16),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([ 
+                  // Add space
                   const SizedBox(height: 10),
+                  // Rating section with avg stars visualization and text
                   RatingSection(rating: averageRating),
+                  // More space
                   const SizedBox(height: 14),
+                  // Show top two reviews
                   ReviewTile(reviews: widget.reviews),
 
                   OSMMapContainer(
@@ -121,14 +138,19 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     ),
                   );
                 } : null, // Only enabled if the user is logged in
-                label: const Text(
+                label: Text(
                   'RESERVE NOW',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary
+                    ),
                 ),
-                icon: const Icon(Icons.calendar_today, color: Colors.black),
+                icon: Icon(
+                  Icons.calendar_today, 
+                  color: Theme.of(context).colorScheme.onPrimary
+                  ),
                 backgroundColor: isLoggedIn 
-                    ? AppConstants.accentColor 
-                    : AppConstants.accentColor.withOpacity(0.5), // Lighter color if not logged in
+                    ? Theme.of(context).colorScheme.secondary
+                    : Theme.of(context).colorScheme.secondary.withOpacity(0.5), // Lighter color if not logged in
               ),
             ),
             if (!isLoggedIn) 
@@ -137,7 +159,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 child: Text(
                   'You must be logged in to make a reservation.',
                   style: TextStyle(
-                    color: Colors.grey[700],
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontSize: 12,
                   ),
                 ),

@@ -67,21 +67,23 @@ class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Notifications',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary
+            ),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: FutureBuilder<List<dynamic>>(
         future: loadNotifications(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.secondary,
               ),
             );
           }
@@ -90,7 +92,9 @@ class _NotificationsState extends State<Notifications> {
             return Center(
               child: Text(
                 'Error loading notifications',
-                style: TextStyle(color: Colors.grey[500]),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary
+                  ),
               ),
             );
           }
@@ -103,29 +107,38 @@ class _NotificationsState extends State<Notifications> {
               if (index < notifications.length) {
                 final notification = notifications[index];
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: EdgeInsets.only(
+                    left: 12.0, // Fixed horizontal padding
+                    right: 12.0, // Fixed horizontal padding
+                    top: index == 0 ? 14.0 : 4.0, // Extra top padding for the first card
+                    bottom: 4.0, // Fixed bottom padding
+                  ),
                   child: Card(
-                    color: Colors.grey[900],
+                    color: Theme.of(context).colorScheme.primary,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: notification['image'] != null 
-                          ? AssetImage(notification['image'])
-                          : null,
-                        radius: 30,
-                      ),
-                      title: Text(
-                        notification['title'] ?? 'Untitled',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                    child: 
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: notification['image'] != null 
+                            ? AssetImage(notification['image'])
+                            : null,
+                          radius: 30,
                         ),
-                      ),
-                      subtitle: Text(
-                        notification['description'] ?? '',
-                        style: TextStyle(color: Colors.grey[300]),
-                      ),
+                        title: Text(
+                          notification['title'] ?? 'Untitled',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        subtitle: Text(
+                          notification['description'] ?? '',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontSize: 13
+                          ),
+                        ),
                       onTap: () {
                         _navigateToRestaurant(context, notification);
                       },
@@ -138,7 +151,9 @@ class _NotificationsState extends State<Notifications> {
                   child: Center(
                     child: Text(
                       'No notifications remaining!',
-                      style: TextStyle(color: Colors.grey[500], fontSize: 16),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontSize: 16),
                     ),
                   ),
                 );
