@@ -54,6 +54,7 @@ class UserService {
     if (isValid) {
       // Si las credenciales son válidas, guardar el usuario logueado
       await setLoggedUserName(username);
+      await setUserLoggedIn(true);
     }
 
     return isValid;

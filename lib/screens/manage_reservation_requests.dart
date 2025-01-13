@@ -69,9 +69,6 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
       final filePath = '${directory.path}/reservations.json';
       final file = File(filePath);
 
-      print('---------------------------------------------------------------------');
-      print('Cargando reservas');
-
       if (await file.exists()) {
         final fileContent = await file.readAsString();
         final data = json.decode(fileContent);
