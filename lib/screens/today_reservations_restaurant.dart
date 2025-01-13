@@ -15,7 +15,8 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
   String? restaurantName; // Nombre del restaurante administrado por el usuario
   List<dynamic> _reservations = [];
   List<dynamic> _filteredReservations = [];
-  bool _isLoading = true; // Controlador para saber si estamos cargando los datos
+  bool _isLoading =
+      true; // Controlador para saber si estamos cargando los datos
 
   @override
   void initState() {
@@ -23,7 +24,6 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
     _initialize();
   }
 
-  // Método para inicializar el proceso de carga
   Future<void> _initialize() async {
     await _loadUserRestaurant();
     if (restaurantName != null) {
@@ -35,7 +35,6 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
     }
   }
 
-  // Cargar el nombre del restaurante que administra el usuario logeado
   Future<void> _loadUserRestaurant() async {
     try {
       final UserService userServices = UserService();
@@ -49,15 +48,15 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
           final userContent = await userFile.readAsString();
           final userData = json.decode(userContent) as List<dynamic>;
 
-          // Encontrar al usuario logeado
           final adminUser = userData.firstWhere(
-            (user) => user['username'] == username, // Coincide con el nombre de usuario logeado
+            (user) => user['username'] == username,
             orElse: () => null,
           );
 
           if (adminUser != null) {
             restaurantName = adminUser['restaurantAdmin'];
-            print("Restaurante administrado por el usuario logeado: $restaurantName");
+            print(
+                "Restaurante administrado por el usuario logeado: $restaurantName");
           }
         }
       }
@@ -66,7 +65,6 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
     }
   }
 
-  // Cargar las reservas desde un archivo JSON
   Future<void> _loadReservations() async {
     try {
       final directory = Directory.current;
@@ -79,7 +77,6 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
 
         DateTime today = DateTime.now();
 
-        // Filtrar las reservas de hoy para el restaurante administrado
         List<dynamic> reservationsForToday = [];
         for (var reservation in data) {
           DateTime date = DateTime.parse(reservation['date']);
@@ -88,24 +85,20 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
               date.day == today.day &&
               reservation['restaurantName'] == restaurantName &&
               reservation['status'] == "Accepted") {
-            print(
-                "Reserva encontrada: ${reservation['name']} para ${reservation['restaurantName']} a las ${reservation['time']} con ${reservation['people']} personas");
             reservationsForToday.add(reservation);
           }
         }
 
-        // Ordenar las reservas por hora
         reservationsForToday.sort((a, b) {
           DateTime timeA = _parseTime(a['time']);
           DateTime timeB = _parseTime(b['time']);
           return timeA.compareTo(timeB);
         });
 
-        // Actualizar las reservas filtradas
         setState(() {
           _reservations = reservationsForToday;
           _filteredReservations = _reservations;
-          _isLoading = false; // Ya no estamos cargando
+          _isLoading = false;
         });
 
         print("Reservas de hoy: ${_reservations.length}");
@@ -113,7 +106,7 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
         setState(() {
           _reservations = [];
           _filteredReservations = [];
-          _isLoading = false; // Ya no estamos cargando
+          _isLoading = false;
         });
       }
     } catch (e) {
@@ -121,29 +114,40 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
     }
   }
 
-  // Función para convertir la hora de formato AM/PM a DateTime
   DateTime _parseTime(String time) {
-    DateFormat dateFormat = DateFormat("h:mm a"); // Formato de 12 horas con AM/PM
+    DateFormat dateFormat = DateFormat("h:mm a");
     DateTime now = DateTime.now();
     return dateFormat.parse('${now.year}-${now.month}-${now.day} $time');
   }
 
-  // Filtrar las reservas por nombre del cliente
   void _filterReservations() {
     setState(() {
       _filteredReservations = _reservations
           .where((reservation) => reservation['name']
               .toLowerCase()
-              .contains(customerName.toLowerCase())) // Filtra por el nombre de la persona
+              .contains(customerName.toLowerCase()))
           .toList();
 
-      // Ordenar las reservas por hora
       _filteredReservations.sort((a, b) {
         DateTime timeA = _parseTime(a['time']);
         DateTime timeB = _parseTime(b['time']);
         return timeA.compareTo(timeB);
       });
     });
+  }
+
+  bool _isValidUrl(String url) {
+    return Uri.tryParse(url)?.hasAbsolutePath ?? false;
+  }
+
+  String formatDate(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    String suffix = 'th';
+    int day = dateTime.day;
+    if (day == 1 || day == 21 || day == 31) suffix = 'st';
+    if (day == 2 || day == 22) suffix = 'nd';
+    if (day == 3 || day == 23) suffix = 'rd';
+    return DateFormat("MMMM d'$suffix', yyyy").format(dateTime);
   }
 
   @override
@@ -179,24 +183,85 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
               },
             ),
           ),
+          SizedBox(height: 5.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  'Today: ${formatDate(DateTime.now().toString())}',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _filteredReservations.isEmpty
-                    ? const Center(child: Text("No reservations found for today"))
+                    ? const Center(
+                        child: Text("No reservations found for today"))
                     : ListView.builder(
                         itemCount: _filteredReservations.length,
                         itemBuilder: (context, index) {
                           var reservation = _filteredReservations[index];
+                          bool isAssisted = false;
+
                           return Card(
                             margin: const EdgeInsets.all(8.0),
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            color: Colors.white, // Color de la tarjeta
                             child: ListTile(
-                              leading: Image.network(reservation['restaurantImage']),
-                              title: Text(reservation['restaurantName']),
-                              subtitle: Text(
-                                'Name: ${reservation['name']} - ${reservation['people']} people',
+                              contentPadding: EdgeInsets.all(16.0),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        reservation['name'],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.0),
+                                  Row(
+                                    children: [
+                                      SizedBox(width: 15),
+                                      Icon(Icons.people, color: Colors.green),
+                                      SizedBox(width: 15),
+                                      Text(
+                                        '${reservation['people']}',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8.0),
+                                  Row(
+                                    children: [
+                                      SizedBox(width: 15),
+                                      Icon(Icons.access_time,
+                                          color: Colors.green, size: 18),
+                                      SizedBox(width: 15),
+                                      Text(
+                                        '${reservation['time']}',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              trailing: Text('Time: ${reservation['time']}'),
                             ),
                           );
                         },

@@ -100,6 +100,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             SliverAppBar(
               expandedHeight: 200,
               pinned: true,
+              iconTheme: IconThemeData(color: Colors.white),
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
                   widget.restaurantName,
@@ -189,12 +190,13 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     : null, // Only enabled if the user is logged in
                 label: const Text(
                   'RESERVE NOW',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                 ),
-                icon: const Icon(Icons.calendar_today, color: Colors.black),
+                elevation: 5.0,
+                icon: const Icon(Icons.calendar_today, color: Colors.white),
                 backgroundColor: isLoggedIn
-                    ? AppConstants.accentColor
-                    : AppConstants.accentColor
+                    ? Colors.green
+                    : Colors.green
                         .withOpacity(0.5), // Lighter color if not logged in
               ),
             ),

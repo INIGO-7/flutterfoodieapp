@@ -265,21 +265,26 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 const Spacer(),
 
                 // Botón de envío
-                ElevatedButton(
-                  onPressed: () {
-                    _submitReview(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.6, // 60% del ancho de la pantalla
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _submitReview(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 5.0,
+                      ),
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                    elevation: 5.0,
-                  ),
-                  child: const Text(
-                    'Submit',
-                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ],

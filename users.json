@@ -12,7 +12,7 @@
     "estado": "Silver Member",
     "profilePicture": "assets/Profile_pictures/Prf1.jpg",
     "type": "restaurant",
-    "restaurantAdmin": "NEW RESTAURANT"
+    "restaurantAdmin": "El Sombrerito"
   },
   {
     "username": "gg",
@@ -50,11 +50,6 @@
     "profilePicture": "assets/restaurant_photos/food1.jpeg",
     "type": "restaurant",
     "restaurantAdmin": "PROBANDO"
-  },
-  {
-    "username": "paco",
-    "password": "12345",
-    "estado": "Hey there! I am using FoodyBite"
   },
   {
     "username": "corona",

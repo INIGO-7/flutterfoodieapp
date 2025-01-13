@@ -25,7 +25,7 @@ class RatingSection extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppConstants.accentColor,
+                    Colors.green,
                     Colors.white,
                   ],
                   stops: [
@@ -43,7 +43,7 @@ class RatingSection extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8), // Spacing between stars
                   child: Icon(
                     index < rating.floor() ? Icons.star : Icons.star_border,
-                    color: AppConstants.accentColor,
+                    color: Colors.green,
                     size: 32,
                   ),
                 );

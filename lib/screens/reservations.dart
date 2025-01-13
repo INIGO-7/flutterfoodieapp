@@ -336,11 +336,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                             style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(20),
+                                                    BorderRadius.circular(10),
                                               ),
                                               backgroundColor: Colors.green,
                                             ),
                                             onPressed: () {
+                                              Navigator.pop(context);
                                               Navigator.pop(context);
                                             },
                                             child: Text(
