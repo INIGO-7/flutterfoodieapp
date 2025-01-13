@@ -75,10 +75,21 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+/*       appBar: AppBar(
         elevation: 0.0,
         title: Text(widget.categoryName),
         centerTitle: true,
+      ), */
+      appBar: AppBar(
+        title: Text(
+          widget.categoryName.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        iconTheme: IconThemeData(color: Colors.white),
+        centerTitle: true, // Centra el texto
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),

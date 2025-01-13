@@ -57,9 +57,15 @@ class _TrendingState extends State<Trending> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.0,
-        title: Text("Trending Restaurants"),
-        centerTitle: true,
+        title: Text(
+          'Trending Restaurants'.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        iconTheme: IconThemeData(color: Colors.white),
+        centerTitle: true, // Centra el texto
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),

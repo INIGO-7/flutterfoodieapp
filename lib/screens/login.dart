@@ -83,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         backgroundColor: Colors.green,
         centerTitle: true, // Centra el texto
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Padding(

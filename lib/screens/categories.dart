@@ -15,9 +15,15 @@ class _CategoriesState extends State<Categories> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.0,
-        title: Text('Categories'),
-        centerTitle: true,
+        title: Text(
+          'Categories'.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        iconTheme: IconThemeData(color: Colors.white),
+        centerTitle: true, // Centra el texto
       ),
       body: Padding(
         padding: EdgeInsets.all(5.0),
