@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_foodybite/util/categories.dart';
-import 'package:geocoding/geocoding.dart';  // Importar el paquete geocoding
+import 'package:geocoding/geocoding.dart';
 
-import '../util/restaurants.dart'; // Asegúrate de que la ruta sea correcta
+import '../util/categories.dart';
+import '../util/restaurants.dart';
 
 class RestaurantRegister extends StatefulWidget {
   const RestaurantRegister({Key? key}) : super(key: key);
@@ -22,58 +22,70 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
   final TextEditingController adminNameController = TextEditingController();
   final TextEditingController adminPasswordController = TextEditingController();
 
-  final String filePath = 'assets/restaurants_data.json';
-
   String? selectedCategory;
-  Location? _selectedLocation;  // Para almacenar las coordenadas obtenidas
+  Location? _selectedLocation;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadPersistedRestaurants();
-  }
+  bool get _isFormValid =>
+      imgController.text.isNotEmpty &&
+      titleController.text.isNotEmpty &&
+      addressController.text.isNotEmpty &&
+      openingTimeController.text.isNotEmpty &&
+      closingTimeController.text.isNotEmpty &&
+      adminNameController.text.isNotEmpty &&
+      adminPasswordController.text.isNotEmpty &&
+      selectedCategory != null;
 
-  Future<void> _loadPersistedRestaurants() async {
-    try {
-      final file = File(filePath);
-      if (await file.exists()) {
-        final contents = await file.readAsString();
-        final List<dynamic> jsonData = jsonDecode(contents);
-        restaurants.clear();
-        restaurants.addAll(jsonData.map((data) => Map<String, String>.from(data)));
-      }
-    } catch (e) {
-      debugPrint('Error loading persisted restaurants: $e');
-    }
-  }
-
-  Future<void> _persistRestaurants() async {
-    try {
-      final file = File(filePath);
-      await file.writeAsString(jsonEncode(restaurants));
-    } catch (e) {
-      debugPrint('Error persisting restaurants: $e');
-    }
-  }
-
-  // Función para obtener las coordenadas de la dirección
   Future<void> _getCoordinatesFromAddress() async {
-    print(addressController.text);
     try {
       List<Location> locations = await locationFromAddress(addressController.text);
-      print(locations);
       if (locations.isNotEmpty) {
-        Location location = locations.first;
-        setState(() {
-          _selectedLocation = location;  // Guardar la ubicación seleccionada
-        });
-        print('Lat: ${location.latitude}, Lng: ${location.longitude}');
-      } else {
-        print('No se encontró la dirección.');
+        _selectedLocation = locations.first;
       }
     } catch (e) {
       print('Error al obtener coordenadas: $e');
     }
+  }
+
+  Future<void> _saveData() async {
+    // Guardar en restaurants_data.json
+    final restaurantData = {
+      "img": imgController.text,
+      "title": titleController.text,
+      "address": addressController.text,
+      "rating": "0.0",
+      "foodType": selectedCategory,
+      "openingTime": openingTimeController.text,
+      "closingTime": closingTimeController.text,
+      "latitude": _selectedLocation?.latitude.toString() ?? "0.0",
+      "longitude": _selectedLocation?.longitude.toString() ?? "0.0",
+    };
+
+    final directory = Directory.current;
+    final restaurantFile = File('${directory.path}/assets/restaurants_data.json');
+    List<dynamic> restaurantList = [];
+    if (await restaurantFile.exists()) {
+      restaurantList = jsonDecode(await restaurantFile.readAsString());
+    }
+    restaurantList.add(restaurantData);
+    await restaurantFile.writeAsString(jsonEncode(restaurantList));
+
+    // Guardar en users.json
+    final userData = {
+      "username": adminNameController.text,
+      "password": adminPasswordController.text,
+      "estado": "Restaurant",
+      "profilePicture": imgController.text,
+      "type": "restaurant",
+      "restaurantAdmin": titleController.text,
+    };
+
+    final userFile = File('${directory.path}/users.json');
+    List<dynamic> userList = [];
+    if (await userFile.exists()) {
+      userList = jsonDecode(await userFile.readAsString());
+    }
+    userList.add(userData);
+    await userFile.writeAsString(jsonEncode(userList));
   }
 
   void seleccionarImagen() async {
@@ -125,6 +137,28 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
         }
       });
     }
+  }
+
+  void _showSuccessDialog() {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Success'),
+          content: const Text('Restaurant registered successfully!'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); // Go back to the home screen
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -265,31 +299,13 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
                     backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
                   ),
-                  onPressed: () async {
-                    await _getCoordinatesFromAddress();
-                    print(_selectedLocation?.latitude.toString());
-                    print(_selectedLocation?.longitude.toString());
-                    final newRestaurant = {
-                      "adminName": adminNameController.text,
-                      "adminPassword": adminPasswordController.text,
-                      "img": imgController.text,
-                      "title": titleController.text,
-                      "address": addressController.text,
-                      "foodType": selectedCategory ?? '',
-                      "openingTime": openingTimeController.text,
-                      "closingTime": closingTimeController.text,
-                      "latitude": _selectedLocation?.latitude.toString() ?? "0.0",  // Guardar la latitud
-                      "longitude": _selectedLocation?.longitude.toString() ?? "0.0",  // Guardar la longitud
-                    };
-
-                    print(newRestaurant);
-
-                    restaurants.add(newRestaurant);
-
-                    print(restaurants);
-
-                    await _persistRestaurants();
-                  },
+                  onPressed: _isFormValid
+                      ? () async {
+                          await _getCoordinatesFromAddress();
+                          await _saveData();
+                          _showSuccessDialog();
+                        }
+                      : null,
                   child: const Text(
                     'Save Restaurant Data',
                     style: TextStyle(color: Colors.white),
