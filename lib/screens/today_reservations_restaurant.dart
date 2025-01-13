@@ -150,6 +150,7 @@ class _ReservationScreenState extends State<TodayReservationsRestaurant> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Reservations"),
       ),
       body: Column(

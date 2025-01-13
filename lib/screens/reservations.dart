@@ -297,7 +297,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                           ),
-                                          backgroundColor: Colors.teal,
+                                          backgroundColor: Colors.green,
                                         ),
                                         onPressed: () {
                                           Navigator.pop(context);
