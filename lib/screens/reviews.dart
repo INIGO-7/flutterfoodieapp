@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/util/restaurants.dart';
 import 'dart:convert';
 import 'dart:io';
+import '../util/user_service.dart';
 
 class ReviewService {
   late final String _filePath;
@@ -10,12 +11,14 @@ class ReviewService {
     _initializeFilePath();
   }
 
+  final UserService _userService = UserService();
+
   void _initializeFilePath() {
     _filePath = '${Directory.current.path}/reviews.json';
     print('Path del archivo: $_filePath');
   }
 
-  Future<List<Map<String, dynamic>>> _loadReviews() async {
+  Future<List<Map<String, dynamic>>> loadReviews() async {
     try {
       final file = File(_filePath);
       if (!await file.exists()) {
@@ -25,7 +28,7 @@ class ReviewService {
       }
 
       final content = await file.readAsString();
-      print('Contenido del archivo: $content');
+      //print('Contenido del archivo: $content');
 
       if (content.isEmpty) {
         print('El archivo está vacío.');
@@ -65,14 +68,20 @@ class ReviewService {
   Future<void> addReview(
       String restaurant, String comment, double rating) async {
     try {
-      final reviews = await _loadReviews();
+      final reviews = await loadReviews();
       print('Reviews cargadas: $reviews');
+
+      String? username = await _userService.getLoggedUserName();
+      final avatarPath =
+          await _userService.getImagenPerfil(username ?? 'NoImagen');
 
       final newReview = {
         'restaurant': restaurant,
         'comment': comment,
         'rating': rating,
         'createdAt': DateTime.now().toIso8601String(),
+        'username': username,
+        'avatarPath': avatarPath
       };
       print('Nueva reseña: $newReview');
 
@@ -97,6 +106,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
   final _formKey = GlobalKey<FormState>();
   String? selectedRestaurant;
   double rating = 0.0;
+  String? avatarPath;
   final TextEditingController reviewController = TextEditingController();
   final ReviewService reviewService = ReviewService();
   final FocusNode _focusNode = FocusNode();
@@ -108,38 +118,44 @@ class _ReviewScreenState extends State<ReviewScreen> {
     super.dispose();
   }
 
-  Future<void> _submitReview() async {
-    print('selectedRestaurant: $selectedRestaurant');
-    print(reviewController.text);
-    print(rating);
-
+  // Método para enviar la reseña
+  Future<void> _submitReview(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       if (selectedRestaurant != null) {
         try {
+          // Agregar la reseña
           await reviewService.addReview(
             selectedRestaurant!,
             reviewController.text,
             rating,
           );
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Review submitted successfully!')),
-          );
 
-          // Limpiar el formulario después del envío
-          setState(() {
-            selectedRestaurant = null;
-            rating = 0.0;
-            reviewController.clear();
-          });
+          // Verificar si el widget sigue montado antes de mostrar el SnackBar
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Review submitted successfully!')),
+            );
+
+            setState(() {
+              selectedRestaurant = null;
+              rating = 0.0;
+              reviewController.clear();
+            });
+          }
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${e.toString()}')),
-          );
+          // Verificar si el widget sigue montado antes de mostrar el SnackBar
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error: ${e.toString()}')),
+            );
+          }
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please select a restaurant.')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please select a restaurant.')),
+          );
+        }
       }
     }
   }
@@ -250,7 +266,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
                 // Botón de envío
                 ElevatedButton(
-                  onPressed: _submitReview,
+                  onPressed: () {
+                    _submitReview(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                     backgroundColor: Colors.green,

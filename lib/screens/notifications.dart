@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 
 import '../util/review.dart';
+import '../util/review_service.dart'; // Importamos el servicio
 
 class Notifications extends StatefulWidget {
   const Notifications({Key? key}) : super(key: key);
@@ -13,26 +14,30 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
-  
+  final ReviewService reviewService =
+      ReviewService(); // Instanciamos el servicio
+
   Future<List<dynamic>> loadNotifications() async {
     try {
-      // Load the JSON file as a string
-      final String jsonString = await rootBundle.loadString('notifications.json');  // Make sure your file has .json extension
-      //Decode the json and return it
+      final String jsonString =
+          await rootBundle.loadString('notifications.json');
       Map<String, dynamic> jsonData = json.decode(jsonString);
       return jsonData['notifications'] as List<dynamic>;
-
     } catch (e) {
       print('Error loading notifications: $e');
       return [];
     }
   }
 
-  void _navigateToRestaurant(BuildContext context, Map<String, dynamic> notification) {
-    // First check if restaurantData exists
+  // Usamos el servicio para cargar las reseñas
+  Future<List<Map<String, dynamic>>> loadReviews() async {
+    return await reviewService.loadReviews();
+  }
+
+  void _navigateToRestaurant(
+      BuildContext context, Map<String, dynamic> notification) async {
     final restaurantData = notification['restaurantData'];
     if (restaurantData == null) {
-      // Show a snackbar or some other feedback that this restaurant's details aren't available
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Restaurant details not available yet'),
@@ -42,14 +47,23 @@ class _NotificationsState extends State<Notifications> {
     }
 
     final locationData = restaurantData['location'] as Map<String, dynamic>;
-    final reviews = (restaurantData['reviews'] as List).map((review) => Review(
-          restaurant: notification['title'],
-          username: review['reviewerName'] as String,
-          rating: review['rating'] as double,
-          comment: review['comment'] as String,
-          avatarPath: review['avatarPath'] as String,
-          createdAt: DateTime.now(),   //FIX         
-        )).toList();
+
+    // Cargar las reseñas usando el servicio
+    final reviewsData = await loadReviews();
+    print("---------------------------------");
+    print(reviewsData);
+
+    // Convertir las reseñas de Map<String, dynamic> a objetos Review
+    final reviews = reviewsData.map((review) {
+      return Review(
+        restaurant: review['restaurant'] as String,
+        username: review['username'] as String,
+        rating: review['rating'] as double,
+        comment: review['comment'] as String,
+        avatarPath: review['avatarPath'] as String,
+        createdAt: DateTime.parse(review['createdAt'] as String),
+      );
+    }).toList();
 
     Navigator.push(
       context,
@@ -57,7 +71,6 @@ class _NotificationsState extends State<Notifications> {
         builder: (context) => RestaurantScreen(
           restaurantName: notification['title'],
           imageUrl: restaurantData['imageUrl'],
-          reviews: reviews,
           location: locationData,
         ),
       ),
@@ -103,15 +116,17 @@ class _NotificationsState extends State<Notifications> {
               if (index < notifications.length) {
                 final notification = notifications[index];
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   child: Card(
                     color: Colors.grey[900],
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: notification['image'] != null 
-                          ? AssetImage(notification['image'])
-                          : null,
+                        backgroundImage: notification['image'] != null
+                            ? AssetImage(notification['image'])
+                            : null,
                         radius: 30,
                       ),
                       title: Text(

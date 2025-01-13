@@ -28,7 +28,8 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
 
   Future<void> _loadReviewsAndRatings() async {
     final reviews = await _reviewService.loadReviews();
-    print('---------------------------------------------------------------------------------');
+    print(
+        '---------------------------------------------------------------------------------');
     print('Reviews obtenidas');
     print(reviews);
     final Map<String, List<Map<String, dynamic>>> groupedReviews = {};
@@ -49,7 +50,8 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
       ratingsMap[restaurant]?.add(rating);
     }
 
-    print('////////////////////////////////////////////////////////////////////////////////////////////');
+    print(
+        '////////////////////////////////////////////////////////////////////////////////////////////');
     print(groupedReviews);
 
     final Map<String, double> computedRatings = {};
@@ -58,9 +60,9 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
           ratings.reduce((a, b) => a + b) / ratings.length;
     });
 
-    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+    print(
+        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     print(computedRatings);
-    
 
     setState(() {
       reviewsByRestaurant = groupedReviews;
@@ -85,7 +87,7 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
             final title = restaurant["title"];
             final reviews = reviewsByRestaurant[title] ?? [];
             final rating = restaurantRatings[title] ?? 0.0;
-            final imageUrl = restaurant["img"] ?? ''; 
+            final imageUrl = restaurant["img"] ?? '';
             final address = restaurant["address"] ?? '';
             final latitude = double.parse(restaurant["latitude"].toString());
             final longitude = double.parse(restaurant["longitude"].toString());
@@ -105,7 +107,8 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
               );
             }).toList();
 
-            print('************************************************************************************');
+            print(
+                '************************************************************************************');
             print(reviewList);
 
             return Padding(
@@ -118,7 +121,7 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
                       builder: (context) => RestaurantScreen(
                         restaurantName: title!,
                         imageUrl: imageUrl,
-                        reviews: reviewList, // Pasamos la lista de objetos Review
+                        // Pasamos la lista de objetos Review
                         location: {
                           'latitude': latitude,
                           'longitude': longitude,
