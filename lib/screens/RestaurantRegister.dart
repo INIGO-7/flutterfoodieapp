@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_foodybite/util/categories.dart';
+import 'package:geocoding/geocoding.dart';  // Importar el paquete geocoding
 
 import '../util/restaurants.dart'; // Asegúrate de que la ruta sea correcta
 
@@ -15,13 +17,15 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
   final TextEditingController imgController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-  final TextEditingController foodTypeController = TextEditingController();
   final TextEditingController openingTimeController = TextEditingController();
   final TextEditingController closingTimeController = TextEditingController();
   final TextEditingController adminNameController = TextEditingController();
   final TextEditingController adminPasswordController = TextEditingController();
 
   final String filePath = 'assets/restaurants_data.json';
+
+  String? selectedCategory;
+  Location? _selectedLocation;  // Para almacenar las coordenadas obtenidas
 
   @override
   void initState() {
@@ -49,6 +53,26 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
       await file.writeAsString(jsonEncode(restaurants));
     } catch (e) {
       debugPrint('Error persisting restaurants: $e');
+    }
+  }
+
+  // Función para obtener las coordenadas de la dirección
+  Future<void> _getCoordinatesFromAddress() async {
+    print(addressController.text);
+    try {
+      List<Location> locations = await locationFromAddress(addressController.text);
+      print(locations);
+      if (locations.isNotEmpty) {
+        Location location = locations.first;
+        setState(() {
+          _selectedLocation = location;  // Guardar la ubicación seleccionada
+        });
+        print('Lat: ${location.latitude}, Lng: ${location.longitude}');
+      } else {
+        print('No se encontró la dirección.');
+      }
+    } catch (e) {
+      print('Error al obtener coordenadas: $e');
     }
   }
 
@@ -83,6 +107,22 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
     if (imagenSeleccionada != null) {
       setState(() {
         imgController.text = imagenSeleccionada;
+      });
+    }
+  }
+
+  Future<void> _selectTime(BuildContext context, bool isOpeningTime) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        if (isOpeningTime) {
+          openingTimeController.text = picked.format(context);
+        } else {
+          closingTimeController.text = picked.format(context);
+        }
       });
     }
   }
@@ -166,35 +206,54 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
                 ),
               ),
               const SizedBox(height: 16.0),
-              TextField(
-                controller: foodTypeController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Food Type',
-                  hintText: 'e.g., Mexican',
+                  hintText: 'Select a food type',
                 ),
+                value: selectedCategory,
+                items: categories.map((category) {
+                  return DropdownMenuItem<String>(
+                    value: category['name'],
+                    child: Text(category['name']),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedCategory = value;
+                  });
+                },
               ),
               const SizedBox(height: 16.0),
               Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: openingTimeController,
-                      decoration: const InputDecoration(
-                        labelText: 'Opening Time',
-                        hintText: 'e.g., 11:00',
+                    child: GestureDetector(
+                      onTap: () => _selectTime(context, true),
+                      child: AbsorbPointer(
+                        child: TextField(
+                          controller: openingTimeController,
+                          decoration: const InputDecoration(
+                            labelText: 'Opening Time',
+                            hintText: 'Select opening time',
+                          ),
+                        ),
                       ),
-                      keyboardType: TextInputType.datetime,
                     ),
                   ),
                   const SizedBox(width: 16.0),
                   Expanded(
-                    child: TextField(
-                      controller: closingTimeController,
-                      decoration: const InputDecoration(
-                        labelText: 'Closing Time',
-                        hintText: 'e.g., 22:00',
+                    child: GestureDetector(
+                      onTap: () => _selectTime(context, false),
+                      child: AbsorbPointer(
+                        child: TextField(
+                          controller: closingTimeController,
+                          decoration: const InputDecoration(
+                            labelText: 'Closing Time',
+                            hintText: 'Select closing time',
+                          ),
+                        ),
                       ),
-                      keyboardType: TextInputType.datetime,
                     ),
                   ),
                 ],
@@ -203,20 +262,27 @@ class _RestaurantRegisterState extends State<RestaurantRegister> {
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Botón del mismo color que el banner
+                    backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
                   ),
                   onPressed: () async {
+                    await _getCoordinatesFromAddress();
+                    print(_selectedLocation?.latitude.toString());
+                    print(_selectedLocation?.longitude.toString());
                     final newRestaurant = {
                       "adminName": adminNameController.text,
                       "adminPassword": adminPasswordController.text,
                       "img": imgController.text,
                       "title": titleController.text,
                       "address": addressController.text,
-                      "foodType": foodTypeController.text,
+                      "foodType": selectedCategory ?? '',
                       "openingTime": openingTimeController.text,
                       "closingTime": closingTimeController.text,
+                      "latitude": _selectedLocation?.latitude.toString() ?? "0.0",  // Guardar la latitud
+                      "longitude": _selectedLocation?.longitude.toString() ?? "0.0",  // Guardar la longitud
                     };
+
+                    print(newRestaurant);
 
                     restaurants.add(newRestaurant);
 
