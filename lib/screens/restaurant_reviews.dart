@@ -48,8 +48,15 @@ class _RestaurantReviewsScreenState extends State<RestaurantReviewsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.restaurantName} Reviews'),
         centerTitle: true,
+        title: Text(
+          '${widget.restaurantName} Reviews'.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: FutureBuilder<List<Review>>(
         future: _reviewsFuture,
