@@ -30,22 +30,54 @@
     {
       "image": "assets/restaurant_photos/food3.jpeg",
       "title": "Burgerheart Regensburg",
-      "description": "Dive into the ultimate flavor with our new Smoky BBQ Bacon Burger!"
+      "description": "Dive into the ultimate flavor with our new Smoky BBQ Bacon Burger!",
+      "restaurantData": {
+        "imageUrl": "assets/restaurant_photos/food3.jpeg",
+        "location": {
+          "address": "1278 Loving Acres Road, Kansas City, MO 64110",
+          "latitude": 39.1005,
+          "longitude": -94.5794
+        }
+      }
     },
     {
       "image": "assets/restaurant_photos/food6.jpeg",
       "title": "Andoni's Bistro",
-      "description": "Our new Dry-Aged Tomahawk will take your steak experience to a new level."
+      "description": "Our new Dry-Aged Tomahawk will take your steak experience to a new level.",
+      "restaurantData": {
+        "imageUrl": "assets/restaurant_photos/food6.jpeg",
+        "location": {
+          "address": "1278 Loving Acres Road, Kansas City, MO 64110",
+          "latitude": 39.1005,
+          "longitude": -94.5794
+        }
+      }
     },
     {
       "image": "assets/restaurant_photos/food1.jpeg",
       "title": "Montevideo",
-      "description": "Looking for a light meal? Our salads are perfect for a guilt-free indulgence!"
+      "description": "Looking for a light meal? Our salads are perfect for a guilt-free indulgence!",
+      "restaurantData": {
+        "imageUrl": "assets/restaurant_photos/food1.jpeg",
+        "location": {
+          "address": "1278 Loving Acres Road, Kansas City, MO 64110",
+          "latitude": 39.1005,
+          "longitude": -94.5794
+        }
+      }
     },
     {
       "image": "assets/restaurant_photos/food7.jpeg",
       "title": "Happy Jones",
-      "description": "We are guilty of having the best tasting pizza in all of Regensburg... Come try!"
+      "description": "We are guilty of having the best tasting pizza in all of Regensburg... Come try!",
+      "restaurantData": {
+        "imageUrl": "assets/restaurant_photos/food7.jpeg",
+        "location": {
+          "address": "1278 Loving Acres Road, Kansas City, MO 64110",
+          "latitude": 39.1005,
+          "longitude": -94.5794
+        }
+      }
     },
     {
       "image": "assets/restaurant_photos/food1.jpeg",
