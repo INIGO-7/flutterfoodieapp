@@ -44,6 +44,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -62,6 +69,7 @@ flutter:
     - assets/restaurant_photos/
     - assets/Profile_pictures/
     - notifications.json
+    - assets/icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
