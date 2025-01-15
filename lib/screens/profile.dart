@@ -163,7 +163,7 @@ void seleccionarImagen() async {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.green,
-        title: Text('Profile', style: TextStyle(color: Colors.white)),
+        title: Text('PROFILE', style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       body: Container(
