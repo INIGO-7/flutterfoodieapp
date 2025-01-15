@@ -28,7 +28,8 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
 
   Future<void> _loadReviewsAndRatings() async {
     final reviews = await _reviewService.loadReviews();
-    print('---------------------------------------------------------------------------------');
+    print(
+        '---------------------------------------------------------------------------------');
     print('Reviews obtenidas');
     print(reviews);
     final Map<String, List<Map<String, dynamic>>> groupedReviews = {};
@@ -49,7 +50,8 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
       ratingsMap[restaurant]?.add(rating);
     }
 
-    print('////////////////////////////////////////////////////////////////////////////////////////////');
+    print(
+        '////////////////////////////////////////////////////////////////////////////////////////////');
     print(groupedReviews);
 
     final Map<String, double> computedRatings = {};
@@ -58,9 +60,9 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
           ratings.reduce((a, b) => a + b) / ratings.length;
     });
 
-    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+    print(
+        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     print(computedRatings);
-    
 
     setState(() {
       reviewsByRestaurant = groupedReviews;
@@ -73,10 +75,21 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+/*       appBar: AppBar(
         elevation: 0.0,
         title: Text(widget.categoryName),
         centerTitle: true,
+      ), */
+      appBar: AppBar(
+        title: Text(
+          widget.categoryName.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        iconTheme: IconThemeData(color: Colors.white),
+        centerTitle: true, // Centra el texto
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
@@ -85,7 +98,7 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
             final title = restaurant["title"];
             final reviews = reviewsByRestaurant[title] ?? [];
             final rating = restaurantRatings[title] ?? 0.0;
-            final imageUrl = restaurant["img"] ?? ''; 
+            final imageUrl = restaurant["img"] ?? '';
             final address = restaurant["address"] ?? '';
             final latitude = double.parse(restaurant["latitude"].toString());
             final longitude = double.parse(restaurant["longitude"].toString());
@@ -105,7 +118,8 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
               );
             }).toList();
 
-            print('************************************************************************************');
+            print(
+                '************************************************************************************');
             print(reviewList);
 
             return Padding(

@@ -14,6 +14,7 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
+
   final ReviewService reviewService = ReviewService();
 
   final UserService userService = UserService();
@@ -86,6 +87,7 @@ class _NotificationsState extends State<Notifications> {
     }
   }
 
+
   void _navigateToRestaurant(BuildContext context, Map<String, dynamic> notification) async {
 
     bool isDataReady = notification['sender'] != '' && 
@@ -128,7 +130,7 @@ class _NotificationsState extends State<Notifications> {
           title: const Text('Your Reservations'),
           automaticallyImplyLeading: false, // Elimina la flecha de retroceso
           centerTitle: true,
-          backgroundColor: Colors.green,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
         ),
         body: Center(
           child: Column(
@@ -236,9 +238,6 @@ class _NotificationsState extends State<Notifications> {
                             ),
                           ),
                         onTap: () {
-                          //TODO: 
-                          // - if the sender is a restaurant, navigate to it
-                          // - if the sender is a user, do nothing (for now?)
                           _navigateToRestaurant(context, notification);
                         },
                       ),

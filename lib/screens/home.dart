@@ -59,7 +59,6 @@ class _HomeState extends State<Home> {
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
         }
-
       },
       child: Scaffold(
         body: Padding(
@@ -161,7 +160,7 @@ class _HomeState extends State<Home> {
         primary: false,
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
-        itemCount: categories == null ? 0 : categories.length,
+        itemCount: categories == null ? 0 : categories.take(5).length,
         itemBuilder: (BuildContext context, int index) {
           Map cat = categories[index];
 
@@ -169,7 +168,8 @@ class _HomeState extends State<Home> {
             onTap: () {
               // Filtrar restaurantes por categoría y navegar a RestaurantCategory
               var filteredRestaurants = restaurants.where((restaurant) {
-                return restaurant['foodType'] == cat['name']; // Filtra por tipo de comida
+                return restaurant['foodType'] ==
+                    cat['name']; // Filtra por tipo de comida
               }).toList();
 
               Navigator.push(
@@ -177,7 +177,8 @@ class _HomeState extends State<Home> {
                 MaterialPageRoute(
                   builder: (context) => RestaurantCategory(
                     categoryName: cat["name"], // Nombre de la categoría
-                    filteredRestaurants: filteredRestaurants, // Restaurantes filtrados
+                    filteredRestaurants:
+                        filteredRestaurants, // Restaurantes filtrados
                   ),
                 ),
               );
@@ -194,10 +195,12 @@ class _HomeState extends State<Home> {
   bool isRestaurantOpen(String openingTime, String closingTime) {
     // Obtener la hora actual en formato de 24 horas (ej. "09:30")
     DateTime now = DateTime.now();
-    String currentTime = "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+    String currentTime =
+        "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
 
     // Verificar si la hora actual está dentro del rango de apertura
-    return currentTime.compareTo(openingTime) >= 0 && currentTime.compareTo(closingTime) <= 0;
+    return currentTime.compareTo(openingTime) >= 0 &&
+        currentTime.compareTo(closingTime) <= 0;
   }
 
   buildRestaurantList(BuildContext context) {
@@ -208,7 +211,7 @@ class _HomeState extends State<Home> {
         primary: false,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: restaurants == null ? 0 : restaurants.length,
+        itemCount: restaurants == null ? 0 : restaurants.take(6).length,
         itemBuilder: (BuildContext context, int index) {
           Map restaurant = restaurants[index];
 
@@ -229,7 +232,7 @@ class _HomeState extends State<Home> {
                       latitude: double.parse(restaurant["latitude"].toString()),
                       longitude: double.parse(restaurant["longitude"].toString()),
                       address: restaurant["address"],
-                      reviews: [], // Agrega las reseñas que necesites
+                      reviews: [] // Agrega las reseñas que necesites
                     ),
                   ),
                 );
@@ -238,7 +241,8 @@ class _HomeState extends State<Home> {
                 img: restaurant["img"],
                 title: restaurant["title"],
                 address: restaurant["address"],
-                opened: isRestaurantOpen(restaurant["openingTime"], restaurant["closingTime"]),
+                opened: isRestaurantOpen(
+                    restaurant["openingTime"], restaurant["closingTime"]),
                 rating: rating.toStringAsFixed(1), // Conversión a String
               ),
             ),

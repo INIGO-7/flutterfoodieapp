@@ -12,7 +12,7 @@ void main() async {
 
     // Establecer el tamaño de la ventana antes de ejecutar la app
   WidgetsFlutterBinding.ensureInitialized();
-  setWindowTitle("Mi App Flutter");
+  setWindowTitle("FoodieBite");
 
   runApp(MyApp(isLogged: isLogged)); // Pasamos el argumento isLogged
 }

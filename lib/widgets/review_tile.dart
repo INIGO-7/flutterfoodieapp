@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../util/review.dart';
+import '../screens/restaurant_reviews.dart'; // Importa la nueva pantalla
 
 class ReviewTile extends StatelessWidget {
   final List<Review> reviews;
@@ -20,7 +21,7 @@ class ReviewTile extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(8),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -92,11 +93,11 @@ class ReviewTile extends StatelessWidget {
                       ),
                     ),
                     if (review != topReviews.last)
-                      const Divider(
-                        color: Colors.white,
-                        height: 16, // Reduced height for less vertical spacing
-                        thickness: 1,
-                      ),
+                    Divider(
+                      color: Theme.of(context).colorScheme.secondary,
+                      height: 16, // Reduced height for less vertical spacing
+                      thickness: 1,
+                    ),
                   ],
                 )),
           if (!hasReviews)
@@ -117,8 +118,16 @@ class ReviewTile extends StatelessWidget {
           Center(
             child: TextButton(
               onPressed: () {
-                // Navigate to the reviews page
-                Navigator.pushNamed(context, '/reviews');
+                // Navigate to RestaurantReviewsScreen and pass restaurantName
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RestaurantReviewsScreen(
+                      restaurantName: reviews
+                          .first.restaurant, // Pass the restaurant name here
+                    ),
+                  ),
+                );
               },
               child: Text(
                 hasReviews ? 'Go to reviews' : 'Be the first!',

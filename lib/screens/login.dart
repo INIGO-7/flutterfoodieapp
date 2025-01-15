@@ -83,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         backgroundColor: Colors.green,
         centerTitle: true, // Centra el texto
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Padding(
@@ -135,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      elevation: 5.0,
                     ),
                     onPressed: _login,
                     child: Text('Sign In', style: TextStyle(fontSize: 16)),
@@ -170,9 +172,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      elevation: 5.0,
                     ),
                     child: Text(
-                      'Register new user',
+                      'Register as user',
                       style: TextStyle(fontSize: 16, color: Colors.green),
                     ),
                   ),
@@ -188,9 +191,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      elevation: 5.0,
                     ),
                     child: Text(
-                      'Register new restaurant',
+                      'Register as restaurant',
                       style: TextStyle(fontSize: 16, color: Colors.green),
                     ),
                   ),

@@ -161,6 +161,7 @@ void seleccionarImagen() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.green,
         title: Text('Profile', style: TextStyle(color: Colors.white)),
         centerTitle: true,

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/reserva_restaurante_detail.dart';
 import 'package:flutter_foodybite/util/user_service.dart';
+import 'package:intl/intl.dart';
 
 class ManageReservationRequests extends StatefulWidget {
   const ManageReservationRequests({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class ManageReservationRequests extends StatefulWidget {
 
 class _ManageReservationRequestsState extends State<ManageReservationRequests> {
   List<dynamic> _reservations = [];
-  String? restaurantName; 
+  String? restaurantName;
   bool _isLoading = true;
 
   @override
@@ -28,7 +29,7 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
     await _loadReservations();
   }
 
-    // Cargar el nombre del restaurante que administra el usuario logeado
+  // Cargar el nombre del restaurante que administra el usuario logeado
   Future<void> _loadUserRestaurant() async {
     try {
       final UserService userServices = UserService();
@@ -52,7 +53,8 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
           if (adminUser != null) {
             print(adminUser);
             restaurantName = adminUser['restaurantAdmin'];
-            print("Restaurante administrado por el usuario logeado: $restaurantName");
+            print(
+                "Restaurante administrado por el usuario logeado: $restaurantName");
           }
         }
       }
@@ -60,7 +62,6 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
       print("Error al cargar el restaurante del usuario: $e");
     }
   }
-
 
   // Cargar las reservas desde el archivo JSON
   Future<void> _loadReservations() async {
@@ -72,8 +73,6 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
       if (await file.exists()) {
         final fileContent = await file.readAsString();
         final data = json.decode(fileContent);
-
-        print(data);
 
         List<dynamic> pendingReservations = data
             .where((reservation) =>
@@ -129,9 +128,9 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
   // Función para mostrar la imagen según el tipo de fuente (Internet o Asset)
   Widget _loadImage(String imageUrl) {
     if (imageUrl.startsWith('http') || imageUrl.startsWith('https')) {
-      return Image.network(imageUrl);
+      return Image.network(imageUrl, fit: BoxFit.cover, height: 100.0);
     } else {
-      return Image.asset(imageUrl);
+      return Image.asset(imageUrl, fit: BoxFit.cover, height: 100.0);
     }
   }
 
@@ -139,7 +138,15 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Reservation Requests'),
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Manage Reservation'.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        centerTitle: true,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -148,10 +155,25 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('No pending reservations.', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Center(
+                        child: Text('No pending reservations.',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                      ),
                       SizedBox(height: 20),
-                      Text('There are no reservations waiting for your approval at the moment.',
-                          style: TextStyle(fontSize: 16, color: Colors.grey)),
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            'There are no reservations waiting for your approval at the moment.',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 )
@@ -159,34 +181,109 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
                   itemCount: _reservations.length,
                   itemBuilder: (context, index) {
                     var reservation = _reservations[index];
-                    print('*********************************************************************************************');
-                    print(reservation);
-                    return Card(
-                      margin: EdgeInsets.all(8.0),
-                      child: ListTile(
-                        leading: _loadImage(reservation['restaurantImage']),
-                        title: Text(reservation['restaurantName']),
-                        subtitle: Text(
-                            'Name: ${reservation['name']} - People: ${reservation['people']}'),
-                        trailing: Text('Time: ${reservation['time']}'),
-                        isThreeLine: true,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReservationDetailScreen(
-                                reservation: reservation,
-                                onStatusChange: (String id, String status) async {
-                                  await _updateReservationStatus(id, status);
-                                },
-                              ),
+
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReservationDetailScreen(
+                              reservation: reservation,
+                              onStatusChange: (String id, String status) async {
+                                await _updateReservationStatus(id, status);
+                              },
                             ),
-                          );
-                        },
+                          ),
+                        );
+                      },
+                      child: Card(
+                        margin: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
+                        elevation: 5.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(16.0),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    'Reservation for ${reservation['name']}',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8.0),
+                              Row(
+                                children: [
+                                  Icon(Icons.calendar_today,
+                                      color: Colors.green, size: 18),
+                                  SizedBox(width: 5),
+                                  Text('${formatDate(reservation['date'])}'),
+                                ],
+                              ),
+                              SizedBox(height: 8.0),
+                              Row(
+                                children: [
+                                  Icon(Icons.access_time,
+                                      color: Colors.green, size: 18),
+                                  SizedBox(width: 5),
+                                  Text('${reservation['time']}'),
+                                ],
+                              ),
+                              SizedBox(height: 8.0),
+                              Row(
+                                children: [
+                                  Icon(Icons.people,
+                                      color: Colors.green, size: 18),
+                                  SizedBox(width: 5),
+                                  Text('${reservation['people']}'),
+                                ],
+                              ),
+                            ],
+                          ),
+                          trailing: IconButton(
+                            icon:
+                                Icon(Icons.arrow_forward, color: Colors.green),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReservationDetailScreen(
+                                    reservation: reservation,
+                                    onStatusChange:
+                                        (String id, String status) async {
+                                      await _updateReservationStatus(
+                                          id, status);
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     );
                   },
                 ),
     );
+  }
+
+  // Helper to format date
+  String formatDate(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    String suffix = 'th';
+    int day = dateTime.day;
+    if (day == 1 || day == 21 || day == 31) suffix = 'st';
+    if (day == 2 || day == 22) suffix = 'nd';
+    if (day == 3 || day == 23) suffix = 'rd';
+    return DateFormat("MMMM d'$suffix', yyyy").format(dateTime);
   }
 }
