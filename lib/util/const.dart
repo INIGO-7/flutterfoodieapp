@@ -8,19 +8,19 @@ class Constants {
   static Color lightBG = Colors.white;
   static Color darkBG = Colors.black;
   // Primary colors
-  static Color lightPrimary = Color.fromARGB(255, 233, 233, 233);
+  static Color lightPrimary = Color.fromARGB(255, 178, 220, 179);
   static Color darkPrimary = Color.fromARGB(255, 33, 33, 33);
   // Secondary colors
   // static Color lightSecondary = Color.fromARGB(255, 64, 64, 65);
   // static Color darkSecondary = Color.fromARGB(255, 33, 33, 33);
   // Accents
-  static Color lightAccent = Color(0xFF5563FF);
-  static Color darkAccent = Color(0xFF5563FF);
+  static Color lightAccent = Colors.green;
+  static Color darkAccent = Colors.green;
   static Color ratingBG = Color.fromARGB(255, 255, 218, 52);
   // Text colors
   static Color lightPrimaryText = Color.fromARGB(255, 64, 64, 64);
   static Color darkPrimaryText = Colors.white;
-  static Color lightSecondaryText = Color.fromARGB(255, 140, 140, 140);
+  static Color lightSecondaryText = Color.fromARGB(255, 113, 113, 113);
   static Color darkSecondaryText = Color.fromARGB(255, 170, 170, 170);
   // Text fonts
   static const TextStyle robotoFlexBlack = TextStyle(
