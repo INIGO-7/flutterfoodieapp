@@ -1,0 +1,156 @@
+[
+    {
+        "img": "assets/restaurant_photos/food7.jpeg",
+        "title": "Happy Jones",
+        "address": "123 Broadway, New York, NY 10013",
+        "rating": "4.3",
+        "foodType": "Italian",
+        "openingTime": "11:00 AM",
+        "closingTime": "10:00 PM",
+        "latitude": 40.716,
+        "longitude": -74.003
+    },
+    {
+        "img": "assets/restaurant_photos/SavorNigeria.jpeg",
+        "title": "Savor Nigeria",
+        "address": "15 Marina Street, Lagos, Nigeria",
+        "rating": "4.1",
+        "foodType": "Nigerian",
+        "openingTime": "12:00 PM",
+        "closingTime": "10:30 PM",
+        "latitude": 6.4541,
+        "longitude": 3.3947
+    },
+    {
+        "img": "assets/restaurant_photos/BambooGarden.jpeg",
+        "title": "Bamboo Garden",
+        "address": "789 Nanjing Road, Shanghai, China",
+        "rating": "4.4",
+        "foodType": "Chinese",
+        "openingTime": "11:30 AM",
+        "closingTime": "11:00 PM",
+        "latitude": 31.2304,
+        "longitude": 121.4737
+    },
+    {
+        "img": "assets/restaurant_photos/tratoria.png",
+        "title": "La Trattoria Italiana",
+        "address": "Via del Corso 12, Rome, Italy",
+        "rating": "4.2",
+        "foodType": "Italian",
+        "openingTime": "11:30 AM",
+        "closingTime": "10:30 PM",
+        "latitude": 41.9028,
+        "longitude": 12.4964
+    },
+    {
+        "img": "assets/restaurant_photos/food9.jpeg",
+        "title": "El Sombrerito",
+        "address": "Av. Insurgentes Sur 1234, Mexico City, Mexico",
+        "rating": "4.2",
+        "foodType": "Mexican",
+        "openingTime": "12:00 PM",
+        "closingTime": "11:00 PM",
+        "latitude": 19.4326,
+        "longitude": -99.1332
+    },
+    {
+        "img": "assets/restaurant_photos/food3.jpeg",
+        "title": "Burgerheart Regensburg",
+        "address": "1578 Third Avenue, Seattle, WA 98101",
+        "rating": "4.0",
+        "foodType": "American",
+        "openingTime": "11:30 AM",
+        "closingTime": "10:00 PM",
+        "latitude": 47.6062,
+        "longitude": -122.3321
+    },
+    {
+        "img": "assets/restaurant_photos/food6.jpeg",
+        "title": "Andoni's Bistro",
+        "address": "25 Rue du Faubourg Saint-Antoine, Paris, France",
+        "rating": "4.4",
+        "foodType": "International",
+        "openingTime": "11:00 AM",
+        "closingTime": "11:00 PM",
+        "latitude": 48.8566,
+        "longitude": 2.3522
+    },
+    {
+        "img": "assets/restaurant_photos/food12.jpeg",
+        "title": "Montevideo",
+        "address": "Rambla Wilson 2589, Montevideo, Uruguay",
+        "rating": "4.2",
+        "foodType": "International",
+        "openingTime": "11:00 AM",
+        "closingTime": "10:00 PM",
+        "latitude": -34.9011,
+        "longitude": -56.1645
+    },
+    {
+        "img": "assets/restaurant_photos/ElSaborDeEspaña.jpg",
+        "title": "El Sabor de España",
+        "address": "Calle Gran Vía 42, Madrid, Spain",
+        "rating": "4.4",
+        "foodType": "Spanish",
+        "openingTime": "12:00 PM",
+        "closingTime": "11:00 PM",
+        "latitude": 40.4168,
+        "longitude": -3.7038
+    },
+    {
+        "img": "assets/restaurant_photos/FiestaMexicana.jpg",
+        "title": "Fiesta Mexicana",
+        "address": "456 King Street West, Toronto, ON M5V 1K4",
+        "rating": "4.4",
+        "foodType": "Mexican",
+        "openingTime": "11:30 AM",
+        "closingTime": "10:30 PM",
+        "latitude": 43.6532,
+        "longitude": -79.3832
+    },
+    {
+        "img": "assets/restaurant_photos/PastaEBasta.jpeg",
+        "title": "Pasta e Basta",
+        "address": "Via Dante 15, Milan, Italy",
+        "rating": "4.3",
+        "foodType": "Italian",
+        "openingTime": "11:30 AM",
+        "closingTime": "10:00 PM",
+        "latitude": 45.4642,
+        "longitude": 9.1900
+    },
+    {
+        "img": "assets/restaurant_photos/ChinatownBistro.jpg",
+        "title": "Chinatown Bistro",
+        "address": "233 Sussex Street, Sydney, NSW 2000",
+        "rating": "4.3",
+        "foodType": "Chinese",
+        "openingTime": "11:30 AM",
+        "closingTime": "10:30 PM",
+        "latitude": -33.8688,
+        "longitude": 151.2093
+    },
+    {
+        "img": "assets/restaurant_photos/TasteOfNigeria.jpeg",
+        "title": "Taste of Nigeria",
+        "address": "10 Victoria Island Road, Port Harcourt, Nigeria",
+        "rating": "4.4",
+        "foodType": "Nigerian",
+        "openingTime": "12:00 PM",
+        "closingTime": "10:00 PM",
+        "latitude": 4.8156,
+        "longitude": 7.0498
+    },
+    {
+        "img": "assets/restaurant_photos/TabernaEspañola.jpg",
+        "title": "Taberna Española",
+        "address": "Carrer de Mallorca 401, Barcelona, Spain",
+        "rating": "4.5",
+        "foodType": "Spanish",
+        "openingTime": "12:00 PM",
+        "closingTime": "11:00 PM",
+        "latitude": 41.3851,
+        "longitude": 2.1734
+    }
+]

@@ -3,8 +3,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../util/app_constants.dart';
-
 class OSMMapContainer extends StatelessWidget {
   final double latitude;
   final double longitude;
@@ -33,7 +31,7 @@ class OSMMapContainer extends StatelessWidget {
       height: 120,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
       decoration: BoxDecoration(
-        color: AppConstants.secondaryColor,
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(12),
       ),
       child: latitude != 0 && longitude != 0
