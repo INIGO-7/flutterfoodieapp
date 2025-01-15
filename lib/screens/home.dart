@@ -130,7 +130,7 @@ class _HomeState extends State<Home> {
           child: Text(
             "See all (" + categories.length.toString() + ")",
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
           onPressed: () {

@@ -56,12 +56,12 @@ class _NotificationsState extends State<Notifications> {
   Future<List<Map<String, dynamic>>> loadNotifications() async {
     try {
       String? username = await userService.getLoggedUserName();
-      
+
       // Load notifications from the file system instead of assets
       final directory = Directory.current;
       final notificationsPath = '${directory.path}/notifications.json';
       final notificationsFile = File(notificationsPath);
-      
+
       if (!await notificationsFile.exists()) {
         print('Notifications file not found');
         return [];
@@ -77,27 +77,31 @@ class _NotificationsState extends State<Notifications> {
       print(filteredNotifications);
 
       // Still load restaurants from assets as it's static
-      final String restaurantsString = await rootBundle.loadString('restaurants_data.json');
+      final String restaurantsString =
+          await rootBundle.loadString('restaurants_data.json');
       final List<dynamic> restaurantsData = json.decode(restaurantsString);
 
-      final List<Map<String, dynamic>> result = filteredNotifications.map((notification) {
-        final restaurantData = restaurantsData.firstWhere(
-          (restaurant) => restaurant['title'] == notification['sender'],
-          orElse: () => null,
-        );
+      final List<Map<String, dynamic>> result = filteredNotifications
+          .map((notification) {
+            final restaurantData = restaurantsData.firstWhere(
+              (restaurant) => restaurant['title'] == notification['sender'],
+              orElse: () => null,
+            );
 
-        if (restaurantData == null) return null;
+            if (restaurantData == null) return null;
 
-        return {
-          'id': notification['id'],
-          'img': restaurantData['img'],
-          'sender': notification['sender'],
-          'latitude': restaurantData['latitude'],
-          'longitude': restaurantData['longitude'],
-          'address': restaurantData['address'],
-          'message': notification['message']
-        };
-      }).whereType<Map<String, dynamic>>().toList();
+            return {
+              'id': notification['id'],
+              'img': restaurantData['img'],
+              'sender': notification['sender'],
+              'latitude': restaurantData['latitude'],
+              'longitude': restaurantData['longitude'],
+              'address': restaurantData['address'],
+              'message': notification['message']
+            };
+          })
+          .whereType<Map<String, dynamic>>()
+          .toList();
 
       return result;
     } catch (e) {
@@ -118,13 +122,15 @@ class _NotificationsState extends State<Notifications> {
     if (await notificationsFile.exists()) {
       try {
         final notificationsFileContent = await notificationsFile.readAsString();
-        final notificationsData = json.decode(notificationsFileContent) as List<dynamic>;
+        final notificationsData =
+            json.decode(notificationsFileContent) as List<dynamic>;
 
         notificationsData.removeWhere((notification) =>
             notification is Map<String, dynamic> && notification['id'] == id);
 
-        await notificationsFile.writeAsString(json.encode(notificationsData), flush: true);
-        
+        await notificationsFile.writeAsString(json.encode(notificationsData),
+            flush: true);
+
         // Reload notifications after deletion
         final updatedNotifications = await loadNotifications();
         setState(() {
@@ -145,11 +151,11 @@ class _NotificationsState extends State<Notifications> {
     }
   }
 
-  void _navigateToRestaurant(BuildContext context, Map<String, dynamic> notification) async {
-
-    bool isDataReady = notification['sender'] != '' && 
-                  notification['sender'] != null && 
-                  notification['sender'] != 'Untitled';
+  void _navigateToRestaurant(
+      BuildContext context, Map<String, dynamic> notification) async {
+    bool isDataReady = notification['sender'] != '' &&
+        notification['sender'] != null &&
+        notification['sender'] != 'Untitled';
 
     if (!isDataReady) {
       // Show a snackbar or some other feedback that this restaurant's details aren't available
@@ -162,32 +168,37 @@ class _NotificationsState extends State<Notifications> {
     }
 
     // Get the reviews
-    List<Review> reviews = await reviewService.getReviewsByRestaurant(notification["sender"]);
+    List<Review> reviews =
+        await reviewService.getReviewsByRestaurant(notification["sender"]);
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => RestaurantScreen(
-          restaurantName: notification['sender'],
-          imageUrl: notification['img'],
-          reviews: reviews,
-          latitude: notification['latitude'],
-          longitude: notification['longitude'],
-          address: notification['address']
-        ),
+            restaurantName: notification['sender'],
+            imageUrl: notification['img'],
+            reviews: reviews,
+            latitude: notification['latitude'],
+            longitude: notification['longitude'],
+            address: notification['address']),
       ),
     );
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
     if (!isLoggedIn) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Your Notifications'),
           automaticallyImplyLeading: false,
-          centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.secondary,
+          title: Text(
+            'YOUR Notifications'.toUpperCase(),
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: Colors.green,
+          centerTitle: true, // Centra el texto
         ),
         body: Center(
           child: Column(
@@ -202,14 +213,26 @@ class _NotificationsState extends State<Notifications> {
                 ),
               ),
               SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  ).then((_) => initializeScreen());
-                },
-                child: Text('Login'),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 14.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    elevation: 5,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    ).then((_) => initializeScreen());
+                  },
+                  child: Text('Sign in'),
+                ),
               ),
             ],
           ),
@@ -219,13 +242,17 @@ class _NotificationsState extends State<Notifications> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Notifications',
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            'YOUR Notifications'.toUpperCase(),
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: Colors.green,
+          centerTitle: true, // Centra el texto
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
       body: isLoading
           ? Center(
               child: CircularProgressIndicator(
@@ -243,81 +270,82 @@ class _NotificationsState extends State<Notifications> {
                   ),
                 )
               : ListView.builder(
-            itemCount: notifications.length,  // Removed the +1
-            itemBuilder: (context, index) {
-              final notification = notifications[index];
-              return Padding(
-                padding: EdgeInsets.only(
-                  left: 12.0,
-                  right: 12.0,
-                  top: index == 0 ? 14.0 : 4.0,
-                  bottom: 4.0,
-                ),
-                child: Card(
-                  color: Theme.of(context).colorScheme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: notification['img'] != null
-                          ? AssetImage(notification['img'])
-                          : null,
-                      radius: 30,
-                    ),
-                    title: Text(
-                      notification['sender'] ?? 'Untitled',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                  itemCount: notifications.length, // Removed the +1
+                  itemBuilder: (context, index) {
+                    final notification = notifications[index];
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        left: 12.0,
+                        right: 12.0,
+                        top: index == 0 ? 14.0 : 4.0,
+                        bottom: 4.0,
                       ),
-                    ),
-                    subtitle: Text(
-                      notification['message'] ?? '',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontSize: 13,
-                      ),
-                    ),
-                    trailing: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
-                        padding: EdgeInsets.zero,
+                      child: Card(
+                        color: Theme.of(context).colorScheme.primary,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      ),
-                      onPressed: () async {
-                        if (notification['id'] != null) {
-                          await deleteNotification(notification['id']);
-                        } else {
-                          print('Notification ID is null');
-                        }
-                      },
-                      child: SizedBox(
-                        width: 80,
-                        height: double.infinity,
-                        child: Center(
-                          child: Text(
-                            'Delete',
-                            textAlign: TextAlign.center,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: notification['img'] != null
+                                ? AssetImage(notification['img'])
+                                : null,
+                            radius: 30,
+                          ),
+                          title: Text(
+                            notification['sender'] ?? 'Untitled',
                             style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
                               fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              fontSize: 15,
                             ),
                           ),
+                          subtitle: Text(
+                            notification['message'] ?? '',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: 13,
+                            ),
+                          ),
+                          trailing: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                            onPressed: () async {
+                              if (notification['id'] != null) {
+                                await deleteNotification(notification['id']);
+                              } else {
+                                print('Notification ID is null');
+                              }
+                            },
+                            child: SizedBox(
+                              width: 80,
+                              height: double.infinity,
+                              child: Center(
+                                child: Text(
+                                  'Delete',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            _navigateToRestaurant(context, notification);
+                          },
                         ),
                       ),
-                    ),
-                    onTap: () {
-                      _navigateToRestaurant(context, notification);
-                    },
-                  ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
     );
   }
 }
