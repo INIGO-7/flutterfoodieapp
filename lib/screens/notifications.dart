@@ -101,6 +101,8 @@ class _NotificationsState extends State<Notifications> {
             };
           })
           .whereType<Map<String, dynamic>>()
+          .toList()
+          .reversed
           .toList();
 
       return result;
