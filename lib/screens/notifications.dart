@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'restaurant_screen.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
+import 'dart:io';
 
 import '../util/review.dart';
 import '../util/user_service.dart';
@@ -15,10 +16,11 @@ class Notifications extends StatefulWidget {
 
 class _NotificationsState extends State<Notifications> {
 
-  final ReviewService reviewService = ReviewService();
-
-  final UserService userService = UserService();
+  List<Map<String, dynamic>> notifications = [];
   bool isLoggedIn = false;
+
+  final ReviewService reviewService = ReviewService();
+  final UserService userService = UserService();
 
   @override
   void initState() {
@@ -71,6 +73,7 @@ class _NotificationsState extends State<Notifications> {
 
         // Construct the final map
         return {
+          'id': notification['id'],
           'img': restaurantData['img'],
           'sender': notification['sender'],
           'latitude': restaurantData['latitude'],
@@ -84,6 +87,35 @@ class _NotificationsState extends State<Notifications> {
     } catch (e) {
       print('Error loading notifications: $e');
       return [];
+    }
+  }
+
+  Future<void> deleteNotification(String id) async {
+    final directory = Directory.current;
+
+    // Path to the notifications.json file
+    final notificationsPath = '${directory.path}/notifications.json';
+    final notificationsFile = File(notificationsPath);
+
+    // Check if the file exists
+    if (await notificationsFile.exists()) {
+      try {
+        // Read the file content and decode it
+        final notificationsFileContent = await notificationsFile.readAsString();
+        final notificationsData = json.decode(notificationsFileContent) as List<dynamic>;
+
+        // Find and remove the notification with the given id
+        notificationsData.removeWhere((notification) =>
+            notification is Map<String, dynamic> && notification['id'] == id);
+
+        // Write the updated notifications list back to the file
+        await notificationsFile.writeAsString(json.encode(notificationsData), flush: true);
+        
+      } catch (e) {
+        print('Error while deleting notification: $e');
+      }
+    } else {
+      print('Notifications file does not exist.');
     }
   }
 
@@ -217,9 +249,9 @@ class _NotificationsState extends State<Notifications> {
                       child: 
                         ListTile(
                           leading: CircleAvatar(
-                            backgroundImage: notification['img'] != null 
-                              ? AssetImage(notification['img'])
-                              : null,
+                            backgroundImage: notification['img'] != null
+                                ? AssetImage(notification['img'])
+                                : null,
                             radius: 30,
                           ),
                           title: Text(
@@ -234,13 +266,45 @@ class _NotificationsState extends State<Notifications> {
                             notification['message'] ?? '',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onPrimary,
-                              fontSize: 13
+                              fontSize: 13,
                             ),
                           ),
-                        onTap: () {
-                          _navigateToRestaurant(context, notification);
-                        },
-                      ),
+                          trailing: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).colorScheme.secondary, // Background color
+                              padding: EdgeInsets.zero, // Removes padding
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0), // Button shape
+                              ),
+                            ),
+                            onPressed: () async {
+                              if (notification['id'] != null) {
+                                deleteNotification(notification['id']);
+                                setState(() {}); // Refresh the UI after deletion
+                              } else {
+                                print('Notification ID is null');
+                              }
+                            },
+                            child: SizedBox(
+                              width: 80, // Fixed width
+                              height: double.infinity, // Occupies full height of the notification
+                              child: Center(
+                                child: Text(
+                                  'Delete',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            _navigateToRestaurant(context, notification);
+                          },
+                        ),
+
                     ),
                   );
                 } else {

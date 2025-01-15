@@ -122,6 +122,7 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
           reservation['status'] = newStatus;
 
           final notification = {
+            "id": DateTime.now().millisecondsSinceEpoch.toString(),
             "receiver": reservation['user'], // Fix: Access fields from the matched reservation
             "sender": reservation['restaurantName'],
             "message": newStatus == 'Accepted'
