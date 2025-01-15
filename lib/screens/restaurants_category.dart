@@ -119,11 +119,9 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
                         restaurantName: title!,
                         imageUrl: imageUrl,
                         reviews: reviewList, // Pasamos la lista de objetos Review
-                        location: {
-                          'latitude': latitude,
-                          'longitude': longitude,
-                          'address': address
-                        }, // Asegúrate de pasar correctamente la ubicación
+                        latitude: latitude,
+                        longitude: longitude,
+                        address: address
                       ),
                     ),
                   );

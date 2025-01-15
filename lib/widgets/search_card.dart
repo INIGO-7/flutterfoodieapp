@@ -148,11 +148,9 @@ class _SearchCardState extends State<SearchCard> with RouteAware {
                                   imageUrl: restaurant["img"],
                                   restaurantName: restaurant["title"],
                                   reviews: reviews,
-                                  location: {
-                                    'latitude': double.parse(restaurant["latitude"]),
-                                    'longitude': double.parse(restaurant["longitude"]),
-                                    'address': restaurant["address"],
-                                  },
+                                  latitude: restaurant['latitude'],
+                                  longitude: restaurant['longitude'],
+                                  address: restaurant['address']
                                 ),
                               ),
                             );

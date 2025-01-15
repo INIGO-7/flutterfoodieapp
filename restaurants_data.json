@@ -1,1 +1,24 @@
-[{"img":"assets/restaurant_photos/food3.jpeg","title":"Json","address":"Dr.-Gessler-Strasse 2","rating":"0.0","foodType":"Mexican","openingTime":"10:00 AM","closingTime":"11:30 PM","latitude":"0.0","longitude":"0.0"}]
+[
+    {
+        "img": "assets/restaurant_photos/food3.jpeg",
+        "title": "Json",
+        "address": "Dr.-Gessler-Strasse 2",
+        "rating": "0.0",
+        "foodType": "Mexican",
+        "openingTime": "10:00 AM",
+        "closingTime": "11:30 PM",
+        "latitude": "0.0",
+        "longitude": "0.0"
+    },
+    {
+        "img": "assets/restaurant_photos/food2.jpeg",
+        "title": "El Sombrerito",
+        "address": "Fischgässel 4, 93047 Regensburg",
+        "rating": "0.0",
+        "foodType": "Mexican",
+        "openingTime": "10:00 AM",
+        "closingTime": "11:30 PM",
+        "latitude": 49.02077738427102,
+        "longitude": 12.09520907943992
+    }
+]

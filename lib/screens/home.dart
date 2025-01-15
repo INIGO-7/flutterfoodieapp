@@ -226,11 +226,9 @@ class _HomeState extends State<Home> {
                     builder: (context) => RestaurantScreen(
                       imageUrl: restaurant["img"],
                       restaurantName: restaurant["title"],
-                      location: {
-                        'latitude': double.parse(restaurant["latitude"].toString()),
-                        'longitude': double.parse(restaurant["longitude"].toString()),
-                        'address': restaurant["address"],
-                      },
+                      latitude: double.parse(restaurant["latitude"].toString()),
+                      longitude: double.parse(restaurant["longitude"].toString()),
+                      address: restaurant["address"],
                       reviews: [], // Agrega las reseñas que necesites
                     ),
                   ),

@@ -12,14 +12,18 @@ class RestaurantScreen extends StatefulWidget {
   final String restaurantName;
   final String imageUrl;
   final List<Review> reviews;
-  final Map<String, dynamic> location;
+  final double latitude;
+  final double longitude;
+  final String address;
 
   const RestaurantScreen({
     Key? key,
     required this.restaurantName,
     required this.imageUrl,
     required this.reviews,
-    required this.location,
+    required this.latitude,
+    required this.longitude,
+    required this.address
   }) : super(key: key);
 
   @override
@@ -101,14 +105,14 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                   ReviewTile(reviews: widget.reviews),
 
                   OSMMapContainer(
-                    latitude: widget.location['latitude'],
-                    longitude: widget.location['longitude'],
-                    address: widget.location['address']
+                    latitude: widget.latitude,
+                    longitude: widget.longitude,
+                    address: widget.address
                   ),
 
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                    child: LocationTile(location: widget.location['address']),
+                    child: LocationTile(location: widget.address),
                   ),
 
                   const SizedBox(height: 100),
@@ -132,7 +136,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     MaterialPageRoute(
                       builder: (context) => ReservationScreen(
                         restaurantName: widget.restaurantName, 
-                        restaurantAddress: widget.location['address'], 
+                        restaurantAddress: widget.address, 
                         restaurantImage: widget.imageUrl
                       )
                     ),

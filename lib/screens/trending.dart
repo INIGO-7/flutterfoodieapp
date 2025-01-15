@@ -96,7 +96,9 @@ class _TrendingState extends State<Trending> {
                           //TODO: edit this to work
                           imageUrl: '',
                           reviews: [],
-                          location: {},
+                          latitude: 0.0,
+                          longitude: 0.0,
+                          address: ''
                         ),
                       ),
                     );

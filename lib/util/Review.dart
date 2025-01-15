@@ -22,8 +22,7 @@ class Review {
       restaurant: json['restaurant'],
       comment: json['comment'],
       rating: json['rating'],
-      createdAt: DateTime.parse(
-          json['createdAt']), // Convierte la fecha del JSON a DateTime
+      createdAt: DateTime.parse( json['createdAt'] ), // Convierte la fecha del JSON a DateTime
       username: json['username'], // Obtiene el nombre de usuario del JSON
       avatarPath: json['avatarPath'],
     );
