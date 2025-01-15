@@ -112,6 +112,90 @@ void seleccionarImagen() async {
   }
 }
 
+  void cambiarPassword() async {
+  final TextEditingController currentPasswordController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+  final resultado = await showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Change Password'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: currentPasswordController,
+              obscureText: true,
+              decoration: InputDecoration(labelText: 'Current password'),
+            ),
+            TextFormField(
+              controller: newPasswordController,
+              obscureText: true,
+              decoration: InputDecoration(labelText: 'New password'),
+            ),
+            TextFormField(
+              controller: confirmPasswordController,
+              obscureText: true,
+              decoration: InputDecoration(labelText: 'Confirm new password'),
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+              elevation: 5.0
+            ),
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+              elevation: 5.0
+            ),
+            child: Text('Update'),
+          ),
+        ],
+      );
+    },
+  );
+  if (resultado == true) {
+    final currentPassword = currentPasswordController.text;
+    final newPassword = newPasswordController.text;
+    final confirmPassword = confirmPasswordController.text;
+    final username = LoginScreen.getUserName()!;
+    // Validar contraseñas
+    if (!await _userService.validateUser(username, currentPassword)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Current password incorrect')),
+      );
+      return;
+    }
+    if (newPassword.isEmpty || confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('New password cannot be empty')),
+      );
+      return;
+    }
+    if (newPassword != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Passwords are not equal')),
+      );
+      return;
+    }
+    // Actualizar contraseña en el archivo JSON
+    await _userService.updatePassword(username, newPassword);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Password changed successfully')),
+    );
+  }
+}
+
 
 
 
@@ -223,9 +307,7 @@ void seleccionarImagen() async {
             ListTile(
               leading: Icon(Icons.lock, color: Colors.green),
               title: Text('Change password'),
-              onTap: () async {
-                // Función de cambio de contraseña
-              },
+              onTap: (cambiarPassword)
             ),
             ListTile(
               leading: Icon(Icons.logout, color: Colors.green),
