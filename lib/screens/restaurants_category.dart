@@ -132,12 +132,10 @@ class _RestaurantCategoryState extends State<RestaurantCategory> {
                       builder: (context) => RestaurantScreen(
                         restaurantName: title!,
                         imageUrl: imageUrl,
-                        // Pasamos la lista de objetos Review
-                        location: {
-                          'latitude': latitude,
-                          'longitude': longitude,
-                          'address': address
-                        }, // Asegúrate de pasar correctamente la ubicación
+                        reviews: reviewList, // Pasamos la lista de objetos Review
+                        latitude: latitude,
+                        longitude: longitude,
+                        address: address
                       ),
                     ),
                   );

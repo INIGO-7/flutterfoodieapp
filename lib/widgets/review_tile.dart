@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../util/review.dart';
-import '../util/app_constants.dart';
 import '../screens/restaurant_reviews.dart'; // Importa la nueva pantalla
 
 class ReviewTile extends StatelessWidget {
@@ -18,9 +17,11 @@ class ReviewTile extends StatelessWidget {
         .take(2)
         .toList();
 
+    final hasReviews = reviews.isNotEmpty;
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.green[100], // Fondo en un verde claro
+        color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(8),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -28,79 +29,89 @@ class ReviewTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ...topReviews.map((review) => Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        bottom: 4), // Reduced bottom padding
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment
-                          .center, // Center aligns avatar with text
-                      children: [
-                        CircleAvatar(
-                          radius: 27,
-                          backgroundImage: review.avatarPath != null
-                              ? AssetImage(review.avatarPath!)
-                              : null,
-                          child: review.avatarPath == null
-                              ? Text(
-                                  review.username[0],
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                              : null,
-                        ),
-                        const SizedBox(width: 16), // Reduced horizontal spacing
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize
-                                .min, // Ensures the text doesn't expand unnecessarily
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    '${review.username} - ${review.rating}',
-                                    style: const TextStyle(
+          if (hasReviews)
+            ...topReviews.map((review) => Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4), // Reduced bottom padding
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center, // Center aligns avatar with text
+                        children: [
+                          CircleAvatar(
+                            radius: 27,
+                            backgroundImage: review.avatarPath != null
+                                ? AssetImage(review.avatarPath!)
+                                : null,
+                            child: review.avatarPath == null
+                                ? Text(
+                                    review.username[0],
+                                    style: TextStyle(
+                                      color: Theme.of(context).colorScheme.onPrimary,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
                                     ),
-                                  ),
-                                  const SizedBox(width: 3), // Reduced spacing
-                                  const Icon(Icons.star,
-                                      color: Colors.green, // Icono verde
-                                      size: 18), // Slightly smaller icon
-                                ],
-                              ),
-                              const SizedBox(
-                                  height:
-                                      2), // Reduced spacing between name and comment
-                              Text(
-                                review.comment,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
+                                  )
+                                : null,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 16), // Reduced horizontal spacing
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min, // Ensures the text doesn't expand unnecessarily
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      '${review.username} - ${review.rating}',
+                                      style: TextStyle(
+                                        color: Theme.of(context).colorScheme.onPrimary,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 3), // Reduced spacing
+                                    Icon(
+                                      Icons.star,
+                                      color: Theme.of(context).colorScheme.secondary,
+                                      size: 18,
+                                    ), // Slightly smaller icon
+                                  ],
+                                ),
+                                const SizedBox(height: 2), // Reduced spacing between name and comment
+                                Text(
+                                  review.comment,
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.onSecondary,
+                                    fontSize: 14,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  if (review != topReviews.last)
-                    const Divider(
-                      color: Colors.green, // Divider verde
+                    if (review != topReviews.last)
+                    Divider(
+                      color: Theme.of(context).colorScheme.secondary,
                       height: 16, // Reduced height for less vertical spacing
                       thickness: 1,
                     ),
-                ],
-              )),
-
+                  ],
+                )),
+          if (!hasReviews)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                'No reviews available yet',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
           const SizedBox(height: 4), // Space between reviews and button
 
           // "Go to reviews" button
@@ -118,56 +129,18 @@ class ReviewTile extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text(
-                'See all reviews',
+              child: Text(
+                hasReviews ? 'Go to reviews' : 'Be the first!',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: Colors.green, // Botón con texto verde
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class LocationTile extends StatelessWidget {
-  final String location;
-
-  const LocationTile({
-    Key? key,
-    required this.location,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        // const Icon(Icons.location_on, color: Colors.green), // Uncomment if needed
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text.rich(
-            TextSpan(
-              text: 'Located at - ',
-              style: AppConstants.robotoFlexBlack,
-              children: [
-                TextSpan(
-                  text: location,
-                  style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.green, // Texto verde
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.green,
-                      decorationThickness: 1.5),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

@@ -99,7 +99,6 @@ class _TrendingState extends State<Trending> {
                     createdAt: DateTime.parse(reviewMap['createdAt']),
                   );
                 }).toList();
-
                 return Padding(
                   padding: const EdgeInsets.only(right: 10.0),
                   child: GestureDetector(
@@ -110,11 +109,10 @@ class _TrendingState extends State<Trending> {
                           builder: (context) => RestaurantScreen(
                             restaurantName: title!,
                             imageUrl: imageUrl,
-                            location: {
-                              'latitude': latitude,
-                              'longitude': longitude,
-                              'address': address,
-                            },
+                            reviews: reviewList,
+                            latitude: latitude,
+                            longitude: longitude,
+                            address: address
                           ),
                         ),
                       );

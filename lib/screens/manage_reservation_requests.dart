@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foodybite/screens/reserva_restaurante_detail.dart';
 import 'package:flutter_foodybite/util/user_service.dart';
@@ -99,28 +100,46 @@ class _ManageReservationRequestsState extends State<ManageReservationRequests> {
     }
   }
 
-  // Actualizar una reserva y recargar la lista
   Future<void> _updateReservationStatus(String id, String newStatus) async {
     final directory = Directory.current;
-    final filePath = '${directory.path}/reservations.json';
-    final file = File(filePath);
 
-    if (await file.exists()) {
-      final fileContent = await file.readAsString();
-      final data = json.decode(fileContent);
+    final reservationsPath = '${directory.path}/reservations.json';
+    final reservationsFile = File(reservationsPath);
 
-      // Buscar la reserva por ID y actualizar su status
-      for (var reservation in data) {
+    final notificationsPath = '${directory.path}/notifications.json';
+    final notificationsFile = File(notificationsPath);
+
+    if (await reservationsFile.exists() && await notificationsFile.exists()) {
+      final reservationsFileContent = await reservationsFile.readAsString();
+      final notificationsFileContent = await notificationsFile.readAsString();
+
+      final reservationsData = json.decode(reservationsFileContent) as List<dynamic>;
+      final notificationsData = json.decode(notificationsFileContent) as List<dynamic>;
+
+      // Update reservation and add notification
+      for (var reservation in reservationsData) {
         if (reservation['id'] == id) {
           reservation['status'] = newStatus;
+
+          final notification = {
+            "id": DateTime.now().millisecondsSinceEpoch.toString(),
+            "receiver": reservation['user'], // Fix: Access fields from the matched reservation
+            "sender": reservation['restaurantName'],
+            "message": newStatus == 'Accepted'
+                ? "We're glad to confirm that your reservation HAS BEEN ACCEPTED!"
+                : "Unfortunately, we have to communicate that your reservation HAS BEEN REJECTED."
+          };
+
+          notificationsData.add(notification);
           break;
         }
       }
 
-      // Guardar el archivo actualizado
-      await file.writeAsString(json.encode(data), flush: true);
+      // Save updated files
+      await reservationsFile.writeAsString(json.encode(reservationsData), flush: true);
+      await notificationsFile.writeAsString(json.encode(notificationsData), flush: true);
 
-      // Recargar las reservas
+      // Reload reservations
       _loadReservations();
     }
   }

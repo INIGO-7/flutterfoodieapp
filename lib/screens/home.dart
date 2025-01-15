@@ -130,7 +130,7 @@ class _HomeState extends State<Home> {
           child: Text(
             "See all (" + categories.length.toString() + ")",
             style: TextStyle(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
           onPressed: () {
@@ -229,14 +229,10 @@ class _HomeState extends State<Home> {
                     builder: (context) => RestaurantScreen(
                       imageUrl: restaurant["img"],
                       restaurantName: restaurant["title"],
-                      location: {
-                        'latitude':
-                            double.parse(restaurant["latitude"].toString()),
-                        'longitude':
-                            double.parse(restaurant["longitude"].toString()),
-                        'address': restaurant["address"],
-                      },
-                      // Agrega las reseñas que necesites
+                      latitude: double.parse(restaurant["latitude"].toString()),
+                      longitude: double.parse(restaurant["longitude"].toString()),
+                      address: restaurant["address"],
+                      reviews: [] // Agrega las reseñas que necesites
                     ),
                   ),
                 );
